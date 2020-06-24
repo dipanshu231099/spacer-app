@@ -6,7 +6,8 @@ var entrySchema = new Schema(
         customer_id: {type: String, required: true, maxlength:100},
         customer_name: {type: String, required: true, maxlength: 100},
         collect_time: {type: Date, required: true},
-        window: {type: Number, min: 1, max: 6, required:true}
+        groceries: {type:Boolean, required:true},
+        liquor: {type:Boolean, required:true},
     }
 )
 

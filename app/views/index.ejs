@@ -13,11 +13,11 @@
 
             <div class="col-sm-6 left-pane">
                 <h2 style="text-align: center;">welcome</h2>
-                <form action="create_timing" method="POST">
+                <form action="/create_timing" method="POST">
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">First Name</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control <%= valid.name %> " name="name" placeholder="name" required>
+                            <input type="text" class="form-control <%= (errors.name===""?"is-valid":"is-invalid") %> " name="name" placeholder="first name" required>
                             <div class="invalid-feedback">
                                 <%= errors.name %>
                             </div>
@@ -26,16 +26,16 @@
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                            <input type="email" class="form-control <%= valid.email %>  " name="email" placeholder="Email" required>
+                            <input type="email" class="form-control <%= (errors.email===""?"is-valid":"is-invalid") %>  " name="email" placeholder="Email" required>
                             <div class="invalid-feedback">
                                 <%= errors.email %>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Conatact no.</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Contact no.</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control <%= valid.contact %>  " name="contact" placeholder="Conatact" required>
+                            <input type="number" class="form-control <%= (errors.contact===""?"is-valid":"is-invalid") %>  " name="contact" placeholder="Conatact" required>
                             <div class="invalid-feedback">
                                 <%= errors.contact %>
                             </div>
@@ -53,8 +53,8 @@
                     </div>
                     <hr>
                     <div class="form-group">
-                        <label for="visit_time">=> Select your visit time</label>
-                        <select class="form-control" id="visit_time">
+                        <label for="visit_time">Select your visit time</label>
+                        <select class="form-control" id="visit_time" name="timestamp">
                             <% for( let index = 0; index < availableTimes.length; index++ ) { %>
                                 <option><%= availableTimes[index] %></option>
                             <% } %>
