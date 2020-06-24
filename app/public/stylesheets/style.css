@@ -1,13 +1,14 @@
 body{
-  padding: 2.5%;
 }
 
 .left-pane{
-  background-color: cornsilk;
-  min-height: 90vh;
+  padding: 2.5%;
+  background-color: #fff8dc;
+  min-height: 100vh;
 }
 
 .right-pane{
-  background-color: crimson;
-  min-height: 90vh;
+  padding: 2.5%;
+  background-color: #fff2bf;
+  min-height: 100vh;
 }
