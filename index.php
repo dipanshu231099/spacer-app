@@ -27,15 +27,21 @@
         $endTime = date("h:ia M d Y",strtotime("+20 minutes", strtotime($_POST["timestamp"])));
         if(isset($_POST['liquor']))$liquor=true;
         if(isset($_POST['groceries']))$groceries=true;
-        $query = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0). ");";
-        // echo $query;
-        $results = $conn->query($query);
+        $query_insertion = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0). ");";
+        $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
+        $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
+        $counter_number = (int)($count_timestamp/4)+1;
+        $results = $conn->query($query_insertion);
         if(!$results)echo "Error inserting data into sql";
+        else if($count_timestamp>=12){
+            $_SESSION['message']="Cannot allot the selected time as it just got fulfilled.";
+            $_SESSION['good']=false;
+        }
         else {
-            // $conn->close();
-            header("Location: ".$_SESSION['PHP_SELF']);
-            $_SESSION['message']=("succusfully created your request <br>from <strong>$timestamp</strong> <br>to <strong>$endTime</strong><br>Kindly collect your items within this time frame.");
-            exit();
+            $_SESSION['message']="succusfully created your request <br>from <strong>$timestamp</strong> <br>to <strong>$endTime</strong><br>counter number: <strong>".$counter_number. "</strong><br>Kindly collect your items within this time frame.";
+            $_SESSION['good']=true;
+            header("Location: message.php");
+            exit;
         }
 
     }
@@ -61,7 +67,7 @@
         <div class="row">
 
             <div class="col-sm-6 left-pane">
-                <h1 style="text-align: center;">Welcome to</h1>
+                <h1 style="text-align: center;">Welcome</h1>
                 <hr>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                     <div class="form-group row">
@@ -69,7 +75,7 @@
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id='user_name' name="name" placeholder="first name" required>
                             <div class="invalid-feedback">
-                                Only alphabets are allowed, no whitespaces or special chars.
+                                No empty string or special chars allowed.
                             </div>
                         </div>
                     </div>
@@ -136,12 +142,11 @@
             <div class="col-sm-6 right-pane">
                 <h1 style="text-align: center;">Spacer-App</h1>
                 <hr>
-                <div class="alert alert-success" role="alert">
-                    <?php
-                        if(isset($_SESSION['message'])){
-                            echo "<p>".$_SESSION['message']."</p>";
-                        }
-                    ?>
+                <div class="alert alert-info" role="alert">
+                    <p>
+                        This app is to designed for providing solution to social distancing implementation, during the difficult time of Corona.
+                        Kindly enter all the required fields required in the form. 
+                    </p>
                 </div>
             </div>
         </div>
@@ -151,7 +156,7 @@
 <footer class="page-footer font-small blue">
 
   <div class="footer-copyright text-center py-2">© 2020 Copyright:
-    <a href="https://www.linkedin.com/in/dipanshu-verma-955068183/"> Dipanshu </a>and Ayushman
+    <a href="https://www.linkedin.com/in/dipanshu-verma-955068183/"> Dipanshu </a>and <a href="https://www.linkedin.com/in/ayushman-dixit-4812b9171">Ayushman</a>
   </div>
 
 </footer>

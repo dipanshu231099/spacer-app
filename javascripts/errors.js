@@ -14,7 +14,7 @@ document.addEventListener('click', logKey_submit);
 
 
 function checkAlpha(str){
-    return (/^[a-zA-Z]+$/.test(str));
+    return (/^[a-z][a-z\s]*$/i.test(str));
 }
 
 function checkMobile(str){
