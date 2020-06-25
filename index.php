@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     $servername = "localhost";
     $username = "spacer-app";
     $password = '$$ArmySpacerApp$$';
@@ -6,6 +8,9 @@
     $conn = new mysqli($servername, $username, $password,$dbname);
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
+    }
+    function alert($msg) {
+        echo "<script type='text/javascript'>alert('".$msg."');</script>";
     }
 ?>
 
@@ -19,6 +24,7 @@
         $email = test_input($_POST["email"]);
         $contact = test_input($_POST["contact"]);
         $timestamp = $_POST["timestamp"];
+        $endTime = date("h:ia M d Y",strtotime("+20 minutes", strtotime($_POST["timestamp"])));
         if(isset($_POST['liquor']))$liquor=true;
         if(isset($_POST['groceries']))$groceries=true;
         $query = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0). ");";
@@ -27,9 +33,11 @@
         if(!$results)echo "Error inserting data into sql";
         else {
             // $conn->close();
-            header("Location: " . $_SERVER['REQUEST_URI']);
+            header("Location: ".$_SESSION['PHP_SELF']);
+            $_SESSION['message']=("succusfully created your request <br>from <strong>$timestamp</strong> <br>to <strong>$endTime</strong><br>Kindly collect your items within this time frame.");
             exit();
         }
+
     }
     
     function test_input($data) {
@@ -53,7 +61,8 @@
         <div class="row">
 
             <div class="col-sm-6 left-pane">
-                <h2 style="text-align: center;">welcome</h2>
+                <h1 style="text-align: center;">Welcome to</h1>
+                <hr>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">First Name</label>
@@ -83,7 +92,7 @@
                         </div>
                     </div>
                     <hr>
-                    <h3>What items you wish to buy</h3>
+                    <h4>What items you wish to buy?</h4>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" name="groceries" id='groceries'>
                         <label class="form-check-label" for="groceries">Groceries</label>
@@ -94,7 +103,8 @@
                     </div>
                     <hr>
                     <div class="form-group">
-                        <label for="visit_time">Select your visit time</label>
+                        <h4>Select a time preffered to you.</h4>
+                        <label for="visit_time">list of time windows available</label>
                         <select class="form-control" id="visit_time" name="timestamp">
                         <?php
                             date_default_timezone_set("Asia/Kolkata");
@@ -119,13 +129,20 @@
                         </select>
                     </div>
                     <hr>
-                    <button type="submit" class="btn btn-primary mb-2">Request validity</button>
+                    <button type="submit" id='submit' class="btn btn-primary mb-2" disabled>Request validity</button>
                 </form>
             </div>
 
             <div class="col-sm-6 right-pane">
                 <h1 style="text-align: center;">Spacer-App</h1>
-                
+                <hr>
+                <div class="alert alert-success" role="alert">
+                    <?php
+                        if(isset($_SESSION['message'])){
+                            echo "<p>".$_SESSION['message']."</p>";
+                        }
+                    ?>
+                </div>
             </div>
         </div>
     </div>

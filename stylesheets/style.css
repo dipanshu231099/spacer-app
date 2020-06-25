@@ -1,14 +1,16 @@
-body{
-}
 
 .left-pane{
   padding: 2.5%;
-  background-color: #fff8dc;
+  background-color: #fdfbf1;
   min-height: 100vh;
 }
 
 .right-pane{
   padding: 2.5%;
-  background-color: #fff2bf;
+  background-color: #fff9df;
   min-height: 100vh;
+}
+
+.alert-success {
+  margin: 2.5% !important;
 }
