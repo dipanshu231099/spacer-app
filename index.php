@@ -1,4 +1,15 @@
 <?php
+    $servername = "localhost";
+    $username = "spacer-app";
+    $password = '$$ArmySpacerApp$$';
+    $dbname = 'spacerApp';
+    $conn = new mysqli($servername, $username, $password,$dbname);
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+?>
+
+<?php
     date_default_timezone_set("Asia/Kolkata");
     $present_time = strtotime('now');
     $present_hour = (int)date("H",$present_time);
@@ -6,7 +17,33 @@
     $present_a = (int)date("A",$present_time);
     $present_year = (int)date("y",$present_time);
     $present_date = (int)date("d",$present_time);
-    $present_month = (int)date("m",$present_time);
+    $present_month = (int)date("m",$present_time); 
+?>
+
+<?php
+
+    $name = $email = $contact = $timestamp = "";
+    $liquor = $groceries = false;
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $name = test_input($_POST["name"]);
+        $email = test_input($_POST["email"]);
+        $contact = test_input($_POST["contact"]);
+        $timestamp = $_POST["timestamp"];
+        if(isset($_POST['liquor']))$liquor=true;
+        if(isset($_POST['groceries']))$groceries=true;
+        $query = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0). ");";
+        // echo $query;
+        $results = $conn->query($query);
+        if(!$results)echo "Error inserting data into sql";
+    }
+    
+    function test_input($data) {
+      $data = trim($data);
+      $data = stripslashes($data);
+      $data = htmlspecialchars($data);
+      return $data;
+    }
 ?>
 
 <html lang="en">
@@ -23,13 +60,13 @@
 
             <div class="col-sm-6 left-pane">
                 <h2 style="text-align: center;">welcome</h2>
-                <form action="/create_timing" method="POST">
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">First Name</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control is-valid" name="name" placeholder="first name" required>
+                            <input type="text" class="form-control is-invalid" name="name" placeholder="first name" required>
                             <div class="invalid-feedback">
-                                <%= errors.name %>
+                                either the name is empty or should contain only alphabet
                             </div>
                         </div>
                     </div>
@@ -70,7 +107,7 @@
                                 if($i%24<10 || $i%24>19){continue;}
                                 for($j=0;$j<=40;$j+=20){
                                     $new_timestamp = mktime($i,$j,0,$present_month,$present_date,$present_year);
-                                    echo "<option>". date("d M,Y h:ia",$new_timestamp) ."</option>";
+                                    echo "<option>". date("h:ia M d Y",$new_timestamp) ."</option>";
                                 }
                             }
                         ?> 
