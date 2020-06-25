@@ -10,17 +10,6 @@
 ?>
 
 <?php
-    date_default_timezone_set("Asia/Kolkata");
-    $present_time = strtotime('now');
-    $present_hour = (int)date("H",$present_time);
-    $present_minute = (int)date("h",$present_time);
-    $present_a = (int)date("A",$present_time);
-    $present_year = (int)date("y",$present_time);
-    $present_date = (int)date("d",$present_time);
-    $present_month = (int)date("m",$present_time); 
-?>
-
-<?php
 
     $name = $email = $contact = $timestamp = "";
     $liquor = $groceries = false;
@@ -36,6 +25,11 @@
         // echo $query;
         $results = $conn->query($query);
         if(!$results)echo "Error inserting data into sql";
+        else {
+            // $conn->close();
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit();
+        }
     }
     
     function test_input($data) {
@@ -103,11 +97,22 @@
                         <label for="visit_time">Select your visit time</label>
                         <select class="form-control" id="visit_time" name="timestamp">
                         <?php
+                            date_default_timezone_set("Asia/Kolkata");
+                            $present_time = strtotime('now');
+                            $present_hour = (int)date("H",$present_time);
+                            $present_minute = (int)date("h",$present_time);
+                            $present_a = (int)date("A",$present_time);
+                            $present_year = (int)date("y",$present_time);
+                            $present_date = (int)date("d",$present_time);
+                            $present_month = (int)date("m",$present_time); 
                             for ($i=$present_hour+1; $i <= $present_hour+24 ; $i++) { 
                                 if($i%24<10 || $i%24>19){continue;}
                                 for($j=0;$j<=40;$j+=20){
                                     $new_timestamp = mktime($i,$j,0,$present_month,$present_date,$present_year);
-                                    echo "<option>". date("h:ia M d Y",$new_timestamp) ."</option>";
+                                    $new_timestamp = date("h:ia M d Y",$new_timestamp);
+                                    $sql = "SELECT COUNT(*) as cnt from allotment where start_time='".$new_timestamp."';";
+                                    $results = (($conn->query($sql))->fetch_assoc())['cnt'];
+                                    if($results<12)echo "<option>". $new_timestamp ."</option>";
                                 }
                             }
                         ?> 
@@ -119,7 +124,7 @@
             </div>
 
             <div class="col-sm-6 right-pane">
-                <h2 style="text-align: center;">welcome2</h2>
+                <h1 style="text-align: center;">Spacer-App</h1>
                 
             </div>
         </div>
