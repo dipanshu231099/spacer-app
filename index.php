@@ -58,27 +58,27 @@
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">First Name</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control is-invalid" name="name" placeholder="first name" required>
+                            <input type="text" class="form-control" id='user_name' name="name" placeholder="first name" required>
                             <div class="invalid-feedback">
-                                either the name is empty or should contain only alphabet
+                                Only alphabets are allowed, no whitespaces or special chars.
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                            <input type="email" class="form-control is-valid" name="email" placeholder="Email" required>
+                            <input type="email" class="form-control" id='user_email' name="email" placeholder="Email" required>
                             <div class="invalid-feedback">
-                                <%= errors.email %>
+                                Invalid email id.
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Contact no.</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control is-valid" name="contact" placeholder="Conatact" required>
+                            <input type="number" id='contact_number' class="form-control" name="contact" placeholder="Conatact" required>
                             <div class="invalid-feedback">
-                                <%= errors.contact %>
+                                The number must be exactly 10 digits in length.
                             </div>
                         </div>
                     </div>
@@ -130,4 +130,5 @@
         </div>
     </div>
 </body>
+<script src="javascripts/errors.js"></script>
 </html>
