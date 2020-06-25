@@ -1,10 +1,10 @@
 <?php
     session_start();
-
-    $servername = "localhost";
-    $username = "spacer-app";
-    $password = '$$ArmySpacerApp$$';
-    $dbname = 'spacerApp';
+    $config = include('config.php');
+    $servername = $config["host"];
+    $username = $config['username'];
+    $password = $config['password'];
+    $dbname = $config['dbname'];
     $conn = new mysqli($servername, $username, $password,$dbname);
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
