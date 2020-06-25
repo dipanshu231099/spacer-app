@@ -147,5 +147,13 @@
         </div>
     </div>
 </body>
+<!-- Footer -->
+<footer class="page-footer font-small blue">
+
+  <div class="footer-copyright text-center py-2">© 2020 Copyright:
+    <a href="https://www.linkedin.com/in/dipanshu-verma-955068183/"> Dipanshu </a>and Ayushman
+  </div>
+
+</footer>
 <script src="javascripts/errors.js"></script>
 </html>

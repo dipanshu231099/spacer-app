@@ -2,15 +2,21 @@
 .left-pane{
   padding: 2.5%;
   background-color: #fdfbf1;
-  min-height: 100vh;
+  min-height: 95vh;
 }
 
 .right-pane{
   padding: 2.5%;
   background-color: #fff9df;
-  min-height: 100vh;
+  min-height: 95vh;
 }
 
 .alert-success {
   margin: 2.5% !important;
+}
+
+.page-footer{
+  background-color: rgb(233, 233, 255);
+  height: 5vh;
+  margin: 0 !important;
 }
