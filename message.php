@@ -25,7 +25,7 @@
               <p>
                   <?php
                    echo $_SESSION['message'];
-                   echo "Thank you for using the apllication";
+                   echo "Thank you for using the application";
                   ?>
               </p>
           </div>

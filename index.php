@@ -91,7 +91,7 @@
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Contact no.</label>
                         <div class="col-sm-10">
-                            <input type="number" id='contact_number' class="form-control" name="contact" placeholder="Conatact" required>
+                            <input type="number" id='contact_number' class="form-control" name="contact" placeholder="Contact" required>
                             <div class="invalid-feedback">
                                 The number must be exactly 10 digits in length.
                             </div>
