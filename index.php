@@ -72,9 +72,9 @@
                 <hr>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">First Name</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id='user_name' name="name" placeholder="first name" required>
+                            <input type="text" class="form-control" id='user_name' name="name" placeholder="Name" required>
                             <div class="invalid-feedback">
                                 No empty string or special chars allowed.
                             </div>
@@ -123,14 +123,15 @@
                             $present_date = (int)date("d",$present_time);
                             $present_month = (int)date("m",$present_time); 
                             for ($i=$present_hour+1; $i <= $present_hour+24 ; $i++) { 
-                                if(!($i==9 || $i==10 || $i==2 || $i==3)){continue;}
+                                if(!($i%24==9 || $i%24==10|| $i%24==11|| $i%24==12 || $i%24==14 || $i%24==15)){continue;}
                                 for($j=0;$j<=30;$j+=30){
-                                    if($i==9 && $j==0){continue;}
+                                    if($i%24==9 && $j==0){continue;}
+                                    if($i%24==15 && $j==30){continue;}
                                     $new_timestamp = mktime($i,$j,0,$present_month,$present_date,$present_year);
                                     $new_timestamp = date("h:ia M d Y",$new_timestamp);
                                     $sql = "SELECT COUNT(*) as cnt from allotment where start_time='".$new_timestamp."';";
                                     $results = (($conn->query($sql))->fetch_assoc())['cnt'];
-                                    if($results<12)echo "<option>". $new_timestamp ."</option>";
+                                    if($results<18)echo "<option>". $new_timestamp ."</option>";
                                 }
                             }
                         ?> 
