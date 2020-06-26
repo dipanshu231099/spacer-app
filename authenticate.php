@@ -51,19 +51,19 @@
                 <hr>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Validation Username</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Username</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id='validation_username' name="validation_username" placeholder="validate this username" required>
+                            <input type="text" class="form-control" id='validation_username' name="validation_username" placeholder="Enter username" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Validation Password</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-10">
-                            <input type="password" class="form-control" id='validation_password' name="validation_password" placeholder="validate this password" required>
+                            <input type="password" class="form-control" id='validation_password' name="validation_password" placeholder="Enter password" required>
                         </div>
                     </div>
                     <hr>
-                    <button type="submit" id='submit' class="btn btn-primary mb-2">Authenticate & Generate</button>
+                    <button type="submit" id='submit' class="btn btn-primary mb-2">Generate Report</button>
                 </form>
                 <?php
                     if($_SESSION['incorrect'])
