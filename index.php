@@ -24,26 +24,27 @@
         $email = test_input($_POST["email"]);
         $contact = test_input($_POST["contact"]);
         $timestamp = $_POST["timestamp"];
-        $endTime = date("h:ia M d Y",strtotime("+20 minutes", strtotime($_POST["timestamp"])));
+        $endTime = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp"])));
         if(isset($_POST['liquor']))$liquor=true;
         if(isset($_POST['groceries']))$groceries=true;
+
         $query_insertion = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0). ");";
         $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
+
         $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
-        $counter_number = (int)($count_timestamp/4)+1;
-        $results = $conn->query($query_insertion);
-        if(!$results)echo "Error inserting data into sql";
-        else if($count_timestamp>=12){
+        $counter_number = (int)($count_timestamp/6)+1;
+        
+        if($count_timestamp>=18){
             $_SESSION['message']="Cannot allot the selected time as it just got fulfilled.";
             $_SESSION['good']=false;
+            header("Location: message.php");
         }
         else {
-            $_SESSION['message']="succusfully created your request <br>from <strong>$timestamp</strong> <br>to <strong>$endTime</strong><br>counter number: <strong>".$counter_number. "</strong><br>Kindly collect your items within this time frame.";
+            $results = $conn->query($query_insertion);
+            $_SESSION['message']="succesfully created your request <br>from <strong>$timestamp</strong> <br>to <strong>$endTime</strong><br>counter number: <strong>".$counter_number. "</strong><br>Kindly collect your items within this time frame.";
             $_SESSION['good']=true;
             header("Location: message.php");
-            exit;
         }
-
     }
     
     function test_input($data) {
@@ -91,7 +92,7 @@
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Contact no.</label>
                         <div class="col-sm-10">
-                            <input type="number" id='contact_number' class="form-control" name="contact" placeholder="Conatact" required>
+                            <input type="number" id='contact_number' class="form-control" name="contact" placeholder="Contact" required>
                             <div class="invalid-feedback">
                                 The number must be exactly 10 digits in length.
                             </div>
@@ -122,8 +123,8 @@
                             $present_date = (int)date("d",$present_time);
                             $present_month = (int)date("m",$present_time); 
                             for ($i=$present_hour+1; $i <= $present_hour+24 ; $i++) { 
-                                if($i%24<10 || $i%24>19){continue;}
-                                for($j=0;$j<=40;$j+=20){
+                                if(!($i==9 || $i==10 || $i==2 || $i==3)){continue;}
+                                for($j=0;$j<=30;$j+=30){
                                     $new_timestamp = mktime($i,$j,0,$present_month,$present_date,$present_year);
                                     $new_timestamp = date("h:ia M d Y",$new_timestamp);
                                     $sql = "SELECT COUNT(*) as cnt from allotment where start_time='".$new_timestamp."';";
