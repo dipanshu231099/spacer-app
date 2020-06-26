@@ -125,6 +125,7 @@
                             for ($i=$present_hour+1; $i <= $present_hour+24 ; $i++) { 
                                 if(!($i==9 || $i==10 || $i==2 || $i==3)){continue;}
                                 for($j=0;$j<=30;$j+=30){
+                                    if($i==9 && $j==0){continue;}
                                     $new_timestamp = mktime($i,$j,0,$present_month,$present_date,$present_year);
                                     $new_timestamp = date("h:ia M d Y",$new_timestamp);
                                     $sql = "SELECT COUNT(*) as cnt from allotment where start_time='".$new_timestamp."';";
