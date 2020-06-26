@@ -138,7 +138,7 @@
                         </select>
                     </div>
                     <hr>
-                    <button type="submit" id='submit' class="btn btn-primary mb-2" disabled>Request validity</button>
+                    <button type="submit" id='submit' class="btn btn-primary mb-2" disabled>Make Booking</button>
                 </form>
             </div>
 

@@ -91,4 +91,11 @@
         </div>
     </div>
 </body>
+<footer class="page-footer font-small blue">
+
+  <div class="footer-copyright text-center py-2">SpacerApp © 2020 Copyright:
+    <a href="https://www.linkedin.com/in/dipanshu-verma-955068183/"> Dipanshu </a>and <a href="https://www.linkedin.com/in/ayushman-dixit-4812b9171">Ayushman</a>
+  </div>
+
+</footer>
 </html>
