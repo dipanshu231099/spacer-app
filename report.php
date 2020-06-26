@@ -22,7 +22,7 @@
     $sql = "SELECT * FROM allotment WHERE start_time like '%".$today."';";
     // echo $sql;
     $results = $conn->query($sql);
-    if(!results)die('tera naam joker');
+    if(!results)die('invalid please refresh');
     session_destroy();
 ?>
 
@@ -45,6 +45,7 @@
                     <th scope="col">Contact</th>
                     <th scope="col">Groceries</th>
                     <th scope="col">Liquor</th>
+                    <th scope="col">Counter#</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,6 +57,7 @@
                         <td><?php echo $row['contact']; ?></td>
                         <td><?php echo $row['groceries']; ?></td>
                         <td><?php echo $row['liquor']; ?></td>
+                        <td><?php echo $row['counter']; ?></td>
                     </tr>
                 <?php } ?>
             </tbody>

@@ -28,11 +28,13 @@
         if(isset($_POST['liquor']))$liquor=true;
         if(isset($_POST['groceries']))$groceries=true;
 
-        $query_insertion = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0). ");";
         $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
-
         $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
         $counter_number = (int)($count_timestamp/6)+1;
+
+        $query_insertion = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor,counter) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."');";
+        // die("echo $query_insertion");
+
         
         if($count_timestamp>=18){
             $_SESSION['message']="Cannot allot the selected time as it just got fulfilled.";
