@@ -65,6 +65,7 @@
     $liquor = $groceries = false;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        //post variables here-------------------
         $name = test_input($_POST["name"]);
         $card_name = test_input($_POST["card_name"]);
         $email = test_input($_POST["email"]);
@@ -73,15 +74,16 @@
         $endTime = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp"])));
         if(isset($_POST['liquor']))$liquor=true;
         if(isset($_POST['groceries']))$groceries=true;
-        $liquor_card = $_POST['liquor_card'];
-        $grocery_card = $_POST['grocery_card'];
+        $liquor_card = test_input($_POST['liquor_card']);
+        $grocery_card = test_input($_POST['grocery_card']);
+        $rank = test_input($_POST['rank']);
 
+        //queries here----------
         $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
         $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
         $counter_number = (int)($count_timestamp/6)+1;
-
-        $query_insertion = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor,counter) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."');";
-        // die("echo $query_insertion");
+        $query_insertion = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."');";
+        
 
         
         if($count_timestamp>=18){
