@@ -9,9 +9,54 @@
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
-    function alert($msg) {
-        echo "<script type='text/javascript'>alert('".$msg."');</script>";
+
+    $gazetted_holidays = array(
+        array(26,"Jan"),//republic day
+        array(21,"Feb"),//maha shiv
+        array(10,"Mar"),//holi
+        array(6,"Apr"),//mahavir jayanti
+        array(15,"Apr"),//himachal day
+        array(25,"May"),//id ul fitr
+        array(15,"Aug"),//independence day
+        array(2,"Oct"),//gandhi jayanti
+        array(14,"Nov"),//diwali
+        array(30,"Nov"),//guru nanak jayanti
+    );
+
+    function isHoliday($tp){
+        $date = (int)date("d",$tp);
+        $day = date("D",$tp);
+        $month = date("M",$tp);
+        if($day=="Sun"){
+            return true;
+        }
+        for ($i=0; $i < count($gazetted_holidays); $i++) { 
+            $hol_date = $gazetted_holidays[$i][0];
+            $hol_month = $gazetted_holidays[$i][1];
+            if($date==$hol_date || $month==$hol_month){
+                return true;
+            }
+        }
+        return false;
     }
+
+
+    $working_hours = array(9,10,11,12,14,15);
+    $sat_working_hours = array(9,10,11,12);
+
+    function isWorkingHour($tp){
+        $hour = (int)date("H",$tp);
+        $min = (int)date("i",$tp);
+        $day = date("D",$tp);
+        if($day=="Sat"){
+            if(($hour==9 && $min>0) || $hour==10 || $hour==11 || $hour==12)return true;
+        }
+        else {
+            if(($hour==9 && $min>0) || $hour==10 || $hour==11 || $hour==12 || $hour==14 || ($hour==15 && $min==0))return true;
+        }
+        return false;
+    }
+    
 ?>
 
 <?php
@@ -21,12 +66,15 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = test_input($_POST["name"]);
+        $card_name = test_input($_POST["card_name"]);
         $email = test_input($_POST["email"]);
         $contact = test_input($_POST["contact"]);
         $timestamp = $_POST["timestamp"];
         $endTime = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp"])));
         if(isset($_POST['liquor']))$liquor=true;
         if(isset($_POST['groceries']))$groceries=true;
+        $liquor_card = $_POST['liquor_card'];
+        $grocery_card = $_POST['grocery_card'];
 
         $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
         $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
@@ -75,25 +123,36 @@
                     <p>
                    <strong>Welcome to ARTRAC ESM Canteen Mandi</strong>
                         <br>
+                        <br>
                         Booking Policy
                         <br>
+                        <br>
                         #  Only Card / authority letter holder is allowed to get inside the Canteen
+                        <br>
                          <br>
                         #  Visit after e-appointment appointment.
                         <br>
+                        <br>
                         #  Wearing of Mask is mandatory.
+                        <br>
                         <br>
                         #  Follow Social distancing and COVID-19 instructions.
                         <br>
+                        <br>
                         # Payment through ATM/credit/debit Cards only
+                        <br>
                         <br>
                         # Entry on production of e-appointment and CSD Card at the gate.
                         <br>
+                        <br>
                         # Next visit to CSD after 10 days permitted.
+                        <br>
                         <br>
                         # Visit Canteen on given date and time
                         <br>
+                        <br>
                         We request your cooperation in providing service to maximum customers.
+                        <br>
                         <br>
 
                         <strong> Stay Home Stay Safe </strong>
@@ -101,6 +160,12 @@
                 </div>
                 <hr>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+                    <div class="form-group row">
+                        <label for="rank" class="col-sm-2 col-form-label">Rank</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control is-valid" id='rank' name="rank" placeholder="(optional)">
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
@@ -128,6 +193,37 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Card no.</label>
+                        <div class="col-sm-5">
+
+                            <label for="grocery_card" class="col-sm-2 col-form-label">Grocery</label>
+                            <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="grocery card number" required>
+                            <div class="invalid-feedback">
+                                Must be 17 characters long
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+
+                            <label for="liquor_card" class="col-sm-2 col-form-label">Liquor.</label>
+                            <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="liquor card number" required>
+                            <div class="invalid-feedback">
+                                Must be 17 characters long
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Name as on card</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id='card_name' name="card_name" placeholder="name as on the card" required>
+                            <div class="invalid-feedback">
+                                No empty string or special chars allowed.
+                            </div>
+                        </div>
+                    </div>
+
                     <hr>
                     <h4>What items you wish to buy?</h4>
                     <div class="form-check">
@@ -145,24 +241,28 @@
                         <select class="form-control" id="visit_time" name="timestamp">
                         <?php
                             date_default_timezone_set("Asia/Kolkata");
-                            $present_time = strtotime('now');
-                            $present_hour = (int)date("H",$present_time);
-                            $present_minute = (int)date("h",$present_time);
-                            $present_a = (int)date("A",$present_time);
-                            $present_year = (int)date("y",$present_time);
-                            $present_date = (int)date("d",$present_time);
-                            $present_month = (int)date("m",$present_time); 
-                            for ($i=$present_hour+1; $i <= $present_hour+24 ; $i++) { 
-                                if(!($i%24==9 || $i%24==10|| $i%24==11|| $i%24==12 || $i%24==14 || $i%24==15)){continue;}
-                                for($j=0;$j<=30;$j+=30){
-                                    if($i%24==9 && $j==0){continue;}
-                                    if($i%24==15 && $j==30){continue;}
-                                    $new_timestamp = mktime($i,$j,0,$present_month,$present_date,$present_year);
-                                    $new_timestamp = date("h:ia M d Y",$new_timestamp);
+                            $present_time = strtotime('next hour');
+                            $presnt_minute = (int)date("i",$present_time);
+                            $present_time = strtotime("-$presnt_minute minutes",$present_time);
+                            $new_tp = $present_time;
+
+
+                            $slots = 20;
+                            while($slots>0){
+                                $new_timestamp = date("h:ia M d Y",$new_tp);
+                                while(isHoliday($new_tp)){
+                                    $new_tp = strtotime('+24 hours',$new_tp);
+                                }
+
+                                if(isWorkingHour($new_tp)){
                                     $sql = "SELECT COUNT(*) as cnt from allotment where start_time='".$new_timestamp."';";
                                     $results = (($conn->query($sql))->fetch_assoc())['cnt'];
-                                    if($results<18)echo "<option>". $new_timestamp ."</option>";
+                                    if($results<12){
+                                        echo "<option>". $new_timestamp ."</option>";
+                                        $slots--;
+                                    }
                                 }
+                                $new_tp = strtotime("+30 minutes",$new_tp);
                             }
                         ?> 
                         </select>
@@ -172,16 +272,6 @@
                 </form>
             </div>
             <div class="col-sm-1 landing-page"></div>
-            <!-- <div class="col-sm-6 right-pane">
-                <h1 style="text-align: center;">Spacer-App</h1>
-                <hr>
-                <div class="alert alert-info" role="alert">
-                    <p>
-                        This app is to designed for providing solution to social distancing implementation, during the difficult time of Corona.
-                        Kindly enter all the required fields required in the form. 
-                    </p>
-                </div>
-            </div> -->
         </div>
     </div>
 </body>
