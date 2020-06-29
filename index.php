@@ -68,9 +68,37 @@
 <body>
     <div class="container-fluid">
         <div class="row">
+            <div class="col-sm-1 landing-page"></div>
+            <div class="col-sm-10 landing-page">
+                <h1 style="text-align: center;">Spacer App</h1>
+                <div class="alert alert-info" role="alert">
+                    <p>
+                   <strong>Welcome to ARTRAC ESM Canteen Mandi</strong>
+                        <br>
+                        Booking Policy
+                        <br>
+                        #  Only Card / authority letter holder is allowed to get inside the Canteen
+                         <br>
+                        #  Visit after e-appointment appointment.
+                        <br>
+                        #  Wearing of Mask is mandatory.
+                        <br>
+                        #  Follow Social distancing and COVID-19 instructions.
+                        <br>
+                        # Payment through ATM/credit/debit Cards only
+                        <br>
+                        # Entry on production of e-appointment and CSD Card at the gate.
+                        <br>
+                        # Next visit to CSD after 10 days permitted.
+                        <br>
+                        # Visit Canteen on given date and time
+                        <br>
+                        We request your cooperation in providing service to maximum customers.
+                        <br>
 
-            <div class="col-sm-6 left-pane">
-                <h1 style="text-align: center;">Welcome</h1>
+                        <strong> Stay Home Stay Safe </strong>
+                    </p>
+                </div>
                 <hr>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                     <div class="form-group row">
@@ -143,8 +171,8 @@
                     <button type="submit" id='submit' class="btn btn-primary mb-2" disabled>Make Booking</button>
                 </form>
             </div>
-
-            <div class="col-sm-6 right-pane">
+            <div class="col-sm-1 landing-page"></div>
+            <!-- <div class="col-sm-6 right-pane">
                 <h1 style="text-align: center;">Spacer-App</h1>
                 <hr>
                 <div class="alert alert-info" role="alert">
@@ -153,7 +181,7 @@
                         Kindly enter all the required fields required in the form. 
                     </p>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </body>
