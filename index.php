@@ -81,12 +81,12 @@
         //queries here----------
         $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
         $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
-        $counter_number = (int)($count_timestamp/6)+1;
+        $counter_number = (int)($count_timestamp/4)+1;
         $query_insertion = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."');";
         
 
         
-        if($count_timestamp>=18){
+        if($count_timestamp>=12){
             $_SESSION['message']="Cannot allot the selected time as it just got fulfilled.";
             $_SESSION['good']=false;
             header("Location: message.php");
