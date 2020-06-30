@@ -81,12 +81,24 @@
         $grocery_card = test_input($_POST['grocery_card']);
         $rank = test_input($_POST['rank']);
 
+        //finding the max limit and total counters according to date
+        $current_year = date("Y",strtotime('today'));
+        $date = date("M d Y",strtotime($_POST["timestamp"]));
+        $table_name = "calendar_".$current_year."_".($current_year+1);
+        $sql = "SELECT * FROM $table_name WHERE date='".$date."';";
+        $result = ($conn->query($sql))->fetch_assoc();
+        $max_limit = $result['max_limit'];
+        $total_counters = $result['counters'];
+
         //queries here----------
         $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
+        $query_token = "SELECT COUNT(*) as cnt from allotment where start_time like '%".$date."';";
         $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
-        $counter_number = (int)($count_timestamp/4)+1;
-        $query_insertion = "INSERT INTO allotment (customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name) VALUES ('".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."');";
-        
+        $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
+        $token = $count_token+1;
+        $counter_number = (int)($count_timestamp/$max_limit)+1;
+        $query_insertion = "INSERT INTO allotment (token,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name) VALUES ($token,'".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."');";
+
 
         
         if($count_timestamp>=12){
@@ -96,7 +108,7 @@
         }
         else {
             $results = $conn->query($query_insertion);
-            $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. "</strong><br><br>Kindly collect your items within this time frame.<br>";
+            $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " with token number $token </strong><br><br>Kindly collect your items within this time frame.<br>";
             $_SESSION['good']=true;
             header("Location: message.php");
         }
@@ -251,6 +263,14 @@
                             $slots = 20;
                             while($slots>0){
                                 $new_timestamp = date("h:ia M d Y",$new_tp);
+                                $current_year = date("Y",strtotime('today'));
+                                $date = date("M d Y",$new_tp);
+                                $table_name = "calendar_".$current_year."_".($current_year+1);
+                                $sql = "SELECT * FROM $table_name WHERE date='".$date."';";
+                                $result = ($conn->query($sql))->fetch_assoc();
+                                $max_limit = $result['max_limit'];
+                                $total_counters = $result['counters'];
+
                                 while(isHoliday($new_tp,$conn)){
                                     $new_tp = strtotime('+24 hours',$new_tp);
                                 }
@@ -258,7 +278,7 @@
                                 if(isWorkingHour($new_tp,$conn)){
                                     $sql = "SELECT COUNT(*) as cnt from allotment where start_time='".$new_timestamp."';";
                                     $results = (($conn->query($sql))->fetch_assoc())['cnt'];
-                                    if($results<12){
+                                    if($results<$max_limit*$total_counters){
                                         echo "<option>". $new_timestamp ."</option>";
                                         $slots--;
                                     }
