@@ -68,7 +68,6 @@
         //post variables here-------------------
         $name = test_input($_POST["name"]);
         $card_name = test_input($_POST["card_name"]);
-        $email = test_input($_POST["email"]);
         $contact = test_input($_POST["contact"]);
         $timestamp = $_POST["timestamp"];
         $endTime = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp"])));
@@ -82,7 +81,7 @@
         $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
         $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
         $counter_number = (int)($count_timestamp/4)+1;
-        $query_insertion = "INSERT INTO allotment (customer_id,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name) VALUES ('".$email."','".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."');";
+        $query_insertion = "INSERT INTO allotment (customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name) VALUES ('".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."');";
         
 
         
@@ -121,6 +120,7 @@
             <div class="col-sm-1 landing-page"></div>
             <div class="col-sm-10 landing-page">
                 <h1 style="text-align: center;">Spacer App</h1>
+                <hr>
                 <div class="alert alert-info" role="alert">
                     <p>
                    <strong>Welcome to ARTRAC ESM Canteen Mandi</strong>
@@ -161,6 +161,10 @@
                     </p>
                 </div>
                 <hr>
+                <div class="alert alert-info" role="alert">
+                    Are you an Admin? <a href="authenticate.php">login here</a>
+                </div>
+                <hr>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                     <div class="form-group row">
                         <label for="rank" class="col-sm-2 col-form-label">Rank</label>
@@ -174,15 +178,6 @@
                             <input type="text" class="form-control" id='user_name' name="name" placeholder="Name" required>
                             <div class="invalid-feedback">
                                 No empty string or special chars allowed.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id='user_email' name="email" placeholder="Email" required>
-                            <div class="invalid-feedback">
-                                Invalid email id.
                             </div>
                         </div>
                     </div>
@@ -208,7 +203,7 @@
                         </div>
                         <div class="col-sm-5">
 
-                            <label for="liquor_card" class="col-sm-2 col-form-label">Liquor.</label>
+                            <label for="liquor_card" class="col-sm-2 col-form-label">Liquor</label>
                             <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="liquor card number" required>
                             <div class="invalid-feedback">
                                 Must be 17 characters long

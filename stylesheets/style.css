@@ -16,18 +16,22 @@
 }
 
 .page-footer{
-  background-color: rgb(233, 233, 255);
+  color: greenyellow;
+  background-color: rgb(0, 0, 61);
   height: 5vh;
   margin: 0 !important;
+  position: sticky;
+  bottom: 0;
 }
 
 .landing-page {
   padding: 2.5%;
-  background-color: #fdfbf1;
+  background-color: #ffffff;
+  min-height: 100vh;
 }
 
 .landing-page form {
-  border: solid 1px #fae589;
+  border: solid 1px #000272;
   padding: 1.5%;
   border-radius: 2.5%;
 }

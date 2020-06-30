@@ -1,11 +1,10 @@
 console.log('connected')
 var user_name = document.getElementById('user_name')
-var email = document.getElementById('user_email')
+// var email = document.getElementById('user_email')
 var contact = document.getElementById('contact_number')
 var button = document.getElementById('submit')
 var grocery = document.getElementById('groceries')
 var liquor = document.getElementById('liquor')
-
 var liquor_card = document.getElementById('liquor_card')
 var grocery_card = document.getElementById('grocery_card')
 var card_name = document.getElementById('card_name')
@@ -16,8 +15,8 @@ user_name.addEventListener('click', logKey_name);
 contact.addEventListener('keyup', logKey_number);
 contact.addEventListener('click', logKey_number);
 
-email.addEventListener('keyup', logKey_email);
-email.addEventListener('click', logKey_email);
+// email.addEventListener('keyup', logKey_email);
+// email.addEventListener('click', logKey_email);
 
 document.addEventListener('keyup', logKey_submit);
 document.addEventListener('click', logKey_submit);
@@ -114,7 +113,7 @@ function logKey_email(e){
 }
 
 function logKey_submit(e){
-    if(ValidateEmail(email.value) && checkMobile(contact.value) && checkAlpha(user_name.value)
+    if(checkMobile(contact.value) && checkAlpha(user_name.value)
      && (liquor.checked || grocery.checked) && (grocery_card.value.length==17) && (liquor_card.value.length==17) 
      && checkAlpha(card_name.value)){
         button.disabled=false;

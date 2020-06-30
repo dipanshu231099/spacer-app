@@ -18,7 +18,8 @@
 <body>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-6 left-pane">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-10 landing-page">
           <h1 style="text-align: center;">Spacer-App</h1>
           <hr>
           <div class="alert <?php echo ($_SESSION['good']?"alert-success":"alert-danger") ?>" role="alert">
@@ -29,9 +30,8 @@
                   ?>
               </p>
           </div>
-      </div>
-      <div class="col-sm 6 right-pane">
-        <h1 style="text-align: center;">Spacer App</h1>
+          <a href="index.php"><button class="btn btn-primary mb-2">Back to Home</button></a>
+  
       </div>
       
     </div>
