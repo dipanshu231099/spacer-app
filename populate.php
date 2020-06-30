@@ -16,7 +16,7 @@
 	function populate($year,$conn){
 		$a = (string)$year;
 		$b = (string)($year+1);
-		$table_name = "t".$a.$b;
+		$table_name = "calendar-".$a."-".$b;
 
 		$q = "drop table if exists $table_name";
 		$results = $conn->query($q);
