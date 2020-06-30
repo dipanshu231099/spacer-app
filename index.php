@@ -10,6 +10,7 @@
       die("Connection failed: " . $conn->connect_error);
     }
 
+	date_default_timezone_set("Asia/Kolkata");
     $gazetted_holidays = array(
         array(26,"Jan"),//republic day
         array(21,"Feb"),//maha shiv
@@ -23,36 +24,39 @@
         array(30,"Nov"),//guru nanak jayanti
     );
 
-    function isHoliday($tp){
-        $date = (int)date("d",$tp);
-        $day = date("D",$tp);
-        $month = date("M",$tp);
-        if($day=="Sun"){
+    function isHoliday($tp,$conn){
+        $date = date("M d Y",$tp);
+        $current_year = date("Y",strtotime("today"));
+        $table_name = "calendar_".$current_year."_".($current_year+1);
+        $status_query = "SELECT status from $table_name WHERE date='".$date."';";
+        $status = (($conn->query($status_query))->fetch_assoc())['status'];
+        if($status=="close"){
             return true;
         }
-        for ($i=0; $i < count($gazetted_holidays); $i++) { 
-            $hol_date = $gazetted_holidays[$i][0];
-            $hol_month = $gazetted_holidays[$i][1];
-            if($date==$hol_date || $month==$hol_month){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    $working_hours = array(9,10,11,12,14,15);
-    $sat_working_hours = array(9,10,11,12);
-
-    function isWorkingHour($tp){
-        $hour = (int)date("H",$tp);
-        $min = (int)date("i",$tp);
-        $day = date("D",$tp);
-        if($day=="Sat"){
-            if(($hour==9 && $min>0) || $hour==10 || $hour==11 || $hour==12)return true;
-        }
         else {
-            if(($hour==9 && $min>0) || $hour==10 || $hour==11 || $hour==12 || $hour==14 || ($hour==15 && $min==0))return true;
+            return false;
+        }
+    }
+    
+
+    function isWorkingHour($tp,$conn){
+        $timestring =date("Hi",$tp);
+        $date = date("M d Y",$tp);
+        $current_year = date("Y",strtotime("today"));
+        $table_name = "calendar_".$current_year."_".($current_year+1);
+        $sql = "SELECT * FROM $table_name WHERE date='".$date."';";
+        $result = ($conn->query($sql))->fetch_assoc();
+        
+        $startH = $result['startH'];
+        $startM = $result['startM'];
+        $endH = $result['endH'];
+        $endM = $result['endM'];
+
+        $first_slot = date("Hi",strtotime("$startH:$startM"));
+        $last_slot = date("Hi",strtotime("$endH:$endM -30 minutes"));
+        
+        if(date("H",$tp)!="13"){
+            if($timestring>=$first_slot && $timestring<=$last_slot)return true;
         }
         return false;
     }
@@ -247,11 +251,11 @@
                             $slots = 20;
                             while($slots>0){
                                 $new_timestamp = date("h:ia M d Y",$new_tp);
-                                while(isHoliday($new_tp)){
+                                while(isHoliday($new_tp,$conn)){
                                     $new_tp = strtotime('+24 hours',$new_tp);
                                 }
 
-                                if(isWorkingHour($new_tp)){
+                                if(isWorkingHour($new_tp,$conn)){
                                     $sql = "SELECT COUNT(*) as cnt from allotment where start_time='".$new_timestamp."';";
                                     $results = (($conn->query($sql))->fetch_assoc())['cnt'];
                                     if($results<12){
