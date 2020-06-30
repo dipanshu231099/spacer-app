@@ -16,12 +16,14 @@
 	function populate($year,$conn){
 		$a = (string)$year;
 		$b = (string)($year+1);
-		$table_name = "calendar-".$a."-".$b;
+		$table_name = "calendar_".$a."_".$b;
 
 		$q = "drop table if exists $table_name";
 		$results = $conn->query($q);
-		$q2 = "create table $table_name(date varchar(100),day varchar(20),status varchar(20),startH int(32),startM int(32),endH int(32),endM int(32),max_limit int(32))";
+		if(!$results)die("echo 'could not execute';");
+		$q2 = "create table $table_name(date varchar(100),day varchar(20),status varchar(20),startH int(32),startM int(32),endH int(32),endM int(32),max_limit int(32),counters int(32))";
 		$results2 = $conn->query($q2);
+		if(!$results2)die("echo 'could not execute q2';");
 
 		$flag=1;
     	$first=mktime(0, 0, 0, 1, 1, $year);
@@ -36,21 +38,17 @@
 	    	if($day=="Saturday"){
 	    		$startH = 9;
 	    		$startM = 30;
-	    		$endH = 12;
+	    		$endH = 13;
 	    		$endM = 0;
 	    		$status = "half";
-	    		
-	    		$query1 = "INSERT INTO $table_name (date , day , status,startH,startM,endH,endM,max_limit) VALUEs('".$date."',
-	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',4)";
+	    		$query1 = "INSERT INTO $table_name (date , day , status,startH,startM,endH,endM,max_limit,counters) VALUEs('".$date."',
+	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',4,3)";
 	    		$results1 = $conn->query($query1);
-
 	    	}
 	    	elseif ($day=="Sunday") {
 	    		$status = "close";
 	    		$query2 = "INSERT INTO $table_name (date , day , status) VALUEs('".$date."','".$day."','".$status."')";
 	    		$results2 = $conn->query($query2);
-
-
 	    	}
 	    	else{
 	    		$startH = 9;
@@ -59,23 +57,16 @@
 	    		$endM = 30;
 	    		$status = "full";
 	    		
-	    		$query3 = "INSERT INTO $table_name (date , day , status,startH,startM,endH,endM,max_limit) VALUEs('".$date."',
-	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',4)";
+	    		$query3 = "INSERT INTO $table_name (date , day , status,startH,startM,endH,endM,max_limit,counters) VALUEs('".$date."',
+	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',4,3)";
 	    		$results3 = $conn->query($query3);
 	    	}
 	    	$temp = strtotime('+24 hours',$temp);
-
-
-    }
-
-
+    	}
 	}
 
-	populate(2021,$conn);
-
-
-
-
+	$present_year = date("Y",strtotime("today"));
+	populate($present_year,$conn);
 
 ?>
 
