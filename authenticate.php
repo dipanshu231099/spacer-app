@@ -22,7 +22,7 @@
         if($u==$validation_username && $p==$validation_password){
             // die('tera naam joker');
             $_SESSION['authenticated']=true;
-            header("Location: report.php");
+            header("Location: admin.php");
         }
         else {
             $_SESSION['incorrect']=true;

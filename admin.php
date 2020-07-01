@@ -1,5 +1,4 @@
 <?php
-
   	session_start();
     $config = include('config.php');
     $servername = $config["host"];
@@ -10,7 +9,6 @@
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
-
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $date = $_POST["date"];
@@ -30,13 +28,8 @@
         if(!$results){
             die("sf");
         }
-
     }
-
 ?>
-
-
-
 
 <?php
     $r1 = date("Y");
@@ -44,10 +37,6 @@
     $r1 = $r1.$a;
     $r2 = (string)((int)$r1 + 1)."-12-31";
 ?>
-
-
-
-
 
 <html>
 	<head>
@@ -86,19 +75,3 @@
         </div>
 	</body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
