@@ -61,6 +61,7 @@
         <title>Spacer App </title>
         <link rel="stylesheet" href="stylesheets/style.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
 	</head>
 	<body>
 
@@ -74,12 +75,12 @@
             
             
 		                      <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                                <div class="form-group row">
-                                    <label for="rank" class="col-sm-2 col-form-label">Select date:</label>
-                                    <div class="col-sm-10">
-                                        <input type="date" id="date" name="date" value="" min=<?php echo $r1; ?> max=<?php echo $r2; ?>>
-                                    </div>
-                                </div>
+                                
+                                    Enter date:<br>
+                                    
+                                        <input type="date" onkeyup= id="date" name="date" value="" min=<?php echo $r1; ?> max=<?php echo $r2; ?>> <br><br>
+                                    
+                                
 
                                  
                                  
@@ -127,6 +128,8 @@
             <br><br>-->
 		     <input type="submit" value="Change settings">
 		</form>
+
+        <a href="./report.php"> Generate report </a>
     </div>
 	</body>
 </html>
