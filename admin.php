@@ -66,41 +66,79 @@
                 <div class="col-sm-1"></div>
                 <div class="col-sm-10 landing-page">
                     <h1 style="text-align: center;">Spacer App</h1>
-                    <div class="alert alert-info" role="alert"></div>
+                    <hr>
                     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                                    
-                        Enter date:<br>
-                        
-                        <input class="form-control"  type="date" id="date" name="date" value="" min=<?php echo $r1; ?> max=<?php echo $r2; ?>> <br>
-                        
-                        Enter number of counters:<br>
-                        <input class="form-control" type="number" id="counters" placeholder="Enter" name="counters"><br>
-                        
-                        Enter limit:<br>
-                        <input class="form-control" type="number" id="limit" placeholder="Enter" name="limit"><br>
-                        
-                        Select status:<br>
-                        <select class="form-control" id="status" name="status">
-                        <option>half</option>
-                        <option>full</option>
-                        <option>close</option>
-                        </select><br>
-                        
-                        <input type="submit" value="Change settings">
+                        <div class="row">
+                            <div class="col">
+                                <div class="alert alert-info" role="alert">
+                                    The mentioned terms bring about following changes:
+                                    <ul>
+                                    <li><strong>Date:</strong> The date for which the values are to be altered.</li>
+                                    <li><strong>Number of counters:</strong> number of counters available on a day. By default everyday the number of counters are assumed to be 3.</li>
+                                    <li><strong>Limit per counter:</strong> The maximum number of customers allowed during one time slot. By default it is 4 customers for every 30 minutes.</li>
+                                    <li><strong>Status:</strong> It refers to whether the shop is open for 
+                                        <ul>
+                                            <li>full day (9:30am to 3:30pm with lunch time) </li>
+                                            <li>or, half day (9:30am to 1:00pm) </li>
+                                            <li>or, close (shop will not open at all) </li>
+                                            <li>By default sundays are closed and saturdays are half days rest are full working days.</li>
+                                        </ul>
+                                    </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group row">
+                                    <label for="date" class="col-sm-2 col-form-label">Date</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control"  type="date" id="date" name="date" value="" min=<?php echo $r1; ?> max=<?php echo $r2;?> required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Number of counters</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" type="number" id="counters" placeholder="Enter" name="counters" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="date" class="col-sm-2 col-form-label">Limit per counter</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" type="number" id="limit" placeholder="Enter" name="limit" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Status</label>
+                                    <div class="col-sm-10">
+                                    <select class="form-control" id="status" name="status" required>
+                                        <option>half</option>
+                                        <option>full</option>
+                                        <option>close</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-outline-success">Submit changes</button>
+                            </div>
+                            
+                        </div>
                     </form>
-
-                    <div class="container-fluid">
+                    <hr>
+                    <form action="report.php" method="POST">
                         <div class="row">
                             
-                            <form action="report.php" method="POST">
-                                Enter the date of which report is generated:
-                                <input class="form-control"  type="date" id="date" name="report_date" value=""> <br>
-                                <input type="submit" value="Generate report">
-                        
-                            </form>
+                            <div class="col">
+                                <div class="alert alert-info" role="alert">
+                                    To generate the customer schedule for a given date.
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label>Enter the date of which report is generated:</label>
+                                <input class="form-control"  type="date" id="date" name="report_date" value="" required><br>
+                                <button type="submit" class="btn btn-outline-success">Generate Report</button>
+                            </div>
                         </div>
-                    </div>
-
+                    </form>
+                    <hr>
                 
                 </div>
             </div>
