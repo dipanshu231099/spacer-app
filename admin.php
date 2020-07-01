@@ -1,5 +1,14 @@
 <?php
+
   	session_start();
+
+    if(!isset($_SESSION['authenticated'])){
+        header("Location: authenticate.php");
+    }
+    if(!($_SESSION['authenticated'])){
+        header("Location: authenticate.php");
+    }
+
     $config = include('config.php');
     $servername = $config["host"];
     $username = $config['username'];
@@ -9,6 +18,7 @@
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
+
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $date = $_POST["date"];
@@ -28,13 +38,15 @@
         if(!$results){
             die("sf");
         }
+
     }
+
 ?>
 
 <?php
-    $r1 = date("Y");
+    $r1 = date("Y");   
     $a = "-01-01";
-    $r1 = $r1.$a;
+    $r1 = $r1.$a;                    //r1 and r2 are date of today and last day of nexy year  
     $r2 = (string)((int)$r1 + 1)."-12-31";
 ?>
 
@@ -48,30 +60,66 @@
         
 	</head>
 	<body>
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-10 landing-page">
                     <h1 style="text-align: center;">Spacer App</h1>
                     <div class="alert alert-info" role="alert"></div>
-                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">      
+                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                                    
                         Enter date:<br>
-                            <input type="date" id="date" name="date" value="" min=<?php echo $r1; ?> max=<?php echo $r2; ?>> <br><br>
+                        
+                        <input class="form-control"  type="date" id="date" name="date" value="" min=<?php echo $r1; ?> max=<?php echo $r2; ?>> <br>
+                        
                         Enter number of counters:<br>
-                        <input type="number" id="counters" placeholder="Enter" name="counters"><br><br>
+                        <input class="form-control" type="number" id="counters" placeholder="Enter" name="counters"><br>
+                        
                         Enter limit:<br>
-                        <input type="number" id="limit" placeholder="Enter" name="limit"><br><br>
+                        <input class="form-control" type="number" id="limit" placeholder="Enter" name="limit"><br>
+                        
                         Select status:<br>
                         <select class="form-control" id="status" name="status">
                         <option>half</option>
                         <option>full</option>
                         <option>close</option>
-                        </select><br><br>
+                        </select><br>
+                        
                         <input type="submit" value="Change settings">
                     </form>
-                    <a href="./report.php"> Generate report </a>
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            
+                            <form action="report.php" method="POST">
+                                Enter the date of which report is generated:
+                                <input class="form-control"  type="date" id="date" name="report_date" value=""> <br>
+                                <input type="submit" value="Generate report">
+                        
+                            </form>
+                        </div>
+                    </div>
+
+                
                 </div>
             </div>
         </div>
 	</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

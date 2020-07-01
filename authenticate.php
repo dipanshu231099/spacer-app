@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <hr>
-                    <button type="submit" id='submit' class="btn btn-primary mb-2">Generate Report</button>
+                    <button type="submit" id='submit' class="btn btn-primary mb-2">Login</button>
                 </form>
                 <?php
                     if($_SESSION['incorrect'])

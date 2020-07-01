@@ -6,6 +6,7 @@
     if(!($_SESSION['authenticated'])){
         header("Location: authenticate.php");
     }
+
     $config = include('config.php');
     $servername = $config["host"];
     $username = $config['username'];
@@ -18,12 +19,17 @@
 ?>
 
 <?php
-    $today = date("M d Y",strtotime('now'));
-    $sql = "SELECT * FROM allotment WHERE start_time like '%".$today."';";
-    // echo $sql;
-    $results = $conn->query($sql);
-    if(!$results)die('invalid please refresh');
-    session_destroy();
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $date = $_POST["report_date"];
+        $date = date("M d Y" , strtotime($date));
+        //$today = date("M d Y",strtotime('now'));
+
+        $sql = "SELECT * FROM allotment WHERE start_time like '%".$date."';";
+        // echo $sql;
+        $results = $conn->query($sql);
+        if(!$results)die('invalid please refresh');
+        session_destroy();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +45,7 @@
         <table class='table table-dark table-hover'>
             <thead>
                 <tr>
-                    <th scope="col">Email</th>
+                    
                     <th scope="col">Name</th>
                     <th scope="col">Collect time</th>
                     <th scope="col">Contact</th>
@@ -52,7 +58,7 @@
             <tbody>
                 <?php while($row = $results->fetch_assoc()){ ?>
                     <tr>
-                        <td><?php echo $row['customer_id']; ?></td>
+                        
                         <td><?php echo $row['customer_name']; ?></td>
                         <td><?php echo $row['start_time']; ?></td>
                         <td><?php echo $row['contact']; ?></td>
