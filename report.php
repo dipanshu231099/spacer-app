@@ -67,6 +67,7 @@
             <?php } ?>
         </tbody>
     </table>
+    <a href="admin.php"><button type="button" class="btn btn-success" style="width:100%;">Back to Admin Page</button></a>
 </body>
 <!-- Footer -->
 <footer class="page-footer font-small blue">

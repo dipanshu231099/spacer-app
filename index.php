@@ -133,7 +133,7 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-1 landing-page"></div>
+            <div class="col-sm-1 "></div>
             <div class="col-sm-10 landing-page">
                 <h1 style="text-align: center;">Spacer App</h1>
                 <hr>
@@ -178,7 +178,7 @@
                 </div>
                 <hr>
                 <div class="alert alert-info" role="alert">
-                    Are you an Admin? <a href="authenticate.php">login here</a>
+                    Are you an Admin?<a href="authenticate.php"><button type="button" class="btn btn-info w-100">Login Here!</button></a>
                 </div>
                 <hr>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
@@ -289,10 +289,10 @@
                         </select>
                     </div>
                     <hr>
-                    <button type="submit" id='submit' class="btn btn-primary mb-2" disabled>Make Booking</button>
+                    <button type="submit" id='submit' class="btn btn-success mb-2 w-100" disabled>Make Booking</button>
                 </form>
             </div>
-            <div class="col-sm-1 landing-page"></div>
+            <div class="col-sm-1 "></div>
         </div>
     </div>
 </body>

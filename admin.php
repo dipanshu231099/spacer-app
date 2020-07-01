@@ -38,6 +38,9 @@
         if(!$results){
             die("sf");
         }
+        $_SESSION['message']="Changes made succesfully.";
+        $_SESSION['good']=true;
+        header("Location: message.php");
 
     }
 
@@ -139,7 +142,7 @@
                         </div>
                     </form>
                     <hr>
-                
+                    <a href="index.php"><button type="button" class="btn btn-success" style="width:100%;">Back to Home</button></a>
                 </div>
             </div>
         </div>

@@ -63,7 +63,8 @@
                         </div>
                     </div>
                     <hr>
-                    <button type="submit" id='submit' class="btn btn-primary mb-2">Login</button>
+                    <button type="submit" id='submit' class="btn btn-primary mb-2" style="width:100%">Login to Dashboard</button>
+                    <a href="index.php"><button type="button" class="btn btn-success" style="width:100%;">Back to Home</button></a>
                 </form>
                 <?php
                     if($_SESSION['incorrect'])
@@ -93,7 +94,7 @@
 </body>
 <footer class="page-footer font-small blue">
 
-  <div class="footer-copyright text-center py-2">SpacerApp © 2020 Copyright:
+  <div class="footer-copyright text-center py-2">SpacerApp © 2020:
     <a href="https://www.linkedin.com/in/dipanshu-verma-955068183/"> Dipanshu </a>and <a href="https://www.linkedin.com/in/ayushman-dixit-4812b9171">Ayushman</a>
   </div>
 
