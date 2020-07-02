@@ -108,7 +108,7 @@
         }
         else {
             $results = $conn->query($query_insertion);
-            $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " with token number $token </strong><br><br>Kindly collect your items within this time frame.<br>";
+            $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " with token number $token </strong><br><br>Kindly collect your items within this time frame.<br>Please<strong> take a photo/snapshot </strong>of the e-appointment to show at the gate/counter.<br>";
             $_SESSION['good']=true;
             header("Location: message.php");
         }

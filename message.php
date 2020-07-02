@@ -32,10 +32,10 @@
           </div>
           <div class="row">
             <div class="col">
-              <a href="index.php"><button class="btn btn-info mb-2 w-100">Back to Home</button></a>
+              <a href="index.php"><button class="btn btn-info mb-2 w-100">Home</button></a>
             </div>
             <div class="col">
-              <a href="admin.php"><button class="btn btn-warning mb-2 w-100">Back to Admin Page</button></a>
+              <a href="admin.php"><button class="btn btn-warning mb-2 w-100">Admin Page</button></a>
             </div>
           </div>
       </div>
