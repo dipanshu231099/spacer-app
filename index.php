@@ -177,10 +177,7 @@
                     </p>
                 </div>
                 <hr>
-                <div class="alert alert-info" role="alert">
-                    Are you an Admin?<a href="authenticate.php"><button type="button" class="btn btn-info w-100">Login Here!</button></a>
-                </div>
-                <hr>
+                
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                     <div class="form-group row">
                         <label for="rank" class="col-sm-2 col-form-label">Rank</label>
@@ -291,6 +288,11 @@
                     <hr>
                     <button type="submit" id='submit' class="btn btn-success mb-2 w-100" disabled>Make Booking</button>
                 </form>
+                <hr>
+                <div class="alert alert-info" role="alert">
+                    Want to meet the ones who made this app possible?<a href="acknowledgement.php"><button type="button" class="btn btn-info w-100">Developer acknowledgement</button></a>
+                </div>
+                <hr>
             </div>
             <div class="col-sm-1 "></div>
         </div>
