@@ -8,7 +8,8 @@
     $conn = new mysqli($servername, $username, $password,$dbname);
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
-    }
+	}
+	
 
 	date_default_timezone_set("Asia/Kolkata");
 
@@ -65,9 +66,19 @@
     	}
 	}
 
-	$present_year = date("Y",strtotime("today"));
-	populate($present_year,$conn);
-
+	if(!isset($_SESSION['authenticated'])){
+        header("Location: authenticate.php");
+    }
+    if(!($_SESSION['authenticated'])){
+        header("Location: authenticate.php");
+	}
+	else {
+		echo "Reforming present year's table data. Please wait.";
+		$present_year = date("Y",strtotime("today"));
+		populate($present_year,$conn);
+		echo "New Calendar has been created";
+		header("Location: admin.php");
+	}
 ?>
 
 

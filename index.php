@@ -148,7 +148,7 @@
                         #  Only Card / authority letter holder is allowed to get inside the Canteen
                         <br>
                          <br>
-                        #  Visit after e-appointment appointment.
+                        #  Visit after getting an e-appointment.
                         <br>
                         <br>
                         #  Wearing of Mask is mandatory.
@@ -160,7 +160,7 @@
                         # Payment through ATM/credit/debit Cards only
                         <br>
                         <br>
-                        # Entry on production of e-appointment and CSD Card at the gate.
+                        # Entry after showing e-appointment and CSD Card at the gate.
                         <br>
                         <br>
                         # Next visit to CSD after 10 days permitted.

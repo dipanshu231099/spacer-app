@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <button type="submit" class="btn btn-outline-success">Submit changes</button>
+                                <button type="submit" class="btn btn-outline-success w-100">Submit changes</button>
                             </div>
                             
                         </div>
@@ -137,7 +137,19 @@
                             <div class="col">
                                 <label>Enter the date of which report is generated:</label>
                                 <input class="form-control"  type="date" id="date" name="report_date" value="" required><br>
-                                <button type="submit" class="btn btn-outline-success">Generate Report</button>
+                                <button type="submit" class="btn btn-outline-success w-100">Generate Report</button>
+                            </div>
+                        </div>
+                    </form>
+                    <form>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="alert alert-info" role="alert">
+                                    For every new year it is advised to remake the default year-Table structure. Thus ensuring that dates corresponding to that year are known to to the application. Also if you wish to go back to the default settings for a year, making the present year table will do so.
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="populate.php"><button type="submit" class="btn btn-outline-success w-100">Make present year-Table</button></a>
                             </div>
                         </div>
                     </form>
