@@ -146,10 +146,11 @@
                             <div class="col-sm-6">
                                 <div class="alert alert-info" role="alert">
                                     For every new year it is advised to remake the default year-Table structure. Thus ensuring that dates corresponding to that year are known to to the application. Also if you wish to go back to the default settings for a year, making the present year table will do so.
+                                    <br>If you have made a request to do so, it will take some time, kindly be patient, you will be automatically redirected, once the process is complete.
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <a href="populate.php"><button type="submit" class="btn btn-outline-success w-100">Make present year-Table</button></a>
+                                <a href="populate.php"><button type="button" class="btn btn-outline-success w-100">Make present year-Table</button></a>
                             </div>
                         </div>
                     </form>

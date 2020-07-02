@@ -76,8 +76,9 @@
 		echo "Reforming present year's table data. Please wait.";
 		$present_year = date("Y",strtotime("today"));
 		populate($present_year,$conn);
-		echo "New Calendar has been created";
-		header("Location: admin.php");
+		$_SESSION['message']= "New Calendar has been created. ";
+		$_SESSION['good']=true;
+		header("Location: message.php");
 	}
 ?>
 
