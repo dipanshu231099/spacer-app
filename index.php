@@ -89,22 +89,14 @@
             die("query failed");
         }
         $last_booking = $last_booking->fetch_assoc();
-        /*if($last_booking==NULL){
-            die("first time");
-        }*/
         $last_date = $last_booking["start_time"];
         $last_date = strtotime(date("M d Y" , strtotime($last_date)));
         $difference = ($date_of_booking-$last_date)/86400;
         $difference = (int)$difference;
         $difference = abs($difference);
-        // die("$difference"." "."$date_of_booking"." "." $last_date");
         if($difference<=10){
             header("Location: rule_message.php");
         }
-        
-
-
-
 
         else{
             $current_year = date("Y",strtotime('today'));
@@ -133,7 +125,7 @@
             }
             else {
                 $results = $conn->query($query_insertion);
-                $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " with token number $token </strong><br><br>Kindly collect your items within this time frame.<br>Please<strong> take a photo/snapshot </strong>of this e-appointment to show at the gate/counter.<br>";
+                $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " with token number $token </strong><br>Grocery Card number: $grocery_card <br> Liquor Card number: $liquor_card<br>Kindly collect your items within this time frame.<br>Please<strong> take a photo/snapshot </strong>of this e-appointment to show at the gate/counter.<br>";
                 $_SESSION['good']=true;
                 header("Location: message.php");
         }
@@ -215,7 +207,7 @@
                     <div class="form-group row">
                         <label for="rank" class="col-sm-2 col-form-label">Rank</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control is-valid" id='rank' name="rank" placeholder="(optional)">
+                            <input type="text" class="form-control is-valid" id='rank' name="rank" placeholder="Rank (optional)">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -242,7 +234,7 @@
                         <div class="col-sm-5">
 
                             <label for="grocery_card" class="col-sm-2 col-form-label">Grocery</label>
-                            <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="grocery card number" required>
+                            <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="Grocery card number" required>
                             <div class="invalid-feedback">
                                 Must be 17 characters long
                             </div>
@@ -250,7 +242,7 @@
                         <div class="col-sm-5">
 
                             <label for="liquor_card" class="col-sm-2 col-form-label">Liquor</label>
-                            <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="liquor card number" required>
+                            <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="Liquor card number" required>
                             <div class="invalid-feedback">
                                 Must be 17 characters long
                             </div>
@@ -260,7 +252,7 @@
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Name as on card</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id='card_name' name="card_name" placeholder="name as on the card" required>
+                            <input type="text" class="form-control" id='card_name' name="card_name" placeholder="Name as on the card" required>
                             <div class="invalid-feedback">
                                 No empty string or special chars allowed.
                             </div>
