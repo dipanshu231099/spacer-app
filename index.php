@@ -81,37 +81,70 @@
         $grocery_card = test_input($_POST['grocery_card']);
         $rank = test_input($_POST['rank']);
 
-        //finding the max limit and total counters according to date
-        $current_year = date("Y",strtotime('today'));
-        $date = date("M d Y",strtotime($_POST["timestamp"]));
-        $table_name = "calendar_".$current_year."_".($current_year+1);
-        $sql = "SELECT * FROM $table_name WHERE date='".$date."';";
-        $result = ($conn->query($sql))->fetch_assoc();
-        $max_limit = $result['max_limit'];
-        $total_counters = $result['counters'];
+        $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp)));
 
-        //queries here----------
-        $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
-        $query_token = "SELECT COUNT(*) as cnt from allotment where start_time like '%".$date."';";
-        $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
-        $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
-        $token = $count_token+1;
-        $counter_number = (int)($count_timestamp/$max_limit)+1;
-        $query_insertion = "INSERT INTO allotment (token,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name) VALUES ($token,'".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."');";
-
-
+        $query = "SELECT * from allotment WHERE liquor_card='".$liquor_card."'  ORDER BY start_time limit 1;";
+        $last_booking = $conn->query($query);
+        if(!$last_booking){
+            die("query failed");
+        }
+        $last_booking = $last_booking->fetch_assoc();
+        /*if($last_booking==NULL){
+            die("first time");
+        }*/
+        $last_date = $last_booking["start_time"];
+        $last_date = strtotime(date("M d Y" , strtotime($last_date)));
+        $difference = ($date_of_booking-$last_date)/86400;
+        $difference = (int)$difference;
+        $difference = abs($difference);
+        // die("$difference"." "."$date_of_booking"." "." $last_date");
+        if($difference<=10){
+            header("Location: rule_message.php");
+        }
         
-        if($count_timestamp>=12){
-            $_SESSION['message']="Cannot allot the selected time as it just got fulfilled.";
-            $_SESSION['good']=false;
-            header("Location: message.php");
+
+
+
+
+        else{
+            $current_year = date("Y",strtotime('today'));
+            $date = date("M d Y",strtotime($_POST["timestamp"]));
+            $table_name = "calendar_".$current_year."_".($current_year+1);
+            $sql = "SELECT * FROM $table_name WHERE date='".$date."';";
+            $result = ($conn->query($sql))->fetch_assoc();
+            $max_limit = $result['max_limit'];
+            $total_counters = $result['counters'];
+
+            //queries here----------
+            $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
+            $query_token = "SELECT COUNT(*) as cnt from allotment where start_time like '%".$date."';";
+            $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
+            $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
+            $token = $count_token+1;
+            $counter_number = (int)($count_timestamp/$max_limit)+1;
+            $query_insertion = "INSERT INTO allotment (token,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name) VALUES ($token,'".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."');";
+
+
+            
+            if($count_timestamp>=12){
+                $_SESSION['message']="Cannot allot the selected time as it just got fulfilled.";
+                $_SESSION['good']=false;
+                header("Location: message.php");
+            }
+            else {
+                $results = $conn->query($query_insertion);
+                $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " with token number $token </strong><br><br>Kindly collect your items within this time frame.<br>Please<strong> take a photo/snapshot </strong>of this e-appointment to show at the gate/counter.<br>";
+                $_SESSION['good']=true;
+                header("Location: message.php");
         }
-        else {
-            $results = $conn->query($query_insertion);
-            $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " with token number $token </strong><br><br>Kindly collect your items within this time frame.<br>Please<strong> take a photo/snapshot </strong>of this e-appointment to show at the gate/counter.<br>";
-            $_SESSION['good']=true;
-            header("Location: message.php");
+
         }
+
+
+
+
+        //finding the max limit and total counters according to date
+
     }
     
     function test_input($data) {
@@ -246,8 +279,8 @@
                     </div>
                     <hr>
                     <div class="form-group">
-                        <h4>Select a time preffered to you.</h4>
-                        <label for="visit_time">list of time windows available</label>
+                        <h4>Select a time preferable to you.</h4>
+                        <label for="visit_time">List of time windows available</label>
                         <select class="form-control" id="visit_time" name="timestamp">
                         <?php
                             date_default_timezone_set("Asia/Kolkata");
@@ -290,7 +323,7 @@
                 </form>
                 <hr>
                 <div class="alert alert-info" role="alert">
-                    Want to meet the ones who made this app possible?<a href="acknowledgement.php"><button type="button" class="btn btn-info w-100">Developer acknowledgement</button></a>
+                    <a href="acknowledgement.php"><button type="button" class="btn btn-info w-100">Developer Acknowledgement</button></a>
                 </div>
                 <hr>
             </div>
@@ -301,9 +334,7 @@
 <!-- Footer -->
 <footer class="page-footer font-small blue">
 
-  <div class="footer-copyright text-center py-2">© 2020 Copyright:
-    <a href="https://www.linkedin.com/in/dipanshu-verma-955068183/"> Dipanshu </a>and <a href="https://www.linkedin.com/in/ayushman-dixit-4812b9171">Ayushman</a>
-  </div>
+
 
 </footer>
 <script src="javascripts/errors.js"></script>

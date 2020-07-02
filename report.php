@@ -44,6 +44,8 @@
     <table class='table table-dark table-hover'>
         <thead>
             <tr>
+                <th scope="col">Grocery_card</th>
+                <th scope="col">Liquor_card</th>
                 <th scope="col">Token</th>
                 <th scope="col">Counter#</th>
                 <th scope="col">Name</th>
@@ -56,6 +58,8 @@
         <tbody>
             <?php while($row = $results->fetch_assoc()){ ?>
                 <tr>
+                    <td><?php echo $row['grocery_card']; ?></td>
+                    <td><?php echo $row['liquor_card']; ?></td>
                     <td><?php echo $row['token']; ?></td>
                     <td><?php echo $row['counter']; ?></td>
                     <td><?php echo $row['customer_name']; ?></td>
