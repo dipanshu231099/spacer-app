@@ -21,9 +21,9 @@ contact.addEventListener('click', logKey_number);
 document.addEventListener('keyup', logKey_submit);
 document.addEventListener('click', logKey_submit);
 
-liquor_card.addEventListener('keyup',lcard);
+// liquor_card.addEventListener('keyup',lcard);
 // grocery_card.addEventListener('keyup',gcard);
-// card_name.addEventListener('keyup',logKey_card_name);
+card_name.addEventListener('keyup',logKey_card_name);
 // liquor_card.addEventListener('click',lcard);
 // grocery_card.addEventListener('click',gcard);
 card_name.addEventListener('click',logKey_card_name);
