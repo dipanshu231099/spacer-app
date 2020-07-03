@@ -82,15 +82,16 @@
         $rank = test_input($_POST['rank']);
 
         $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp)));
-
-        $query = "SELECT * from allotment WHERE liquor_card='".$liquor_card."'  ORDER BY start_time limit 1;";
+        $query = "SELECT * from allotment WHERE liquor_card='".$liquor_card."'  ORDER BY st_sec desc limit 1;";
         $last_booking = $conn->query($query);
         if(!$last_booking){
-            die("query failed");
+            die("failed");
         }
         $last_booking = $last_booking->fetch_assoc();
-        $last_date = $last_booking["start_time"];
-        $last_date = strtotime(date("M d Y" , strtotime($last_date)));
+
+
+        $last_date = $last_booking["st_sec"];
+
         $difference = ($date_of_booking-$last_date)/86400;
         $difference = (int)$difference;
         $difference = abs($difference);
@@ -114,7 +115,7 @@
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
             $token = $count_token+1;
             $counter_number = (int)($count_timestamp/$max_limit)+1;
-            $query_insertion = "INSERT INTO allotment (token,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name) VALUES ($token,'".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."');";
+            $query_insertion = "INSERT INTO allotment (token,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name,st_sec) VALUES ($token,'".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."','".$date_of_booking."');";
 
 
             
