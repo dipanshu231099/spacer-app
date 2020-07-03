@@ -40,7 +40,7 @@
         }
         $_SESSION['message']="Changes made succesfully.";
         $_SESSION['good']=true;
-        header("Location: message.php");
+        header("Location: admin_message.php");
 
     }
 
@@ -57,7 +57,7 @@
 	<head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Spacer App </title>
+        <title>ACSA admin </title>
         <link rel="stylesheet" href="stylesheets/style.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         
@@ -68,7 +68,8 @@
             <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-10 landing-page">
-                    <h1 style="text-align: center;">Spacer App</h1>
+                    <h1 style="text-align: center;">ACSA</h1>
+                    <h4 style="text-align: center;">Army Canteen Scheduler App</h4>
                     <hr>
                     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                         <div class="row">
@@ -160,6 +161,14 @@
             </div>
         </div>
 	</body>
+    <!-- Footer -->
+    <footer class="page-footer font-small blue">
+
+    <div class="footer-copyright text-center py-2">© 2020 Copyright:
+        <a href="acknowledgement.php">Team Page</a>
+    </div>
+
+    </footer>
 </html>
 
 

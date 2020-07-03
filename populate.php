@@ -78,7 +78,7 @@
 		populate($present_year,$conn);
 		$_SESSION['message']= "New Calendar has been created. ";
 		$_SESSION['good']=true;
-		header("Location: message.php");
+		header("Location: admin_message.php");
 	}
 ?>
 

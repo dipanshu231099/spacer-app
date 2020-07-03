@@ -13,7 +13,9 @@
 <div class="container py-5">
     <div class="row text-center text-white">
         <div class="col-lg-8 mx-auto">
-            <u><h1 class="display-4">The Team</h1></u>
+            <h1 style="text-align: center;">ACSA</h1>
+            <h4 style="text-align: center;">Army Canteen Scheduler App</h4>
+            <h4 style="text-align: center;">The Team</h4>
         </div>
     </div>
 </div><!-- End -->
@@ -66,9 +68,13 @@
                 </ul>
             </div>
         </div><!-- End -->
+
+
     </div>
+
+    <a href="index.php"><button type="button" class="btn btn-info mb-2 w-100">Back to Home Page</button></a>
 </div>
 </body>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 </html>
 

@@ -22,10 +22,10 @@ document.addEventListener('keyup', logKey_submit);
 document.addEventListener('click', logKey_submit);
 
 liquor_card.addEventListener('keyup',lcard);
-grocery_card.addEventListener('keyup',gcard);
-card_name.addEventListener('keyup',logKey_card_name);
-liquor_card.addEventListener('click',lcard);
-grocery_card.addEventListener('click',gcard);
+// grocery_card.addEventListener('keyup',gcard);
+// card_name.addEventListener('keyup',logKey_card_name);
+// liquor_card.addEventListener('click',lcard);
+// grocery_card.addEventListener('click',gcard);
 card_name.addEventListener('click',logKey_card_name);
 
 
@@ -114,7 +114,7 @@ function logKey_email(e){
 
 function logKey_submit(e){
     if(checkMobile(contact.value) && checkAlpha(user_name.value)
-     && (liquor.checked || grocery.checked) && (grocery_card.value.length==17) && (liquor_card.value.length==17) 
+     && (liquor.checked || grocery.checked) //&& (grocery_card.value.length==17) && (liquor_card.value.length==17) 
      && checkAlpha(card_name.value)){
         button.disabled=false;
     }

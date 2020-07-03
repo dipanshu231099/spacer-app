@@ -152,7 +152,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacer App </title>
+    <title>ACSA Home</title>
     <link rel="stylesheet" href="stylesheets/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -161,7 +161,8 @@
         <div class="row">
             <div class="col-sm-1 "></div>
             <div class="col-sm-10 landing-page">
-                <h1 style="text-align: center;">Spacer App</h1>
+                <h1 style="text-align: center;">ACSA</h1>
+                <h4 style="text-align: center;">Army Canteen Scheduler App</h4>
                 <hr>
                 <div class="alert alert-info" role="alert">
                     <p>
@@ -189,7 +190,7 @@
                         # Entry after showing e-appointment and CSD Card at the gate.
                         <br>
                         <br>
-                        # Next visit to CSD after 10 days permitted.
+                        # Next visit to canteen permitted after 10 days.
                         <br>
                         <br>
                         # Visit Canteen on given date and time
@@ -235,7 +236,7 @@
                         <div class="col-sm-5">
 
                             <label for="grocery_card" class="col-sm-2 col-form-label">Grocery</label>
-                            <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="Grocery card number" required>
+                            <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="Grocery card number. This will be used to verify you." required>
                             <div class="invalid-feedback">
                                 Must be 17 characters long
                             </div>
@@ -243,7 +244,7 @@
                         <div class="col-sm-5">
 
                             <label for="liquor_card" class="col-sm-2 col-form-label">Liquor</label>
-                            <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="Liquor card number" required>
+                            <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="Liquor card number. This will be used to verify you." required>
                             <div class="invalid-feedback">
                                 Must be 17 characters long
                             </div>
@@ -253,7 +254,7 @@
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Name as on card</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id='card_name' name="card_name" placeholder="Name as on the card" required>
+                            <input type="text" class="form-control" id='card_name' name="card_name" placeholder="Name as on the card. This will be used to verify you." required>
                             <div class="invalid-feedback">
                                 No empty string or special chars allowed.
                             </div>
@@ -327,7 +328,9 @@
 <!-- Footer -->
 <footer class="page-footer font-small blue">
 
-
+<div class="footer-copyright text-center py-2">© 2020 Copyright:
+    <a href="acknowledgement.php">Team Page</a>
+  </div>
 
 </footer>
 <script src="javascripts/errors.js"></script>

@@ -40,7 +40,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stylesheets/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Spacer app</title>
+    <title>ACSA login</title>
 </head>
 <body>
 <div class="container-fluid">
@@ -48,6 +48,7 @@
 
             <div class="col-sm-6 left-pane">
                 <h1 style="text-align: center;">Admin Page</h1>
+                <h4 style="text-align: center;">Army Canteen Scheduler App</h4>
                 <hr>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                     <div class="form-group row">
@@ -77,12 +78,12 @@
             </div>
 
             <div class="col-sm-6 right-pane">
-                <h1 style="text-align: center;">Spacer-App</h1>
+                <h1 style="text-align: center;">ACSA</h1>
+                <h4 style="text-align: center;">Army Canteen Scheduler App</h4>
                 <hr>
                 <div class="alert alert-info" role="alert">
                     <p>
-                        This app is to designed for providing solution to social distancing implementation, during the difficult time of Corona.
-                        Kindly enter all the required fields required in the form. 
+                        The page was intended only for Admin users. You must provide the required information so that we can verify you.
                     </p>
                     <p>
                         Enter the token username and token key provided to you to see the records, else "THOU SHALL NOT PASS"!
@@ -92,11 +93,10 @@
         </div>
     </div>
 </body>
+<!-- Footer -->
 <footer class="page-footer font-small blue">
-
-  <div class="footer-copyright text-center py-2">SpacerApp © 2020:
-    <a href="https://www.linkedin.com/in/dipanshu-verma-955068183/"> Dipanshu </a>and <a href="https://www.linkedin.com/in/ayushman-dixit-4812b9171">Ayushman</a>
-  </div>
-
+    <div class="footer-copyright text-center py-2">© 2020 Copyright:
+        <a href="acknowledgement.php">Team Page</a>
+    </div>    
 </footer>
 </html>
