@@ -6,16 +6,16 @@
   <link rel="stylesheet" href="stylesheets/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-  <title>Spacer App</title>
+  <title>ACSA error</title>
 </head>
 <body>
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-1"></div>
       <div class="col-sm-10 landing-page">
-          <h1 style="text-align: center;">Spacer-app</h1>
+          <h1 style="text-align: center;">ACSA</h1>
           <hr>
-          <div>
+          <div class='alert alert-danger'>
               <p>
                   Sorry! You can only visit only once within 10 days.
               </p>
