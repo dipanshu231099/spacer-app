@@ -26,14 +26,25 @@
           <div class="alert <?php echo ($_SESSION['good']?"alert-success":"alert-danger") ?>" role="alert">
               <p>
                   <?php
+                  $a = "";
+                  $b = "";
+                  if(isset($_SESSION["liquor_fail"])){
+                     if($_SESSION["liquor_fail"] ) echo "You can't book liquor <br>";
+                  }
+                  if(isset($_SESSION["groceries_fail"])){
+                      if($_SESSION["groceries_fail"]) echo "You can't book groceries <br>";
+                  }
+                   
                    echo $_SESSION['message'];
                    echo "Thank you for using the application";
+                   session_destroy();
                   ?>
               </p>
           </div>
           <div class="row">
             <div class="col">
               <a href="index.php"><button class="btn btn-info mb-2 w-100">Home</button></a>
+              
             </div>
             
           </div>

@@ -66,7 +66,8 @@
 <?php
 
     $name = $email = $contact = $timestamp = "";
-    $liquor = $groceries = false;
+    $liquor = false;
+    $groceries = false;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //post variables here-------------------
@@ -82,24 +83,74 @@
         $rank = test_input($_POST['rank']);
 
         $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp)));
-        $query = "SELECT * from allotment WHERE liquor_card='".$liquor_card."'  ORDER BY st_sec desc limit 1;";
-        $last_booking = $conn->query($query);
-        if(!$last_booking){
-            die("failed");
+        $query_for_liq = "SELECT * from allotment WHERE liquor_card='".$liquor_card."'  ORDER BY st_sec_L desc limit 1;";
+        $query_for_gro = "SELECT * from allotment WHERE liquor_card='".$liquor_card."' ORDER BY st_sec_G desc limit 1;";
+        $last_booking_liq = $conn->query($query_for_liq);
+        $last_booking_gro = $conn->query($query_for_gro);
+        if(!$last_booking_liq){
+            die("failed liq");
         }
-        $last_booking = $last_booking->fetch_assoc();
-
-
-        $last_date = $last_booking["st_sec"];
-
-        $difference = ($date_of_booking-$last_date)/86400;
-        $difference = (int)$difference;
-        $difference = abs($difference);
-        if($difference<=10){
-            header("Location: rule_message.php");
+        if(!$last_booking_gro){
+            die("failed gro");
         }
+        $last_booking_liq = $last_booking_liq->fetch_assoc();
+        $last_booking_gro = $last_booking_gro->fetch_assoc();
 
-        else{
+        $last_date_Liqour = $last_booking_liq["st_sec_L"];
+        $last_date_Groceries = $last_booking_gro["st_sec_G"];
+
+        $difference_Liquor = ($date_of_booking-$last_date_Liqour)/86400;
+        $difference_Liquor = (int)$difference_Liquor;
+        $difference_Liquor = abs($difference_Liquor);
+
+        $difference_Groceries = ($date_of_booking-$last_date_Groceries)/86400;
+        $difference_Groceries = (int)$difference_Groceries;
+        $difference_Groceries = abs($difference_Groceries);
+
+        //die("$difference_Liquor $difference_Groceries $date_of_booking");
+        //die("$liquor - $groceries");
+        if($liquor==true){
+            
+            if($difference_Liquor<=10){
+                $liquor = false;
+                $_SESSION["liquor_fail"] = true;
+            }
+            else{
+                $_SESSION["liquor_fail"] = false;
+            }
+            
+        }
+        if($groceries==true){
+            if($difference_Groceries<=10){
+                $groceries = false;
+                $_SESSION["groceries_fail"] = true;
+            }
+            else{
+                $_SESSION["groceries_fail"] = false;
+            }
+        }
+        
+        if(isset($_SESSION["groceries_fail"]) && isset($_SESSION["groceries_fail"])){
+            if($_SESSION["groceries_fail"] == true && $_SESSION["liquor_fail"] == true){
+                header("Location: rule_message.php");
+                exit();
+            }
+        }
+        if(!isset($_SESSION["liquor_fail"])){
+            if($_SESSION["groceries_fail"]==true){
+                header("Location: rule_message.php");
+                exit();
+            }
+            
+        }
+        if(!isset($_SESSION["groceries_fail"])){
+            if($_SESSION["liquor_fail"]==true){
+                header("Location: rule_message.php");
+                exit();
+            }
+        }
+        
+
             $current_year = date("Y",strtotime('today'));
             $date = date("M d Y",strtotime($_POST["timestamp"]));
             $table_name = "calendar_".$current_year."_".($current_year+1);
@@ -114,13 +165,22 @@
             $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
             $token = $count_token+1;
+            $date_of_booking_G = NULL;
+            $date_of_booking_L = NULL;
             $counter_number = (int)($count_timestamp/$max_limit)+1;
-            $query_insertion = "INSERT INTO allotment (token,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name,st_sec) VALUES ($token,'".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."','".$date_of_booking."');";
+            if($groceries==true){
+                $date_of_booking_G = $date_of_booking;
+            }
+            if($liquor==true){
+                $date_of_booking_L = $date_of_booking;
+            }
+            
+            $query_insertion = "INSERT INTO allotment (token,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name,st_sec_L,st_sec_G) VALUES ($token,'".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."','".(($date_of_booking_L==NULL)?NULL:$date_of_booking_L)."','".(($date_of_booking_G==NULL)?NULL:$date_of_booking_G)."');";
 
 
             
             if($count_timestamp>=12){
-                $_SESSION['message']="Cannot allot the selected time as it just got fulfilled.";
+                $_SESSION['message'] = "Cannot allot the selected time as it just got fulfilled.";
                 $_SESSION['good']=false;
                 header("Location: message.php");
             }
@@ -129,9 +189,9 @@
                 $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " with token number $token </strong><br>Grocery Card number: $grocery_card <br> Liquor Card number: $liquor_card<br>Kindly collect your items within this time frame.<br>Please<strong> take a photo/snapshot </strong>of this e-appointment to show at the gate/counter.<br>";
                 $_SESSION['good']=true;
                 header("Location: message.php");
-        }
+            }
 
-        }
+        
 
 
 
@@ -284,7 +344,7 @@
                             $new_tp = $present_time;
 
 
-                            $slots = 20;
+                            $slots = 500;
                             while($slots>0){
                                 $new_timestamp = date("h:ia M d Y",$new_tp);
                                 $current_year = date("Y",strtotime('today'));

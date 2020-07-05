@@ -1,3 +1,9 @@
+<?php
+  session_start();
+  session_destroy();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +24,8 @@
           <div class='alert alert-danger'>
               <p>
                   Sorry! You can only visit only once within 10 days.
+
+                  
               </p>
           </div>
           <div class="row">
