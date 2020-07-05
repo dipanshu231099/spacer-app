@@ -314,7 +314,9 @@
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Name as on card</label>
                         <div class="col-sm-10">
+
                             <input type="text" class="form-control" id='card_name' name="card_name" placeholder="Name as on the card. This will be used to verify you." required>
+
                             <div class="invalid-feedback">
                                 No empty string or special chars allowed.
                             </div>

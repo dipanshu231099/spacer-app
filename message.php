@@ -37,7 +37,9 @@
                    
                    echo $_SESSION['message'];
                    echo "Thank you for using the application";
+
                    session_destroy();
+
                   ?>
               </p>
           </div>
