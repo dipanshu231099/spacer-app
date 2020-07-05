@@ -16,7 +16,41 @@
 }
 
 .page-footer{
-  background-color: rgb(233, 233, 255);
+  color: greenyellow;
+  background-color: rgb(0, 0, 61);
   height: 5vh;
   margin: 0 !important;
+  position: sticky;
+  bottom: 0;
+}
+
+.landing-page {
+  padding: 2.5%;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+.landing-page form {
+  border: solid 1px #000272;
+  padding: 1.5%;
+  border-radius: 2.5%;
+}
+
+.social-link {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  border-radius: 50%;
+  transition: all 0.3s;
+  font-size: 0.9rem;
+}
+
+.social-link:hover, .social-link:focus {
+  background: #ddd;
+  text-decoration: none;
+  color: #555;
 }
