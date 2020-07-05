@@ -143,7 +143,7 @@
                 $date_of_booking_L = $date_of_booking;
             }
             
-            $query_insertion = "INSERT INTO allotment (token,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name,st_sec_L,st_sec_G) VALUES ($token,'".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."','".(($date_of_booking_L==NULL)?NULL:$date_of_booking_L)."','".(($date_of_booking_G==NULL)?NULL:$date_of_booking_G)."');";
+            $query_insertion = "INSERT INTO allotment (token,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name,st_sec_L,st_sec_G) VALUES ($token,'".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."',".(($date_of_booking_L==NULL)?'NULL':$date_of_booking_L).",".(($date_of_booking_G==NULL)?'NULL':$date_of_booking_G).");";
            
             if($count_timestamp>=12){
                 $_SESSION['message'] = "Cannot allot the selected time as it just got fulfilled.";
@@ -152,6 +152,9 @@
             }
             else {
                 $results = $conn->query($query_insertion);
+                if(!$results){
+                    die("$query_insertion was unsuccesful");
+                }
                 $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " with token number $token </strong><br>Grocery Card number: $grocery_card <br> Liquor Card number: $liquor_card<br>Kindly collect your items within this time frame.<br>Please<strong> take a photo/snapshot </strong>of this e-appointment to show at the gate/counter.<br>";
                 $_SESSION['good']=true;
                 header("Location: message.php");
@@ -305,7 +308,7 @@
                             $new_tp = $present_time;
 
 
-                            $slots = 500;
+                            $slots = 20;
                             while($slots>0){
                                 $new_timestamp = date("h:ia M d Y",$new_tp);
                                 $current_year = date("Y",strtotime('today'));

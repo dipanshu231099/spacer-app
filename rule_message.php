@@ -23,8 +23,8 @@
               <p>
                   <?php
                     if($_SESSION['liquor_fail'] && $_SESSION['groceries_fail'])echo "We are sorry! Your request can not be processed. You must wait for at least 10 days from the previous booking date before making a new request for either of the products.";
-                    else if($_SESSION['liquor_fail'])echo "We are sorry! Your request for 'LIQUOR' can not be processed. You must wait for at least 10 days from the previous booking date made for liquor.";
-                    else if($_SESSION['groceries_fail'])echo "We are sorry! Your request for 'GROCERIES' can not be processed. You must wait for at least 10 days from the previous booking date made for groceries";
+                    else if($_SESSION['liquor_fail'])echo "We are sorry! Seems like your request includes LIQUOR, and thus can not be processed. You must wait for at least 10 days from the previous booking date made for liquor.";
+                    else if($_SESSION['groceries_fail'])echo "We are sorry! Seems like your request includes GROCERIES, and thus can not be processed. You must wait for at least 10 days from the previous booking date made for groceries";
                   ?>                  
               </p>
           </div>
