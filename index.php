@@ -11,18 +11,6 @@
     }
 
 	date_default_timezone_set("Asia/Kolkata");
-    $gazetted_holidays = array(
-        array(26,"Jan"),//republic day
-        array(21,"Feb"),//maha shiv
-        array(10,"Mar"),//holi
-        array(6,"Apr"),//mahavir jayanti
-        array(15,"Apr"),//himachal day
-        array(25,"May"),//id ul fitr
-        array(15,"Aug"),//independence day
-        array(2,"Oct"),//gandhi jayanti
-        array(14,"Nov"),//diwali
-        array(30,"Nov"),//guru nanak jayanti
-    );
 
     function isHoliday($tp,$conn){
         $date = date("M d Y",$tp);
@@ -38,7 +26,6 @@
         }
     }
     
-
     function isWorkingHour($tp,$conn){
         $timestring =date("Hi",$tp);
         $date = date("M d Y",$tp);
@@ -64,7 +51,6 @@
 ?>
 
 <?php
-
     $name = $email = $contact = $timestamp = "";
     $liquor = false;
     $groceries = false;
@@ -81,8 +67,8 @@
         $liquor_card = test_input($_POST['liquor_card']);
         $grocery_card = test_input($_POST['grocery_card']);
         $rank = test_input($_POST['rank']);
-
         $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp)));
+        //queries for timestamp 
         $query_for_liq = "SELECT * from allotment WHERE liquor_card='".$liquor_card."'  ORDER BY st_sec_L desc limit 1;";
         $query_for_gro = "SELECT * from allotment WHERE liquor_card='".$liquor_card."' ORDER BY st_sec_G desc limit 1;";
         $last_booking_liq = $conn->query($query_for_liq);
@@ -96,61 +82,36 @@
         $last_booking_liq = $last_booking_liq->fetch_assoc();
         $last_booking_gro = $last_booking_gro->fetch_assoc();
 
+        //finding time differences in bookings
         $last_date_Liqour = $last_booking_liq["st_sec_L"];
         $last_date_Groceries = $last_booking_gro["st_sec_G"];
-
         $difference_Liquor = ($date_of_booking-$last_date_Liqour)/86400;
         $difference_Liquor = (int)$difference_Liquor;
         $difference_Liquor = abs($difference_Liquor);
-
         $difference_Groceries = ($date_of_booking-$last_date_Groceries)/86400;
         $difference_Groceries = (int)$difference_Groceries;
         $difference_Groceries = abs($difference_Groceries);
 
-        //die("$difference_Liquor $difference_Groceries $date_of_booking");
-        //die("$liquor - $groceries");
-        if($liquor==true){
-            
+        $_SESSION['liquor_fail']=$_SESSION['groceries_fail']=false;
+
+        if($liquor==true){          
             if($difference_Liquor<=10){
                 $liquor = false;
                 $_SESSION["liquor_fail"] = true;
-            }
-            else{
-                $_SESSION["liquor_fail"] = false;
-            }
-            
+            }       
         }
         if($groceries==true){
             if($difference_Groceries<=10){
                 $groceries = false;
                 $_SESSION["groceries_fail"] = true;
             }
-            else{
-                $_SESSION["groceries_fail"] = false;
-            }
         }
         
-        if(isset($_SESSION["groceries_fail"]) && isset($_SESSION["groceries_fail"])){
-            if($_SESSION["groceries_fail"] == true && $_SESSION["liquor_fail"] == true){
-                header("Location: rule_message.php");
-                exit();
-            }
+        if($_SESSION["groceries_fail"] == true || $_SESSION["liquor_fail"] == true){
+            header("Location: rule_message.php");
+            exit();
         }
-        if(!isset($_SESSION["liquor_fail"])){
-            if($_SESSION["groceries_fail"]==true){
-                header("Location: rule_message.php");
-                exit();
-            }
-            
-        }
-        if(!isset($_SESSION["groceries_fail"])){
-            if($_SESSION["liquor_fail"]==true){
-                header("Location: rule_message.php");
-                exit();
-            }
-        }
-        
-
+        else{
             $current_year = date("Y",strtotime('today'));
             $date = date("M d Y",strtotime($_POST["timestamp"]));
             $table_name = "calendar_".$current_year."_".($current_year+1);
@@ -162,8 +123,15 @@
             //queries here----------
             $query_count = "SELECT COUNT(*) as cnt from allotment where start_time='".$timestamp."';";
             $query_token = "SELECT COUNT(*) as cnt from allotment where start_time like '%".$date."';";
+            /*
+            /tells number of people already present with the exact timestamp (slot+date)
+            */
             $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
+            /*
+                tells number of people already present on that day(only date)
+            */
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
+
             $token = $count_token+1;
             $date_of_booking_G = NULL;
             $date_of_booking_L = NULL;
@@ -176,9 +144,7 @@
             }
             
             $query_insertion = "INSERT INTO allotment (token,customer_name,contact,start_time,groceries,liquor,counter,rank,grocery_card,liquor_card,card_name,st_sec_L,st_sec_G) VALUES ($token,'".$name."','".$contact."','" . $timestamp . "',". ($groceries?1:0) .",".($liquor?1:0).",'".$counter_number."','".$rank."','".$grocery_card."','".$liquor_card."','".$card_name."','".(($date_of_booking_L==NULL)?NULL:$date_of_booking_L)."','".(($date_of_booking_G==NULL)?NULL:$date_of_booking_G)."');";
-
-
-            
+           
             if($count_timestamp>=12){
                 $_SESSION['message'] = "Cannot allot the selected time as it just got fulfilled.";
                 $_SESSION['good']=false;
@@ -190,14 +156,7 @@
                 $_SESSION['good']=true;
                 header("Location: message.php");
             }
-
-        
-
-
-
-
-        //finding the max limit and total counters according to date
-
+        }
     }
     
     function test_input($data) {

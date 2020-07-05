@@ -1,7 +1,5 @@
 <?php
   session_start();
-  session_destroy();
-
 ?>
 
 <!DOCTYPE html>
@@ -23,9 +21,11 @@
           <hr>
           <div class='alert alert-danger'>
               <p>
-                  Sorry! You can only visit only once within 10 days.
-
-                  
+                  <?php
+                    if($_SESSION['liquor_fail'] && $_SESSION['groceries_fail'])echo "We are sorry! Your request can not be processed. You must wait for at least 10 days from the previous booking date before making a new request for either of the products.";
+                    else if($_SESSION['liquor_fail'])echo "We are sorry! Your request for 'LIQUOR' can not be processed. You must wait for at least 10 days from the previous booking date made for liquor.";
+                    else if($_SESSION['groceries_fail'])echo "We are sorry! Your request for 'GROCERIES' can not be processed. You must wait for at least 10 days from the previous booking date made for groceries";
+                  ?>                  
               </p>
           </div>
           <div class="row">
@@ -41,9 +41,10 @@
 </body>
 <!-- Footer -->
 <footer class="page-footer font-small blue">
-
-<div class="footer-copyright text-center py-2">© 2020 Copyright:
+  <div class="footer-copyright text-center py-2">© 2020 Copyright:
     <a href="acknowledgement.php">Team Page</a>
   </div>
-
 </footer>
+<?php
+  session_destroy();
+?>
