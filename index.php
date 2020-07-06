@@ -154,7 +154,7 @@
                 if(!$results){
                     die("$query_insertion was unsuccesful");
                 }
-                $_SESSION['message']="Succesfully created your request. Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " with token number $token </strong><br>Grocery Card number: $grocery_card <br> Liquor Card number: $liquor_card<br>Kindly collect your items within this time frame.<br>Please<strong> take a photo/snapshot </strong>of this e-appointment to show at the gate/counter.<br>";
+                $_SESSION['message']="Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between <strong>".date('h:ia',strtotime($timestamp))."</strong> and <strong>".date('h:ia',strtotime( $endTime))."</strong> on <strong>".date('M d Y',strtotime($timestamp))."</strong> at counter number: <strong>".$counter_number. " Your token number: $token </strong><br>Grocery Card number: $grocery_card <br> Liquor Card number: $liquor_card<br>Kindly collect your items within this time frame.<br>Please<strong> take a photo/snapshot </strong>of this e-appointment to show at the gate/counter.<br>";
                 $_SESSION['good']=true;
             }
             $_SESSION['good_liquor'] = ($_SESSION['liquor_fail'])==true?false:true;
@@ -205,13 +205,13 @@
                         #  Visit after getting an e-appointment.
                         <br>
                         <br>
-                        #  Wearing of Mask is mandatory.
+                        #  Wearing of mask is mandatory.
                         <br>
                         <br>
-                        #  Follow Social distancing and COVID-19 instructions.
+                        #  Follow social distancing and COVID-19 instructions.
                         <br>
                         <br>
-                        # Payment through ATM/credit/debit Cards only
+                        # Payment through ATM/credit/debit cards only
                         <br>
                         <br>
                         # Entry after showing e-appointment and CSD Card at the gate.
@@ -249,9 +249,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Contact no.</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Mobile number</label>
                         <div class="col-sm-10">
-                            <input type="number" id='contact_number' class="form-control" name="contact" placeholder="Contact" required>
+                            <input type="number" id='contact_number' class="form-control" name="contact" placeholder="Mobile number" required>
                             <div class="invalid-feedback">
                                 The number must be exactly 10 digits in length.
                             </div>
@@ -345,9 +345,7 @@
                     <button type="submit" id='submit' class="btn btn-success mb-2 w-100" disabled>Make Booking</button>
                 </form>
                 <hr>
-                <div class="alert alert-info" role="alert">
-                    <a href="acknowledgement.php"><button type="button" class="btn btn-info w-100">Developer Acknowledgement</button></a>
-                </div>
+
                 <hr>
             </div>
             <div class="col-sm-1 "></div>

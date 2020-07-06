@@ -22,7 +22,53 @@
 <div class="container">
     <div class="row text-center">
         <!-- Team item -->
-        <div class="col-xl-3 col-sm-6 mb-5">
+        <div class="col-xl-4">
+            <div class="bg-white rounded shadow-sm py-4 px-4"><img src="public/major.jpeg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Maj KS Thakur(retd)</h5><span class="small text-uppercase text-muted">Manager</span>
+                <br>
+                <span class="small text-uppercase text-muted">ESM CSD Mandi<br> </span>
+
+                <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item"><a href="" class="social-link"><i class="fa fa-suitcase"></i></a></li>
+                </ul>
+            </div>
+        </div><!-- End -->
+
+        <!-- Team item -->
+        <div class="col-xl-4 ">
+            <div class="bg-white rounded shadow-sm py-4 px-4"><img src="public/dipanshu.png" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Dipanshu</h5><span class="small text-uppercase text-muted">Application Developer</span>
+                <br>
+                <span class="small text-uppercase text-muted">BTech IIT Mandi <br> </span>
+                <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/dipanshu-verma-955068183/" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div><!-- End -->
+
+        <!-- Team item -->
+        <div class="col-xl-4">
+            <div class="bg-white rounded shadow-sm py-4 px-4"><img src="public/ayushman.jpg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Ayushman</h5><span class="small text-uppercase text-muted">Application Developer</span>
+                <br>
+                <span class="small text-uppercase text-muted">BTech IIT Mandi <br></span>
+                <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/ayushman-dixit-4812b9171/" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div><!-- End -->
+
+        <!-- Team item -->
+        <div class="col-xl-4">
+            <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/shruti.png" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Shruti Kaushik</h5><span class="small text-uppercase text-muted">Guidance</span><br>
+                <span class="small text-uppercase text-muted">PhD <br> IIT Mandi</span>
+                <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/shruti-kaushik-799977b8/" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div><!-- End -->
+        <div class="col-xl-4">
             <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/varun.jpeg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                 <h5 class="mb-0">Varun Dutt</h5><span class="small text-uppercase text-muted">Mentor</span>
                 <br>
@@ -32,43 +78,7 @@
                     <li class="list-inline-item"><a href="http://faculty.iitmandi.ac.in/~varun/" class="social-link"><i class="fa fa-suitcase"></i></a></li>
                 </ul>
             </div>
-        </div><!-- End -->
-
-        <!-- Team item -->
-        <div class="col-xl-3 col-sm-6 mb-5">
-            <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/dipanshu.png" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                <h5 class="mb-0">Dipanshu</h5><span class="small text-uppercase text-muted">Application Developer</span>
-                <br>
-                <span class="small text-uppercase text-muted">Sophomore BTech <br> IIT Mandi</span>
-                <ul class="social mb-0 list-inline mt-3">
-                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/dipanshu-verma-955068183/" class="social-link"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-            </div>
-        </div><!-- End -->
-
-        <!-- Team item -->
-        <div class="col-xl-3 col-sm-6 mb-5">
-            <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/ayushman.jpg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                <h5 class="mb-0">Ayushman</h5><span class="small text-uppercase text-muted">Application Developer</span>
-                <br>
-                <span class="small text-uppercase text-muted">Sophomore BTech <br> IIT Mandi</span>
-                <ul class="social mb-0 list-inline mt-3">
-                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/ayushman-dixit-4812b9171/" class="social-link"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-            </div>
-        </div><!-- End -->
-
-        <!-- Team item -->
-        <div class="col-xl-3 col-sm-6 mb-5">
-            <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/shruti.png" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                <h5 class="mb-0">Shruti Kaushik</h5><span class="small text-uppercase text-muted">Guidance</span><br>
-                <span class="small text-uppercase text-muted">PHD <br> IIT Mandi</span>
-                <ul class="social mb-0 list-inline mt-3">
-                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/shruti-kaushik-799977b8/" class="social-link"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-            </div>
-        </div><!-- End -->
-
+        </div>
 
     </div>
 
