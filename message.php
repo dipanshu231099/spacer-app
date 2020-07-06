@@ -23,7 +23,7 @@
           <h1 style="text-align: center;">ACSA</h1>
           <h4 style="text-align: center;">Army Canteen Scheduler App</h4>
           <hr>
-          <div class="alert <?php echo ($_SESSION['good_liquor']?"alert-success":"alert-danger") ?>" style="<?php echo ($_SESSION['liquor']==false && $_SESSION['liquor_fail']=false)?"display:none":" " ?>" role="alert">
+          <div class="alert <?php echo ($_SESSION['good_liquor']?"alert-success":"alert-danger") ?>" style="<?php echo ($_SESSION['liquor']==false && $_SESSION['liquor_fail']==false)?"display:none":" " ?>" role="alert">
               <p>
                   <?php
                     if($_SESSION['good_liquor'])echo "Your request for Liquor has been successfully approved.";
