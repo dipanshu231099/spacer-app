@@ -14,10 +14,9 @@
 	date_default_timezone_set("Asia/Kolkata");
 
 
-	function populate($year,$conn){
+	function populate($year,$conn,$table_name){
 		$a = (string)$year;
 		$b = (string)($year+1);
-		$table_name = "calendar_".$a."_".$b;
 
 		$q = "drop table if exists $table_name";
 		$results = $conn->query($q);
@@ -75,7 +74,8 @@
 	else {
 		echo "Reforming present year's table data. Please wait.";
 		$present_year = date("Y",strtotime("today"));
-		populate($present_year,$conn);
+		populate($present_year,$conn,"calendarGroceries");
+		populate($present_year,$conn,"calendarLiquor");
 		$_SESSION['message']= "New Calendar has been created. ";
 		$_SESSION['good']=true;
 		header("Location: admin_message.php");

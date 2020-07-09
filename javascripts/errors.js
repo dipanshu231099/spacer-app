@@ -1,6 +1,7 @@
 console.log('connected')
 var user_name = document.getElementById('user_name')
-// var email = document.getElementById('user_email')
+var dropdown_groceries = document.getElementById('dropdown_groceries')
+var dropdown_liquor = document.getElementById('dropdown_liquor')
 var contact = document.getElementById('contact_number')
 var button = document.getElementById('submit')
 var grocery = document.getElementById('groceries')
@@ -15,18 +16,18 @@ user_name.addEventListener('click', logKey_name);
 contact.addEventListener('keyup', logKey_number);
 contact.addEventListener('click', logKey_number);
 
-// email.addEventListener('keyup', logKey_email);
-// email.addEventListener('click', logKey_email);
 
 document.addEventListener('keyup', logKey_submit);
 document.addEventListener('click', logKey_submit);
 
-// liquor_card.addEventListener('keyup',lcard);
-// grocery_card.addEventListener('keyup',gcard);
 card_name.addEventListener('keyup',logKey_card_name);
-// liquor_card.addEventListener('click',lcard);
-// grocery_card.addEventListener('click',gcard);
 card_name.addEventListener('click',logKey_card_name);
+
+grocery.addEventListener('keyup',logKey_dropdown_groceries);
+grocery.addEventListener('click',logKey_dropdown_groceries);
+
+liquor.addEventListener('keyup',logKey_dropdown_liquor);
+liquor.addEventListener('click',logKey_dropdown_liquor);
 
 
 
@@ -122,3 +123,26 @@ function logKey_submit(e){
         button.disabled=true;
     }
 }
+
+function logKey_dropdown_groceries(e){
+    if(grocery.checked){
+        dropdown_groceries.disabled=false;
+        grocery_card.disabled=false;
+    }
+    else{
+        dropdown_groceries.disabled=true;
+        grocery_card.disabled=true;
+    }
+}
+
+function logKey_dropdown_liquor(e){
+    if(liquor.checked){
+        dropdown_liquor.disabled=false;
+        liquor_card.disabled=false;
+    }
+    else {
+        liquor_card.disabled=true;
+        dropdown_liquor.disabled=true;
+    }
+}
+

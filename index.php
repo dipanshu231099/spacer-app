@@ -259,26 +259,6 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Card no.</label>
-                        <div class="col-sm-5">
-
-                            <label for="grocery_card" class="col-sm-2 col-form-label">Grocery</label>
-                            <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="Grocery card number. This will be used to verify you." required>
-                            <div class="invalid-feedback">
-                                Must be 17 characters long
-                            </div>
-                        </div>
-                        <div class="col-sm-5">
-
-                            <label for="liquor_card" class="col-sm-2 col-form-label">Liquor</label>
-                            <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="Liquor card number. This will be used to verify you." required>
-                            <div class="invalid-feedback">
-                                Must be 17 characters long
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Name as on card</label>
                         <div class="col-sm-10">
 
@@ -291,56 +271,113 @@
                     </div>
 
                     <hr>
-                    <h4>What items you wish to buy?</h4>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="groceries" id='groceries'>
-                        <label class="form-check-label" for="groceries">Groceries</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="liquor" id='liquor'>
-                        <label class="form-check-label" for="liquor">Liquor</label>
-                    </div>
-                    <hr>
-                    <div class="form-group">
-                        <h4>Select a time preferable to you.</h4>
-                        <label for="visit_time">List of time windows available</label>
-                        <select class="form-control" id="visit_time" name="timestamp">
-                        <?php
-                            date_default_timezone_set("Asia/Kolkata");
-                            $present_time = strtotime('next hour');
-                            $presnt_minute = (int)date("i",$present_time);
-                            $present_time = strtotime("-$presnt_minute minutes",$present_time);
-                            $new_tp = $present_time;
+                    <h4 class='text-center'>What items you wish to buy?</h4>
+                    <div class="row">
+                        <div class="col" style='border-right:solid 1px black'>
+                            <div class="form-check text-center">
+                                <input type="checkbox" class="form-check-input" name="groceries" id='groceries'>
+                                <label class="form-check-label" for="groceries">Groceries</label>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                            <label for="visit_time">List of time windows available for groceries</label>
+                            <select class="form-control" id="dropdown_groceries" name="timestamp_groceries" disabled>
+                            <?php
+                                date_default_timezone_set("Asia/Kolkata");
+                                $present_time = strtotime('next hour');
+                                $presnt_minute = (int)date("i",$present_time);
+                                $present_time = strtotime("-$presnt_minute minutes",$present_time);
+                                $new_tp = $present_time;
 
 
-                            $slots = 20;
-                            while($slots>0){
-                                $new_timestamp = date("h:ia M d Y",$new_tp);
-                                $current_year = date("Y",strtotime('today'));
-                                $date = date("M d Y",$new_tp);
-                                $table_name = "calendar_".$current_year."_".($current_year+1);
-                                $sql = "SELECT * FROM $table_name WHERE date='".$date."';";
-                                $result = ($conn->query($sql))->fetch_assoc();
-                                $max_limit = $result['max_limit'];
-                                $total_counters = $result['counters'];
+                                $slots = 20;
+                                while($slots>0){
+                                    $new_timestamp = date("h:ia M d Y",$new_tp);
+                                    $current_year = date("Y",strtotime('today'));
+                                    $date = date("M d Y",$new_tp);
+                                    $table= "calendarGroceries";
+                                    $sql = "SELECT * FROM $table WHERE date='".$date."';";
+                                    $result = ($conn->query($sql))->fetch_assoc();
+                                    $max_limit = $result['max_limit'];
+                                    $total_counters = $result['counters'];
 
-                                while(isHoliday($new_tp,$conn)){
-                                    $new_tp = strtotime('+24 hours',$new_tp);
-                                }
-
-                                if(isWorkingHour($new_tp,$conn)){
-                                    $sql = "SELECT COUNT(*) as cnt from allotment where start_time='".$new_timestamp."';";
-                                    $results = (($conn->query($sql))->fetch_assoc())['cnt'];
-                                    if($results<$max_limit*$total_counters){
-                                        echo "<option>". $new_timestamp ."</option>";
-                                        $slots--;
+                                    while(isHoliday($new_tp,$conn)){
+                                        $new_tp = strtotime('+24 hours',$new_tp);
                                     }
+
+                                    if(isWorkingHour($new_tp,$conn)){
+                                        $sql = "SELECT COUNT(*) as cnt from allotment where start_time='".$new_timestamp."';";
+                                        $results = (($conn->query($sql))->fetch_assoc())['cnt'];
+                                        if($results<$max_limit*$total_counters){
+                                            echo "<option>". $new_timestamp ."</option>";
+                                            $slots--;
+                                        }
+                                    }
+                                    $new_tp = strtotime("+30 minutes",$new_tp);
                                 }
-                                $new_tp = strtotime("+30 minutes",$new_tp);
-                            }
-                        ?> 
-                        </select>
+                            ?> 
+                            </select>
+                            </div>
+                            <label for="grocery_card" class="col-sm-2 col-form-label">Grocery</label>
+                            <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="Grocery card number. This will be used to verify you." disabled required>
+                            <div class="invalid-feedback">
+                                Must be 17 characters long
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check text-center">
+                                <input type="checkbox" class="form-check-input" name="liquor" id='liquor'>
+                                <label class="form-check-label" for="liquor">Liquor</label>
+                            </div>
+                            <div class="form-group">
+                            <br>
+                            <label for="visit_time">List of time windows available for liquor</label>
+                            <select class="form-control" id="dropdown_liquor" name="timestamp_liquor" disabled>
+                            <?php
+                                date_default_timezone_set("Asia/Kolkata");
+                                $present_time = strtotime('next hour');
+                                $presnt_minute = (int)date("i",$present_time);
+                                $present_time = strtotime("-$presnt_minute minutes",$present_time);
+                                $new_tp = $present_time;
+
+                                $slots = 20;
+                                while($slots>0){
+                                    $new_timestamp = date("h:ia M d Y",$new_tp);
+                                    $current_year = date("Y",strtotime('today'));
+                                    $date = date("M d Y",$new_tp);
+                                    $table = "calendarLiquor";
+                                    $sql = "SELECT * FROM $table WHERE date='".$date."';";
+                                    $result = ($conn->query($sql))->fetch_assoc();
+                                    $max_limit = $result['max_limit'];
+                                    $total_counters = $result['counters'];
+                                    while(isHoliday($new_tp,$conn)){
+                                        $new_tp = strtotime('+24 hours',$new_tp);
+                                    }
+                                    if(isWorkingHour($new_tp,$conn)){
+                                        $sql = "SELECT COUNT(*) as cnt from allotment where start_time='".$new_timestamp."';";
+                                        $results = (($conn->query($sql))->fetch_assoc())['cnt'];
+                                        if($results<$max_limit*$total_counters){
+                                            echo "<option>". $new_timestamp ."</option>";
+                                            $slots--;
+                                        }
+                                    }
+                                    $new_tp = strtotime("+30 minutes",$new_tp);
+                                }
+                            ?> 
+                            </select>
+                            </div>
+                            <label for="liquor_card" class="col-sm-2 col-form-label">Liquor</label>
+                            <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="Liquor card number. This will be used to verify you." disabled required>
+                            <div class="invalid-feedback">
+                                Must be 17 characters long
+                            </div>
+                        </div>
                     </div>
+                    
+                    
+                    <hr>
+                    
+                    
                     <hr>
                     <button type="submit" id='submit' class="btn btn-success mb-2 w-100" disabled>Make Booking</button>
                 </form>
