@@ -1,8 +1,8 @@
 <?php
     session_start();
-    if(!isset($_SESSION['message'])){
+    if($_SESSION['liquor']==false && $_SESSION['groceries']==false){
       header("Location: index.php");
-      exit;
+      exit();
     }
 ?>
 <!DOCTYPE html>
@@ -23,26 +23,17 @@
           <h1 style="text-align: center;">ACSA</h1>
           <h4 style="text-align: center;">Army Canteen Scheduler App</h4>
           <hr>
-          <div class="alert <?php echo ($_SESSION['good_liquor']?"alert-success":"alert-danger") ?>" style="<?php echo ($_SESSION['liquor']==false && $_SESSION['liquor_fail']==false)?"display:none":" " ?>" role="alert">
+          <div class="alert <?php echo ((!$_SESSION['liquor_fail'])?"alert-success":"alert-danger") ?>" style="<?php echo ($_SESSION['liquor']==false)?"display:none":" " ?>" role="alert">
               <p>
                   <?php
-                    if($_SESSION['good_liquor'])echo "Your request for Liquor has been successfully approved.";
-                    else echo "Oops! Your request for Liquor has been rejected. Another request for buying Liquor must be 10 days later than your booking date.";
+                    echo $_SESSION['message_liquor'];
                   ?>
               </p>
           </div>
-          <div class="alert <?php echo ($_SESSION['good_groceries']?"alert-success":"alert-danger") ?>" style="<?php echo (($_SESSION['groceries']==false && $_SESSION['groceries_fail']==false)?"display:none":" ") ?>" role="alert">
+          <div class="alert <?php echo ((!$_SESSION['groceries_fail'])?"alert-success":"alert-danger") ?>" style="<?php echo (($_SESSION['groceries']==false)?"display:none":" ") ?>" role="alert">
               <p>
                   <?php
-                    if($_SESSION['good_groceries'])echo "Your request for Groceries has been successfully approved.";
-                    else echo "Oops! Your request for Groceries has been rejected. Another request for buying Groceries must be 10 days later than your booking date.";
-                  ?>
-              </p>
-          </div>
-          <div class="alert <?php echo ($_SESSION['good']?"alert-success":"alert-danger") ?>" role="alert">
-              <p>
-                  <?php
-                    echo $_SESSION['message'];
+                    echo $_SESSION['message_groceries'];
                   ?>
               </p>
           </div>
