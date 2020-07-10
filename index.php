@@ -27,7 +27,7 @@
     }
     
     function isWorkingHour($tp,$conn,$type){
-        $timestring =date("Hi",$tp);
+        $timestring = date("Hi",$tp);
         $date = date("M d Y",$tp);
         $current_year = date("Y",strtotime("today"));
         $table_name = "calendar".$type;
@@ -66,11 +66,11 @@
 
         $contact = test_input($_POST["contact"]);
 
-        $timestamp_groceries = $_POST["timestamp_groceries"];
-        $timestamp_liquor= $_POST["timestamp_liquor"];
+        //$timestamp_groceries = $_POST["timestamp_groceries"];
+        //$timestamp_liquor= $_POST["timestamp_liquor"];
         
-        $endTime_groceries = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_groceries"])));
-        $endTime_liquor = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_liquor"])));
+        //$endTime_groceries = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_groceries"])));
+        //$endTime_liquor = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_liquor"])));
 
         $_SESSION['liquor']=$_SESSION['groceries']=false;
         $_SESSION['message_groceries']=$_SESSION['message_liquor']=NULL;
@@ -78,12 +78,14 @@
         if(isset($_POST['liquor']))
         {
             $_SESSION['liquor']=true;
+            $timestamp_liquor= $_POST["timestamp_liquor"];
+            $endTime_liquor = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_liquor"])));
 
             $liquor_card = test_input($_POST['liquor_card']);
 
             $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp_liquor)));
 
-            $query_for_liq = "SELECT * from bookingsLiquor WHERE card_id='".$card_id."' ORDER BY st_sec desc limit 1;";
+            $query_for_liq = "SELECT * from bookingsLiquor WHERE card_id='".$liquor_card."' ORDER BY st_sec desc limit 1;";
 
             $last_booking_liq = $conn->query($query_for_liq);
 
@@ -108,7 +110,7 @@
             $current_year = date("Y",strtotime('today'));
             $date = date("M d Y",strtotime($_POST["timestamp_liquor"]));
 
-            $table_name = "calendarLiquor";
+            $table_name = "calendarliquor";
 
             // to fetch from caendar of groceries
             $sql = "SELECT * FROM $table_name WHERE date='".$date."';";
@@ -119,17 +121,22 @@
             $total_counters = $result['counters'];
 
             //queries to select from table for groceries
+            $table_name = "bookingsliquor";
             $query_count = "SELECT COUNT(*) as cnt from $table_name where start_time='".$timestamp_liquor."';";
             $query_token = "SELECT COUNT(*) as cnt from $table_name where start_time like '%".$date."';";
             
             // tells number of people already present with the exact timestamp (slot+date)
-            $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
+            $count_timestamp = $conn->query($query_count);
+            if(!$count_timestamp){
+                die($query_count);
+            }
+            $count_timestamp = ($count_timestamp->fetch_assoc()['cnt']);
             
             // tells number of people already present on that day(only date)
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
 
             $token = $count_token+1;
-            $counter = ($count_timestamp/$max_limit) + 1;//extra +1 for liquor counter
+            $counter = (int)($count_timestamp/$max_limit) + 1;//extra +1 for liquor counter
             if($counter>$total_counters){
                 die("sorry the spots just got filled");
             }
@@ -153,6 +160,8 @@
             $_SESSION['groceries']=true;
 
             $grocery_card = test_input($_POST['grocery_card']);
+            $timestamp_groceries = $_POST["timestamp_groceries"];
+            $endTime_groceries = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_groceries"])));
 
             $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp_groceries)));
 
@@ -203,8 +212,8 @@
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
 
             $token = $count_token+1;
-            $counter = ($count_timestamp/$max_limit) + 1 + $liquor_counters;//extra +1 for liquor counter
-            if($counter>3){
+            $counter = (int)(($count_timestamp/$max_limit)) + 1 + $liquor_counters;//extra +1 for liquor counter
+            if($counter>$total_counters){
                 die("sorry the spots just got filled");
             }
 

@@ -28,11 +28,19 @@
         $counters = $_POST["counters"];
         $status = $_POST["status"];
         $limit = $_POST["limit"];
+        $shop = $_POST["shop"];
         $limit = (int)$limit;
 
         $t1 = (string)$year;
         $t2 = (string)($year+1);
-        $table_name = "calendar_".$t1."_".$t2;
+        //$table_name = "calendar_".$t1."_".$t2;
+        $table_name = "";
+        if($shop=="Groceries"){
+            $table_name = "calendargroceries";
+        }
+        else{
+            $table_name = "calendarliquor";
+        }
         $query = "UPDATE $table_name SET status='".$status."', max_limit='".$limit."' , counters='".$counters."' WHERE date= '".$newformat."'";
         $results = $conn->query($query);
         if(!$results){
@@ -120,6 +128,16 @@
                                     </select>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Which Shop</label>
+                                    <div class="col-sm-10">
+                                    <select class="form-control" id="shop" name="shop" required>
+                                        <option>Groceries</option>
+                                        <option>Liquor</option>
+                                        
+                                    </select>
+                                    </div>
+                                </div>
                                 <br>
                                 <button type="submit" class="btn btn-outline-success w-100">Submit changes</button>
                             </div>
@@ -138,8 +156,17 @@
                             <div class="col">
                                 <label>Enter the date of which report is generated:</label>
                                 <input class="form-control"  type="date" id="date" name="report_date" value="" required><br>
+                                <label>Enter shop type</label>
+                                <select class="form-control" id="shop" name="shop" required>
+                                        <option>Groceries</option>
+                                        <option>Liquor</option>
+                                        
+                                </select><br>
                                 <button type="submit" class="btn btn-outline-success w-100">Generate Report</button>
                             </div>
+                        
+
+
                         </div>
                     </form>
                     <form>
