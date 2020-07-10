@@ -78,79 +78,78 @@
         if(isset($_POST['liquor']))
         {
             $_SESSION['liquor']=true;
-            $timestamp_liquor= $_POST["timestamp_liquor"];
-            $endTime_liquor = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_liquor"])));
 
             $liquor_card = test_input($_POST['liquor_card']);
+            $timestamp_liquor = $_POST["timestamp_liquor"];
+            $endTime_liquor = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_liquor"])));
 
             $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp_liquor)));
 
-            $query_for_liq = "SELECT * from bookingsLiquor WHERE card_id='".$liquor_card."' ORDER BY st_sec desc limit 1;";
+            $query_for_liquor = "SELECT * from bookingsLiquor WHERE card_id='$liquor_card' ORDER BY st_sec desc limit 1;";
 
-            $last_booking_liq = $conn->query($query_for_liq);
+            $last_booking_liquor = $conn->query($query_for_liquor);
 
-            if(!$last_booking_liq){
+            if(!$last_booking_liquor){
                 die("failed liquor booking");
             }
 
-            $last_booking_liq = $last_booking_liq->fetch_assoc();
+            $last_booking_liquor = $last_booking_liquor->fetch_assoc();
 
-            $last_date_Liquor = $last_booking_liq["st_sec"];
+            $last_date_liquor = $last_booking_liquor["st_sec"];
 
-            $difference_Liquor = ($date_of_booking-$last_date_Liquor)/86400;
+            $difference_liquor = ($date_of_booking-$last_date_liquor)/86400;
 
-            $difference_Liquor = abs((int)$difference_Liquor);
+            $difference_liquor = abs((int)$difference_liquor);
 
-            $_SESSION['grocery_fail']=false;
+            $_SESSION['liquor_fail']=false;
 
-            if($difference_Liquor<=10){
+            if($difference_liquor<=10){
                 $_SESSION["liquor_fail"] = true;
             }
 
             $current_year = date("Y",strtotime('today'));
             $date = date("M d Y",strtotime($_POST["timestamp_liquor"]));
 
-            $table_name = "calendarliquor";
+            $cal_table_name = "calendarLiquor";
 
-            // to fetch from caendar of groceries
-            $sql = "SELECT * FROM $table_name WHERE date='".$date."';";
+            // to fetch from caendar of liquor
+            $sql = "SELECT * FROM $cal_table_name WHERE date='".$date."';";
 
             // catching the results
             $result = ($conn->query($sql))->fetch_assoc();
             $max_limit = $result['max_limit'];
             $total_counters = $result['counters'];
 
-            //queries to select from table for groceries
-            $table_name = "bookingsliquor";
-            $query_count = "SELECT COUNT(*) as cnt from $table_name where start_time='".$timestamp_liquor."';";
-            $query_token = "SELECT COUNT(*) as cnt from $table_name where start_time like '%".$date."';";
+            //queries to select from table for liquor
+            $query_count = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time='".$timestamp_liquor."';";
+            $query_token = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time like '%".$date."';";
             
             // tells number of people already present with the exact timestamp (slot+date)
-            $count_timestamp = $conn->query($query_count);
-            if(!$count_timestamp){
-                die($query_count);
-            }
-            $count_timestamp = ($count_timestamp->fetch_assoc()['cnt']);
+            $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
             
             // tells number of people already present on that day(only date)
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
 
             $token = $count_token+1;
-            $counter = (int)($count_timestamp/$max_limit) + 1;//extra +1 for liquor counter
-            if($counter>$total_counters){
+            $counter = (int)(($count_timestamp/$max_limit)) + 1 + $liquor_counters;//extra liquor counters for liquor counter
+            if($counter>$total_counters+$liquor_counters){
                 die("sorry the spots just got filled");
             }
 
             if(!$_SESSION['liquor_fail']){
-                $insert_sql = "INSERT INTO $table_name VALUES ('$liquor_card', '$name', '$timestamp_liquor', '$contact', '$counter', '$rank', '$card_name', $token, $date_of_booking);";
+                $insert_sql = "INSERT INTO bookingsLiquor VALUES ('$liquor_card', '$name', '$timestamp_liquor', '$contact', '$counter', '$rank', '$card_name', $token, $date_of_booking);";
                 $result = $conn->query($insert_sql);
                 if(!$result){
-                    die("insertion for liquor failed");
+                    die("Error processing the request.");
                 }
-                $_SESSION['message_liquor']="blah blah blah";
+                $_SESSION['message_liquor']="Your request to buy Liquor was successful.<br><br>
+                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_liquor)) ." and ". date('H:ia',strtotime($endTime_liquor))." on ".date('M d Y',strtotime($timestamp_liquor))."<br> at counter number: $counter <br>Your token number: $token. <br>
+                Liquor Card number: $liquor_card <br>
+                Kindly collect your items within this time frame. <br>
+                Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
             else {
-                $_SESSION['message_liquor']="bul bul bul";
+                $_SESSION['message_liquor']="You must wait for at least 10 days, before making a request to buy Liquor. <br>Last booking was made on". date('M d Y',$last_date_liquor);
             }
         }
 
@@ -223,10 +222,14 @@
                 if(!$result){
                     die("Error processing the request.");
                 }
-                $_SESSION['message_groceries']="blah blah blah";
+                $_SESSION['message_groceries']="Your request to buy Groceries was successful.<br><br>
+                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_groceries)) ." and ". date('H:ia',strtotime($endTime_groceries))." on ".date('M d Y',strtotime($timestamp_groceries))."<br> at counter number: $counter <br>Your token number: $token. <br>
+                Liquor Card number: $grocery_card <br>
+                Kindly collect your items within this time frame. <br>
+                Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
             else {
-                $_SESSION['message_groceries']="bul bul bul";
+                $_SESSION['message_groceries']="You must wait for at least 10 days, before making a request to buy Groceries. <br>Last booking was made on ". date('M d Y',$last_date_Groceries);
             }
         }
         header("Location: message.php");

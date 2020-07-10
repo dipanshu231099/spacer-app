@@ -27,7 +27,10 @@
 
 		$flag=1;
     	$first=mktime(0, 0, 0, 1, 1, $year);
-    	$temp = $first;
+		$temp = $first;
+		
+		$max_counters=($table_name=="calendarGroceries")?2:1;
+		$max_limit=($table_name=="calendarGroceries")?4:12;
     	while($flag==1){
 	    	if(date("Y",$temp)==(string)$year+2){
 	    		$flag=0;
@@ -42,7 +45,7 @@
 	    		$endM = 0;
 	    		$status = "half";
 	    		$query1 = "INSERT INTO $table_name (date , day , status,startH,startM,endH,endM,max_limit,counters) VALUEs('".$date."',
-	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',4,3)";
+	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',$max_limit,$max_counters)";
 	    		$results1 = $conn->query($query1);
 	    	}
 	    	elseif ($day=="Sunday") {
@@ -58,7 +61,7 @@
 	    		$status = "full";
 	    		
 	    		$query3 = "INSERT INTO $table_name (date , day , status,startH,startM,endH,endM,max_limit,counters) VALUEs('".$date."',
-	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',4,3)";
+	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',$max_limit,$max_counters)";
 	    		$results3 = $conn->query($query3);
 	    	}
 	    	$temp = strtotime('+24 hours',$temp);
