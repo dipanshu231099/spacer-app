@@ -26,10 +26,10 @@
         //$today = date("M d Y",strtotime('now'));
         $table_name = "";
         if($shop=="Groceries"){
-            $table_name = "bookingsgroceries";
+            $table_name = "bookingsGroceries";
         }
         else{
-            $table_name = "bookingsliquor";
+            $table_name = "bookingsLiquor";
         }
         $sql = "SELECT * FROM $table_name WHERE start_time like '%".$date."';";
         // echo $sql;
