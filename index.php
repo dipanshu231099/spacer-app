@@ -198,7 +198,11 @@
             $result = ($conn->query($sql))->fetch_assoc();
             $max_limit = $result['max_limit'];
             $total_counters = $result['counters'];
-            $liquor_counters=1;
+            
+            //query to get  number of liqour counters
+            $qqq = "SELECT * FROM calendarLiquor WHERE date='".$date."';";
+            $qqq_result = ($conn->query($sql))->fetch_assoc();
+            $liquor_counters= $qqq_result['counters'];
 
             //queries to select from table for groceries
             $query_count = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$timestamp_groceries."';";
@@ -212,7 +216,7 @@
 
             $token = $count_token+1;
             $counter = (int)(($count_timestamp/$max_limit)) + 1 + $liquor_counters;//extra +1 for liquor counter
-            if($counter>$total_counters){
+            if($counter - $liquor_counters >$total_counters){
                 die("sorry the spots just got filled");
             }
 
