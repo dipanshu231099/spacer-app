@@ -224,7 +224,7 @@
                 }
                 $_SESSION['message_groceries']="Your request to buy Groceries was successful.<br><br>
                 Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_groceries)) ." and ". date('H:ia',strtotime($endTime_groceries))." on ".date('M d Y',strtotime($timestamp_groceries))."<br> at counter number: $counter <br>Your token number: $token. <br>
-                Liquor Card number: $grocery_card <br>
+                Grocery Card number: $grocery_card <br>
                 Kindly collect your items within this time frame. <br>
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
