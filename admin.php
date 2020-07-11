@@ -36,10 +36,10 @@
         //$table_name = "calendar_".$t1."_".$t2;
         $table_name = "";
         if($shop=="Groceries"){
-            $table_name = "calendargroceries";
+            $table_name = "calendarGroceries";
         }
         else{
-            $table_name = "calendarliquor";
+            $table_name = "calendarLiquor";
         }
         $query = "UPDATE $table_name SET status='".$status."', max_limit='".$limit."' , counters='".$counters."' WHERE date= '".$newformat."'";
         $results = $conn->query($query);
