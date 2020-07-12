@@ -149,7 +149,7 @@
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
             else {
-                $_SESSION['message_liquor']="You must wait for at least 10 days, before making a request to buy Liquor. <br>Last booking was made on". date('M d Y',$last_date_liquor);
+                $_SESSION['message_liquor']="You must wait for at least 10 days, before making a request to buy Liquor. <br>Last booking was made on ". date('M d Y',$last_date_liquor);
             }
         }
 
