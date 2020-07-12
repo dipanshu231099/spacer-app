@@ -86,14 +86,15 @@
                                     The mentioned terms bring about following changes:
                                     <ul>
                                     <li><strong>Date:</strong> The date for which the values are to be altered.</li>
-                                    <li><strong>Number of counters:</strong> number of counters available on a day. By default everyday the number of counters are assumed to be 3.</li>
-                                    <li><strong>Limit per counter:</strong> The maximum number of customers allowed during one time slot. By default it is 4 customers for every 30 minutes.</li>
+                                    <li><strong>Number of counters:</strong> number of counters available on a day. By default everyday the number of counters are assumed to be 3(1 for liquor and 2 for groceries).</li>
+                                    <li><strong>Limit per counter:</strong> The maximum number of customers allowed during one time slot. By default it is 12 for liquor and 4 for grocery customers for every 30 minutes.</li>
                                     <li><strong>Status:</strong> It refers to whether the shop is open for 
                                         <ul>
                                             <li>full day (9:30am to 3:30pm with lunch time) </li>
                                             <li>or, half day (9:30am to 1:00pm) </li>
                                             <li>or, close (shop will not open at all) </li>
                                             <li>By default sundays are closed and saturdays are half days rest are full working days.</li>
+                                            <li>Canteen will remain closed on last two days of a month.</li>
                                         </ul>
                                     </li>
                                     </ul>
@@ -129,7 +130,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Which Shop</label>
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Which counter</label>
                                     <div class="col-sm-10">
                                     <select class="form-control" id="shop" name="shop" required>
                                         <option>Groceries</option>
@@ -156,7 +157,7 @@
                             <div class="col">
                                 <label>Enter the date of which report is generated:</label>
                                 <input class="form-control"  type="date" id="date" name="report_date" value="" required><br>
-                                <label>Enter shop type</label>
+                                <label>Enter counter type</label>
                                 <select class="form-control" id="shop" name="shop" required>
                                         <option>Groceries</option>
                                         <option>Liquor</option>

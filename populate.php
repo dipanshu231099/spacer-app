@@ -12,7 +12,19 @@
 	
 
 	date_default_timezone_set("Asia/Kolkata");
-
+	
+	function is_last_two_day($date){
+		$raw_date = strtotime($date);
+		$present_month = date("M" , strtotime($date));
+		$next_day_month = date("M" , strtotime("+24 hours" , $raw_date));
+		$next_to_next_day_month = date("M" , strtotime("+48 hours" , $raw_date));
+		
+		if($next_to_next_day_month!=$present_month){
+			return true;
+			}
+		return false;
+		
+	}
 
 	function populate($year,$conn,$table_name){
 		$a = (string)$year;
@@ -37,8 +49,13 @@
 	    		continue;
 	    	}
 	    	$day = date("l",$temp);
-	    	$date = date("M d Y",$temp);
-	    	if($day=="Saturday"){
+			$date = date("M d Y",$temp);
+			if ($day=="Sunday" || is_last_two_day($date)) {
+	    		$status = "close";
+	    		$query2 = "INSERT INTO $table_name (date , day , status) VALUEs('".$date."','".$day."','".$status."')";
+	    		$results2 = $conn->query($query2);
+	    	}
+	    	elseif($day=="Saturday"){
 	    		$startH = 9;
 	    		$startM = 30;
 	    		$endH = 13;
@@ -48,11 +65,7 @@
 	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',$max_limit,$max_counters)";
 	    		$results1 = $conn->query($query1);
 	    	}
-	    	elseif ($day=="Sunday") {
-	    		$status = "close";
-	    		$query2 = "INSERT INTO $table_name (date , day , status) VALUEs('".$date."','".$day."','".$status."')";
-	    		$results2 = $conn->query($query2);
-	    	}
+	    	
 	    	else{
 	    		$startH = 9;
 	    		$startM = 30;

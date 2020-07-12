@@ -101,7 +101,7 @@
 
             $difference_liquor = abs((int)$difference_liquor);
 
-            $_SESSION['liquor_fail']=false;
+            $_SESSION['liquor_fail'] = false;
 
             if($difference_liquor<=10){
                 $_SESSION["liquor_fail"] = true;
