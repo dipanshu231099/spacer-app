@@ -192,7 +192,7 @@
             $cal_table_name = "calendarGroceries";
 
             // to fetch from caendar of groceries
-            $sql = "SELECT * FROM $cal_table_name WHERE date='".$date."';";
+            $sql = "SELECT * FROM $cal_table_name WHERE date='$date';";
 
             // catching the results
             $result = ($conn->query($sql))->fetch_assoc();
@@ -200,8 +200,8 @@
             $total_counters = $result['counters'];
             
             //query to get  number of liqour counters
-            $qqq = "SELECT * FROM calendarLiquor WHERE date='".$date."';";
-            $qqq_result = ($conn->query($sql))->fetch_assoc();
+            $qqq = "SELECT counters FROM calendarLiquor WHERE date='$date';";
+            $qqq_result = ($conn->query($qqq))->fetch_assoc();
             $liquor_counters= $qqq_result['counters'];
 
             //queries to select from table for groceries
