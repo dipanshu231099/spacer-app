@@ -131,8 +131,8 @@
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
 
             $token = $count_token+1;
-            $counter = (int)(($count_timestamp/$max_limit)) + 1 + $liquor_counters;//extra liquor counters for liquor counter
-            if($counter>$total_counters+$liquor_counters){
+            $counter = (int)(($count_timestamp/$max_limit)) + 1;//extra liquor counters for liquor counter
+            if($counter>$total_counters){
                 die("sorry the spots just got filled");
             }
 
