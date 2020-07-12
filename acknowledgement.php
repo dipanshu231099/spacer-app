@@ -24,7 +24,7 @@
         <!-- Team item -->
         <div class="col-xl-4 col-sm-6 mb-5">
             <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/major_new.jpg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                <h5 class="mb-0">Maj KS Thakur(retd)</h5><span class="small text-uppercase text-muted">Manager</span>
+                <h5 class="mb-0">Maj KS Thakur (retd)</h5><span class="small text-uppercase text-muted">Manager</span>
                 <br>
                 <span class="small text-uppercase text-muted">ESM CSD <br> Mandi<br> </span>
 
