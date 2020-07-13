@@ -143,7 +143,7 @@
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
             else {
-                $_SESSION['message_liquor']="You must wait for at least 10 days, before making a request to buy Liquor. <br>Last booking was made on ". date('M d Y',$last_date_liquor);
+                $_SESSION['message_liquor']="You must wait for at least 10 days after your previous visit, before making a request to buy Liquor. <br>Last booking was scheduled for ". date('M d Y',$last_date_liquor);
             }
         }
 
@@ -227,7 +227,7 @@
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
             else {
-                $_SESSION['message_groceries']="You must wait for at least 10 days, before making a request to buy Groceries. <br>Last booking was made on ". date('M d Y',$last_date_Groceries);
+                $_SESSION['message_groceries']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_Groceries);
             }
         }
         header("Location: message.php");
