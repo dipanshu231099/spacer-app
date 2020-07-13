@@ -88,11 +88,11 @@
                                     <li><strong>Date:</strong> The date for which the values are to be altered.</li>
                                     <li><strong>Number of counters:</strong> number of counters available on a day. By default everyday the number of counters are assumed to be 3(1 for liquor and 2 for groceries).</li>
                                     <li><strong>Limit per counter:</strong> The maximum number of customers allowed during one time slot. By default it is 12 for liquor and 4 for grocery customers for every 30 minutes.</li>
-                                    <li><strong>Status:</strong> It refers to whether the shop is open for 
+                                    <li><strong>Status:</strong> It refers to whether the canteen is open for 
                                         <ul>
                                             <li>full day (9:30am to 3:30pm with lunch time) </li>
                                             <li>or, half day (9:30am to 1:00pm) </li>
-                                            <li>or, close (shop will not open at all) </li>
+                                            <li>or, close (canteen will not open at all) </li>
                                             <li>By default sundays are closed and saturdays are half days rest are full working days.</li>
                                             <li>Canteen will remain closed on last two days of a month.</li>
                                         </ul>
@@ -105,6 +105,15 @@
                                     <label for="date" class="col-sm-2 col-form-label">Date</label>
                                     <div class="col-sm-10">
                                     <input class="form-control"  type="date" id="date" name="date" value="" min=<?php echo $r1; ?> max=<?php echo $r2;?> required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Type</label>
+                                    <div class="col-sm-10">
+                                    <select class="form-control" id="shop" name="shop" required>
+                                        <option>Groceries</option>
+                                        <option>Liquor</option>
+                                    </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -129,16 +138,7 @@
                                     </select>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Which counter</label>
-                                    <div class="col-sm-10">
-                                    <select class="form-control" id="shop" name="shop" required>
-                                        <option>Groceries</option>
-                                        <option>Liquor</option>
-                                        
-                                    </select>
-                                    </div>
-                                </div>
+                                
                                 <br>
                                 <button type="submit" class="btn btn-outline-success w-100">Submit changes</button>
                             </div>

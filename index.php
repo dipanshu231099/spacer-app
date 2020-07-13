@@ -66,12 +66,6 @@
 
         $contact = test_input($_POST["contact"]);
 
-        //$timestamp_groceries = $_POST["timestamp_groceries"];
-        //$timestamp_liquor= $_POST["timestamp_liquor"];
-        
-        //$endTime_groceries = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_groceries"])));
-        //$endTime_liquor = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_liquor"])));
-
         $_SESSION['liquor']=$_SESSION['groceries']=false;
         $_SESSION['message_groceries']=$_SESSION['message_liquor']=NULL;
 
