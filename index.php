@@ -398,7 +398,7 @@
                             <label for="liquor_card" class="col-form-label">Liquor card number</label>
                             <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="Liquor card number. This will be used to verify you." disabled required>
                             <div class="invalid-feedback">
-                                Must be 17 characters long
+                                Must be 19 characters long.
                             </div>
                         </div>
 
@@ -450,7 +450,7 @@
                             <label for="grocery_card" class="col-form-label">Grocery card number</label>
                             <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="Grocery card number. This will be used to verify you." disabled required>
                             <div class="invalid-feedback">
-                                Must be 17 characters long
+                                Must be 19 characters long.
                             </div>
                         </div>
 

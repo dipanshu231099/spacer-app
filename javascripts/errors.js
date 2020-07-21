@@ -25,9 +25,19 @@ card_name.addEventListener('click',logKey_card_name);
 
 grocery.addEventListener('keyup',logKey_dropdown_groceries);
 grocery.addEventListener('click',logKey_dropdown_groceries);
+grocery.addEventListener('keyup',logKey_gcard);
+grocery.addEventListener('click',logKey_gcard);
 
 liquor.addEventListener('keyup',logKey_dropdown_liquor);
 liquor.addEventListener('click',logKey_dropdown_liquor);
+liquor.addEventListener('keyup',logKey_lcard);
+liquor.addEventListener('click',logKey_lcard);
+
+grocery_card.addEventListener('keyup',logKey_gcard);
+grocery_card.addEventListener('click',logKey_gcard);
+
+liquor_card.addEventListener('keyup',logKey_lcard);
+liquor_card.addEventListener('click',logKey_lcard);
 
 
 
@@ -113,9 +123,45 @@ function logKey_email(e){
     }
 }
 
+function logKey_gcard(e){
+    if(grocery.checked){
+        if(grocery_card.value.length==19){
+            grocery_card.classList.remove('is-invalid')
+            grocery_card.classList.add('is-valid')
+        }
+        else {
+            grocery_card.classList.remove('is-valid')
+            grocery_card.classList.add('is-invalid')
+        }
+    }
+    else {
+        grocery_card.classList.remove('is-invalid')
+        grocery_card.classList.remove('is-valid')
+    }
+}
+
+function logKey_lcard(e){
+    if(liquor.checked){
+        if(liquor_card.value.length==19){
+            liquor_card.classList.remove('is-invalid')
+            liquor_card.classList.add('is-valid')
+        }
+        else {
+            liquor_card.classList.remove('is-valid')
+            liquor_card.classList.add('is-invalid')
+        }
+    }
+    else {
+        liquor_card.classList.remove('is-invalid')
+        liquor_card.classList.remove('is-valid')
+    }
+}
+
 function logKey_submit(e){
     if(checkMobile(contact.value) && checkAlpha(user_name.value)
-     && (liquor.checked || grocery.checked) //&& (grocery_card.value.length==17) && (liquor_card.value.length==17) 
+     && (liquor.checked || grocery.checked)
+     && !(liquor.checked && liquor_card.value.length!=19)
+     && !(grocery.checked && grocery_card.value.length!=19)
      && checkAlpha(card_name.value)){
         button.disabled=false;
     }
