@@ -458,6 +458,10 @@
                     <hr>
                     <button type="submit" id='submit' class="btn btn-success mb-2 w-100" disabled>Make Booking</button>
                 </form>
+                <div class='alert alert-dark' role='alert'>
+                    Already had a booking ?
+                    <a href="old_bookings.php"><button class="btn btn-warning mb-2 w-100">Manage your previous bookings</button></a>
+                </div>
             </div>
             <div class="col-sm-1 "></div>
         </div>
