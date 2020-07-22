@@ -17,7 +17,7 @@
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         if(isset($_POST['liquor'])){
         $liquor_card = $_POST["liquor_card"];
-        $sql_query_for_liquor = "select * from bookingsliquor where card_id='".$liquor_card."';";
+        $sql_query_for_liquor = "select * from bookingsLiquor where card_id='".$liquor_card."';";
         $results_liquor = $conn->query($sql_query_for_liquor);
         if(!$results_liquor){
             die($sql_query_for_liquor);
@@ -26,7 +26,7 @@
 
         if(isset($_POST['groceries'])){
         $grocery_card = $_POST["grocery_card"];
-        $sql_query_for_grocery = "select * from bookingsgroceries where card_id='".$grocery_card."';";
+        $sql_query_for_grocery = "select * from bookingsGroceries where card_id='".$grocery_card."';";
         $results_grocery = $conn->query($sql_query_for_grocery);
         if(!$results_grocery){
             die($sql_query_for_grocery);
@@ -99,6 +99,69 @@
                     <button type="submit" id='submit' class="btn btn-success mb-2 w-100" disabled>Show</button>
                 </form>
 
+                <?php if($_SERVER["REQUEST_METHOD"] == "POST"){ ?>
+                <?php if(isset($_POST['liquor'])){ ?>
+                <hr>
+                    <h3 class='text-center'>Liquor Bookings</h3>
+                    <table class='table table-dark table-hover'>
+                        <thead>
+                            <tr>
+                                <th scope="col">card_id</th>
+                                <th scope="col">date and time</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while($row = $results_liquor->fetch_assoc()){ ?>
+                                <tr>
+                                    <td><?php echo $row['card_id']; ?></td>
+                                    <td><?php echo $row['start_time']; ?></td>
+                                    <td>
+                                        <form method="post" action="b_process.php">
+                                            <input type="hidden" name="card_number" value="<?php echo $row['card_id']; ?>"/>
+                                            <input type="hidden" name="start_time" value="<?php echo $row['start_time']; ?>"/>
+                                            <input type="hidden" name="op_table" value="bookingsLiquor">
+                                            <button type='submit' class='btn btn-primary w-100'>Cancel</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                <?php } ?>
+                <?php if(isset($_POST['groceries'])){ ?>
+                <hr>
+                    <h3 class='text-center'>Grocery Bookings</h3>
+                    <table class='table table-dark table-hover'>
+                        <thead>
+                            <tr>
+                                <th scope="col">card_id</th>
+                                <th scope="col">date and time</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while($row1 = $results_grocery->fetch_assoc()){ ?>
+                                <tr>
+                                    <td><?php echo $row1['card_id']; ?></td>
+                                    <td><?php echo $row1['start_time']; ?></td>
+                                    <td>
+                                        <form method="post" action="b_process.php"> 
+                                            <input type="hidden" name="card_number" value="<?php echo $row1['card_id']; ?>"/>
+                                            <input type="hidden" name="start_time" value="<?php echo $row1['start_time']; ?>"/>
+                                            <input type="hidden" name="op_table" value="bookingsGroceries">
+                                            <button type='submit' class='btn btn-primary w-100'>Cancel</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                    <?php } ?>
+
+
+                <?php } ?>
+
             </div>
             <div class="col-sm-1 "></div>
         </div>
@@ -106,73 +169,7 @@
 </body>
 
 
-    <?php if($_SERVER["REQUEST_METHOD"] == "POST"){ ?>
-        <?php if(isset($_POST['liquor'])){ ?>
-            <table class='table table-dark table-hover'>
-                <thead>
-
-                    <tr>
-                        <th scope="col">card_id</th>
-                        
-                        <th scope="col">date and time</th>
-                        <th scope="col">operation#</th>
-                    </tr>
-
-                </thead>
-                <tbody>
-                    <?php while($row = $results_liquor->fetch_assoc()){ ?>
-                        <tr>
-                            <td><?php echo $row['card_id']; ?></td>
-                            <td><?php echo $row['start_time']; ?></td>
-                            <td>
-                                <form method="post" action="b_process.php">
-                                    <input type="hidden" name="card_number" value="<?php echo $row['card_id']; ?>"/>
-                                    <input type="hidden" name="start_time" value="<?php echo $row['start_time']; ?>"/>
-                                    <input type="hidden" name="op_table" value="bookingsliquor">
-                                    <input type="submit" value="cancel"/>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-            <?php } ?>
-            <?php if(isset($_POST['groceries'])){ ?>
-
-            <table class='table table-dark table-hover'>
-                <thead>
-                    <tr>
-                        <th scope="col">card_id</th>
-                        <th scope="col">date and time</th>
-                        <th scope="col">operation#</th>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                    
-                    <?php while($row1 = $results_grocery->fetch_assoc()){ ?>
-                        <tr>
-                            <td><?php echo $row1['card_id']; ?></td>
-                            <td><?php echo $row1['start_time']; ?></td>
-                            <td>
-                                <form method="post" action="b_process.php"> 
-                                    <input type="hidden" name="card_number" value="<?php echo $row1['card_id']; ?>"/>
-                                    <input type="hidden" name="start_time" value="<?php echo $row1['start_time']; ?>"/>
-                                    <input type="hidden" name="op_table" value="bookingsgroceries">
-                                    <input type="submit" value="cancel">
-                                </form>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                    
-                </tbody>
-
-
-            </table>
-            <?php } ?>
-
-
-        <?php } ?>
+    
 
 
 
