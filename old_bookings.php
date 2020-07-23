@@ -56,11 +56,7 @@
                 <h1 style="text-align: center;">ACSA</h1>
                 <h4 style="text-align: center;">Army Canteen Scheduler App</h4>
                 <hr>
-                
-                <hr>
-                
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
-                    <hr>
                     <h4 class='text-center'>Which canteen you want to manage bookings?</h4>
                     <div class="row">
                         
@@ -69,10 +65,7 @@
                                 <input type="checkbox" class="form-check-input" name="liquor" id='liquor'>
                                 <label class="form-check-label" for="liquor">Liquor</label>
                             </div>
-                            <div class="form-group">
                             <br>
-                            
-                            </div>
                             <label for="liquor_card" class="col-form-label">Liquor card number</label>
                             <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="Liquor card number. This will be used to verify you." disabled required>
                             <div class="invalid-feedback">
@@ -85,7 +78,7 @@
                                 <input type="checkbox" class="form-check-input" name="groceries" id='groceries'>
                                 <label class="form-check-label" for="groceries">Groceries</label>
                             </div>
-                            <br><br>
+                            <br>
 
                             <label for="grocery_card" class="col-form-label">Grocery card number</label>
                             <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="Grocery card number. This will be used to verify you." disabled required>

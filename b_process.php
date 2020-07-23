@@ -52,7 +52,7 @@
           <h1 style="text-align: center;">ACSA</h1>
           <h4 style="text-align: center;">Army Canteen Scheduler App</h4>
           <hr>
-            <?php echo "<h3>$message</h3>" ?>
+            <?php echo "<h4>$message</h4>" ?>
 
           <div class="row">
             <div class="col">
