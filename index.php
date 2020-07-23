@@ -460,7 +460,7 @@
                 </form>
                 <div class='alert alert-dark' role='alert'>
                     Already had a booking ?
-                    <a href="old_bookings.php"><button class="btn btn-warning mb-2 w-100">Manage your previous bookings</button></a>
+                    <a href="old_bookings.php"><button class="btn btn-primary mb-2 w-100">Manage your previous bookings</button></a>
                 </div>
             </div>
             <div class="col-sm-1 "></div>

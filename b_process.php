@@ -57,6 +57,7 @@
           <div class="row">
             <div class="col">
               <a href="old_bookings.php"><button class="btn btn-info mb-2 w-100">Manage bookings</button></a>
+              <a href="index.php"><button class="btn btn-info mb-2 w-100">Home</button></a>
               
             </div>
             

@@ -91,7 +91,9 @@
                     <hr>
                     <button type="submit" id='submit' class="btn btn-success mb-2 w-100" disabled>Show</button>
                 </form>
-
+                <hr>
+              <a href="index.php"><button class="btn btn-info mb-2 w-100">Home</button></a>
+                <hr>
                 <?php if($_SERVER["REQUEST_METHOD"] == "POST"){ ?>
                 <?php if(isset($_POST['liquor'])){ ?>
                 <hr>
