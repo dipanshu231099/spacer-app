@@ -9,6 +9,7 @@
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
+    date_default_timezone_set("Asia/Kolkata");
 
 ?>
 
@@ -116,7 +117,7 @@
                                             <input type="hidden" name="card_number" value="<?php echo $row['card_id']; ?>"/>
                                             <input type="hidden" name="start_time" value="<?php echo $row['start_time']; ?>"/>
                                             <input type="hidden" name="op_table" value="bookingsLiquor">
-                                            <button type='submit' class='btn btn-primary w-100'>Cancel</button>
+                                            <button <?php if(strtotime(date("h:i:sa"))>strtotime($row['start_time'])){echo "disabled";}?> type='submit' class='btn btn-primary w-100'>Cancel</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -145,7 +146,7 @@
                                             <input type="hidden" name="card_number" value="<?php echo $row1['card_id']; ?>"/>
                                             <input type="hidden" name="start_time" value="<?php echo $row1['start_time']; ?>"/>
                                             <input type="hidden" name="op_table" value="bookingsGroceries">
-                                            <button type='submit' class='btn btn-primary w-100'>Cancel</button>
+                                            <button <?php if(strtotime(date("h:i:sa"))>strtotime($row['start_time'])){echo "disabled";}?> type='submit' class='btn btn-primary w-100'>Cancel</button>
                                         </form>
                                     </td>
                                 </tr>

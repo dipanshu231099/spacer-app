@@ -42,7 +42,7 @@
 		$temp = $first;
 		
 		$max_counters=($table_name=="calendarGroceries")?2:1;
-		$max_limit=($table_name=="calendarGroceries")?4:12;
+		$max_limit=($table_name=="calendarGroceries")?4:15;
     	while($flag==1){
 	    	if(date("Y",$temp)==(string)$year+2){
 	    		$flag=0;

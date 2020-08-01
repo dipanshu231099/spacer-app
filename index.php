@@ -260,7 +260,7 @@
                 <hr>
                 <div class="alert alert-info" role="alert">
                     <p>
-                   <strong>Welcome to ARTRAC ESM Canteen Mandi</strong>
+                   <strong style="color:red">Welcome to ARTRAC ESM Canteen Mandi, Himachal Pradesh, India</strong>
                         <br>
                         <br>
                         Booking Policy
@@ -306,20 +306,20 @@
                         <br>
                         <br>
 
-                        <strong> Stay Home Stay Safe </strong><br><br> Maj KS Thakur
+                        <strong> Stay Home Stay Safe </strong><br><br> Maj KS Thakur<br>Manager, ARTRAC ESM Canteen<br>Mandi, HP, India
                     </p>
                 </div>
                 <hr>
                 
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                     <div class="form-group row">
-                        <label for="rank" class="col-sm-2 col-form-label">Rank</label>
+                        <label for="rank" class="col-sm-2 col-form-label"><b>Rank</b></label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control is-valid" id='rank' name="rank" placeholder="Rank (optional)">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label"><b>Name</b></label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id='user_name' name="name" placeholder="Name" required>
                             <div class="invalid-feedback">
@@ -328,7 +328,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Mobile number</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label"><b>Mobile number</b></label>
                         <div class="col-sm-10">
                             <input type="number" id='contact_number' class="form-control" name="contact" placeholder="Mobile number" required>
                             <div class="invalid-feedback">
@@ -338,7 +338,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label">Name as on card</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label"><b>Name as on card</b></label>
                         <div class="col-sm-10">
 
                             <input type="text" class="form-control" id='card_name' name="card_name" placeholder="Name as on the card. This will be used to verify you." required>
@@ -356,11 +356,11 @@
                         <div class="col"  style='border-right:solid 1px black'>
                             <div class="form-check text-center">
                                 <input type="checkbox" class="form-check-input" name="liquor" id='liquor'>
-                                <label class="form-check-label" for="liquor">Liquor</label>
+                                <label class="form-check-label" for="liquor"><b>Liquor</b></label>
                             </div>
                             <div class="form-group">
                             <br>
-                            <label for="visit_time">List of time windows available for liquor</label>
+                            <label for="visit_time"><b>List of time windows available for liquor</b></label>
                             <select class="form-control" id="dropdown_liquor" name="timestamp_liquor" disabled>
                             <?php
                                 date_default_timezone_set("Asia/Kolkata");
@@ -395,7 +395,7 @@
                             ?> 
                             </select>
                             </div>
-                            <label for="liquor_card" class="col-form-label">Liquor card number</label>
+                            <label for="liquor_card" class="col-form-label"><b>Liquor card number</b></label>
                             <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="Liquor card number. This will be used to verify you." disabled required>
                             <div class="invalid-feedback">
                                 Must be 19 characters long.
@@ -405,11 +405,11 @@
                         <div class="col">
                             <div class="form-check text-center">
                                 <input type="checkbox" class="form-check-input" name="groceries" id='groceries'>
-                                <label class="form-check-label" for="groceries">Groceries</label>
+                                <label class="form-check-label" for="groceries"><b>Groceries</b></label>
                             </div>
                             <br>
                             <div class="form-group">
-                            <label for="visit_time">List of time windows available for groceries</label>
+                            <label for="visit_time"><b>List of time windows available for groceries</b></label>
                             <select class="form-control" id="dropdown_groceries" name="timestamp_groceries" disabled>
                             <?php
                                 date_default_timezone_set("Asia/Kolkata");
@@ -447,7 +447,7 @@
                             ?> 
                             </select>
                             </div>
-                            <label for="grocery_card" class="col-form-label">Grocery card number</label>
+                            <label for="grocery_card" class="col-form-label"><b>Grocery card number</b></label>
                             <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="Grocery card number. This will be used to verify you." disabled required>
                             <div class="invalid-feedback">
                                 Must be 19 characters long.
@@ -459,7 +459,7 @@
                     <button type="submit" id='submit' class="btn btn-success mb-2 w-100" disabled>Make Booking</button>
                 </form>
                 <div class='alert alert-dark' role='alert'>
-                    Already had a booking ?
+                    <b>Already had a booking ?</b>
                     <a href="old_bookings.php"><button class="btn btn-primary mb-2 w-100">Manage your previous bookings</button></a>
                 </div>
             </div>
