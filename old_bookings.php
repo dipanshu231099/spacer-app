@@ -146,7 +146,7 @@
                                             <input type="hidden" name="card_number" value="<?php echo $row1['card_id']; ?>"/>
                                             <input type="hidden" name="start_time" value="<?php echo $row1['start_time']; ?>"/>
                                             <input type="hidden" name="op_table" value="bookingsGroceries">
-                                            <button <?php if(strtotime(date("h:i:sa"))>strtotime($row['start_time'])){echo "disabled";}?> type='submit' class='btn btn-primary w-100'>Cancel</button>
+                                            <button <?php if(strtotime(date("h:i:sa"))>strtotime($row1['start_time'])){echo "disabled";}?> type='submit' class='btn btn-primary w-100'>Cancel</button>
                                         </form>
                                     </td>
                                 </tr>
