@@ -87,7 +87,7 @@
                                     <ul>
                                     <li><strong>Date:</strong> The date for which the values are to be altered.</li>
                                     <li><strong>Number of counters:</strong> number of counters available on a day. By default everyday the number of counters are assumed to be 3(1 for liquor and 2 for groceries).</li>
-                                    <li><strong>Limit per counter:</strong> The maximum number of customers allowed during one time slot. By default it is 12 for liquor and 4 for grocery customers for every 30 minutes.</li>
+                                    <li><strong>Limit per counter:</strong> The maximum number of customers allowed during one time slot. By default it is 15 for liquor and 4 for grocery customers for every 30 minutes.</li>
                                     <li><strong>Status:</strong> It refers to whether the canteen is open for 
                                         <ul>
                                             <li>full day (9:30am to 3:30pm with lunch time) </li>
