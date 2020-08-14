@@ -380,7 +380,7 @@
                                     $max_limit = $result['max_limit'];
                                     $total_counters = $result['counters'];
                                     while(isHoliday($new_tp,$conn,"Liquor")){
-                                        $new_tp = strtotime('+24 hours',$new_tp);
+                                        $new_tp = strtotime('+30 minutes',$new_tp);
                                     }
                                     if(isWorkingHour($new_tp,$conn,"Liquor")){
                                         $sql = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time='".$new_timestamp."';";
@@ -431,7 +431,7 @@
                                     $total_counters = $result['counters'];
 
                                     while(isHoliday($new_tp,$conn,"Groceries")){
-                                        $new_tp = strtotime('+24 hours',$new_tp);
+                                        $new_tp = strtotime('30 minutes',$new_tp);
                                     }
 
                                     if(isWorkingHour($new_tp,$conn,"Groceries")){
@@ -461,6 +461,10 @@
                 <div class='alert alert-dark' role='alert'>
                     <b>Already had a booking ?</b>
                     <a href="old_bookings.php"><button class="btn btn-primary mb-2 w-100">Manage your previous bookings</button></a>
+                </div>
+                <div class='alert alert-warning' role='alert'>
+                    <b>Admin ?</b>
+                    <a href="admin.php"><button class="btn btn-warning mb-2 w-100">Admin Dashboard</button></a>
                 </div>
             </div>
             <div class="col-sm-1 "></div>
