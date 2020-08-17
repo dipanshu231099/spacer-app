@@ -116,8 +116,8 @@
 
             //queries to select from table for liquor
             $query_count = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time='".$timestamp_liquor."';";
-            $query_token = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time like '%".$date."';";
-            
+            //$query_token = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time like '%".$date."';";
+            $query_token = "SELECT max(token) as cnt from bookingsLiquor where start_time like '%".$date."';";
             // tells number of people already present with the exact timestamp (slot+date)
             $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
             
@@ -200,7 +200,9 @@
 
             //queries to select from table for groceries
             $query_count = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$timestamp_groceries."';";
-            $query_token = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time like '%".$date."';";
+            //$query_token = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time like '%".$date."';";
+            $query_token = "SELECT max(token) as cnt from bookingsGroceries where start_time like '%".$date."';";
+
             
             // tells number of people already present with the exact timestamp (slot+date)
             $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
