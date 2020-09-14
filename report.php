@@ -22,9 +22,16 @@
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $date = $_POST["report_date"];
         $date = date("M d Y" , strtotime($date));
+        $shop = $_POST["shop"];
         //$today = date("M d Y",strtotime('now'));
-
-        $sql = "SELECT * FROM allotment WHERE start_time like '%".$date."';";
+        $table_name = "";
+        if($shop=="Groceries"){
+            $table_name = "bookingsGroceries";
+        }
+        else{
+            $table_name = "bookingsLiquor";
+        }
+        $sql = "SELECT * FROM $table_name WHERE start_time like '%".$date."';";
         // echo $sql;
         $results = $conn->query($sql);
         if(!$results)die('invalid please refresh');
@@ -44,29 +51,27 @@
     <table class='table table-dark table-hover'>
         <thead>
             <tr>
-                <th scope="col">Grocery_card</th>
-                <th scope="col">Liquor_card</th>
+                <th scope="col">card_id</th>
+                
                 <th scope="col">Token</th>
                 <th scope="col">Counter#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Collect time</th>
                 <th scope="col">Contact</th>
-                <th scope="col">Groceries</th>
-                <th scope="col">Liquor</th>
+
             </tr>
         </thead>
         <tbody>
             <?php while($row = $results->fetch_assoc()){ ?>
                 <tr>
-                    <td><?php echo $row['grocery_card']; ?></td>
-                    <td><?php echo $row['liquor_card']; ?></td>
+                    <td><?php echo $row['card_id']; ?></td>
+                    
                     <td><?php echo $row['token']; ?></td>
                     <td><?php echo $row['counter']; ?></td>
                     <td><?php echo $row['customer_name']; ?></td>
                     <td><?php echo $row['start_time']; ?></td>
-                    <td><?php echo $row['contact']; ?></td>
-                    <td><?php echo $row['groceries']; ?></td>
-                    <td><?php echo $row['liquor']; ?></td>
+                    <td><?php echo $row['contact']; ?></td> 
+
                 </tr>
             <?php } ?>
         </tbody>

@@ -10,18 +10,16 @@ var liquor_card = document.getElementById('liquor_card')
 var grocery_card = document.getElementById('grocery_card')
 var card_name = document.getElementById('card_name')
 
-user_name.addEventListener('keyup', logKey_name);
-user_name.addEventListener('click', logKey_name);
 
-contact.addEventListener('keyup', logKey_number);
-contact.addEventListener('click', logKey_number);
+
+
+
 
 
 document.addEventListener('keyup', logKey_submit);
 document.addEventListener('click', logKey_submit);
 
-card_name.addEventListener('keyup',logKey_card_name);
-card_name.addEventListener('click',logKey_card_name);
+
 
 grocery.addEventListener('keyup',logKey_dropdown_groceries);
 grocery.addEventListener('click',logKey_dropdown_groceries);
@@ -158,11 +156,10 @@ function logKey_lcard(e){
 }
 
 function logKey_submit(e){
-    if(checkMobile(contact.value) && checkAlpha(user_name.value)
-     && (liquor.checked || grocery.checked)
+    if( (liquor.checked || grocery.checked)
      && !(liquor.checked && liquor_card.value.length!=19)
      && !(grocery.checked && grocery_card.value.length!=19)
-     && checkAlpha(card_name.value)){
+     ){
         button.disabled=false;
     }
     else {
@@ -172,23 +169,23 @@ function logKey_submit(e){
 
 function logKey_dropdown_groceries(e){
     if(grocery.checked){
-        dropdown_groceries.disabled=false;
+
         grocery_card.disabled=false;
     }
     else{
-        dropdown_groceries.disabled=true;
+
         grocery_card.disabled=true;
     }
 }
 
 function logKey_dropdown_liquor(e){
     if(liquor.checked){
-        dropdown_liquor.disabled=false;
+        
         liquor_card.disabled=false;
     }
     else {
         liquor_card.disabled=true;
-        dropdown_liquor.disabled=true;
+        
     }
 }
 

@@ -1,10 +1,39 @@
 <?php
     session_start();
-    if($_SESSION['liquor']==false && $_SESSION['groceries']==false){
-      header("Location: index.php");
-      exit();
+    $config = include('config.php');
+    $servername = $config["host"];
+    $username = $config['username'];
+    $password = $config['password'];
+    $dbname = $config['dbname'];
+    $conn = new mysqli($servername, $username, $password,$dbname);
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+
+
+?>
+
+<?php
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $table_name = $_POST["op_table"];
+        $card_number = $_POST["card_number"];
+        $start_time = $_POST["start_time"];
+        $query_to_delete = "delete from $table_name where card_id='".$card_number."' and start_time='".$start_time."';";
+        $delete_result = $conn->query($query_to_delete);
+        if(!$delete_result){
+            die($delete_result);
+        }
+        $message = "Booking of card number $card_number at $start_time cancelled";
+        
+
+
+
+
     }
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,22 +52,11 @@
           <h1 style="text-align: center;">ACSA</h1>
           <h4 style="text-align: center;">Army Canteen Scheduler App</h4>
           <hr>
-          <div class="alert <?php echo ((!$_SESSION['liquor_fail'])?"alert-success":"alert-danger") ?>" style="<?php echo ($_SESSION['liquor']==false)?"display:none":" " ?>" role="alert">
-              <p>
-                  <?php
-                    echo $_SESSION['message_liquor'];
-                  ?>
-              </p>
-          </div>
-          <div class="alert <?php echo ((!$_SESSION['groceries_fail'])?"alert-success":"alert-danger") ?>" style="<?php echo (($_SESSION['groceries']==false)?"display:none":" ") ?>" role="alert">
-              <p>
-                  <?php
-                    echo $_SESSION['message_groceries'];
-                  ?>
-              </p>
-          </div>
+            <?php echo "<h4>$message</h4>" ?>
+
           <div class="row">
             <div class="col">
+              <a href="old_bookings.php"><button class="btn btn-info mb-2 w-100">Manage bookings</button></a>
               <a href="index.php"><button class="btn btn-info mb-2 w-100">Home</button></a>
               
             </div>
@@ -56,7 +74,3 @@
   </div>
 </footer>
 </html>
-
-<?php
-  session_destroy();
-?>

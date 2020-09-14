@@ -12,12 +12,23 @@
 	
 
 	date_default_timezone_set("Asia/Kolkata");
+	
+	function is_last_two_day($date){
+		$raw_date = strtotime($date);
+		$present_month = date("M" , strtotime($date));
+		$next_day_month = date("M" , strtotime("+24 hours" , $raw_date));
+		$next_to_next_day_month = date("M" , strtotime("+48 hours" , $raw_date));
+		
+		if($next_to_next_day_month!=$present_month){
+			return true;
+			}
+		return false;
+		
+	}
 
-
-	function populate($year,$conn){
+	function populate($year,$conn,$table_name){
 		$a = (string)$year;
 		$b = (string)($year+1);
-		$table_name = "calendar_".$a."_".$b;
 
 		$q = "drop table if exists $table_name";
 		$results = $conn->query($q);
@@ -28,29 +39,33 @@
 
 		$flag=1;
     	$first=mktime(0, 0, 0, 1, 1, $year);
-    	$temp = $first;
+		$temp = $first;
+		
+		$max_counters=($table_name=="calendarGroceries")?2:1;
+		$max_limit=($table_name=="calendarGroceries")?4:15;
     	while($flag==1){
 	    	if(date("Y",$temp)==(string)$year+2){
 	    		$flag=0;
 	    		continue;
 	    	}
 	    	$day = date("l",$temp);
-	    	$date = date("M d Y",$temp);
-	    	if($day=="Saturday"){
+			$date = date("M d Y",$temp);
+			if ($day=="Sunday" || is_last_two_day($date)) {
+	    		$status = "close";
+	    		$query2 = "INSERT INTO $table_name (date , day , status) VALUEs('".$date."','".$day."','".$status."')";
+	    		$results2 = $conn->query($query2);
+	    	}
+	    	elseif($day=="Saturday"){
 	    		$startH = 9;
 	    		$startM = 30;
 	    		$endH = 13;
 	    		$endM = 0;
 	    		$status = "half";
 	    		$query1 = "INSERT INTO $table_name (date , day , status,startH,startM,endH,endM,max_limit,counters) VALUEs('".$date."',
-	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',4,3)";
+	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',$max_limit,$max_counters)";
 	    		$results1 = $conn->query($query1);
 	    	}
-	    	elseif ($day=="Sunday") {
-	    		$status = "close";
-	    		$query2 = "INSERT INTO $table_name (date , day , status) VALUEs('".$date."','".$day."','".$status."')";
-	    		$results2 = $conn->query($query2);
-	    	}
+	    	
 	    	else{
 	    		$startH = 9;
 	    		$startM = 30;
@@ -59,7 +74,7 @@
 	    		$status = "full";
 	    		
 	    		$query3 = "INSERT INTO $table_name (date , day , status,startH,startM,endH,endM,max_limit,counters) VALUEs('".$date."',
-	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',4,3)";
+	    		'".$day."','".$status."','".$startH."','".$startM."','".$endH."','".$endM."',$max_limit,$max_counters)";
 	    		$results3 = $conn->query($query3);
 	    	}
 	    	$temp = strtotime('+24 hours',$temp);
@@ -75,7 +90,8 @@
 	else {
 		echo "Reforming present year's table data. Please wait.";
 		$present_year = date("Y",strtotime("today"));
-		populate($present_year,$conn);
+		populate($present_year,$conn,"calendarGroceries");
+		populate($present_year,$conn,"calendarLiquor");
 		$_SESSION['message']= "New Calendar has been created. ";
 		$_SESSION['good']=true;
 		header("Location: admin_message.php");

@@ -2,3 +2,4 @@
 *config*
 *fake.php
 *.zip*
+config_prod.php
