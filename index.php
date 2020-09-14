@@ -54,7 +54,7 @@
     $rank = $name = $contact = $timestamp = "";
     $liquor = false;
     $groceries = false;
-    $both = false;
+    $groceriesliquor = false;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //POST variables here------
@@ -67,8 +67,8 @@
 
         $contact = test_input($_POST["contact"]);
 
-        $_SESSION['liquor']=$_SESSION['groceries']=$_SESSION['both']=false;
-        $_SESSION['message_groceries']=$_SESSION['message_liquor']=$_SESSION['message_both']=NULL;
+        $_SESSION['liquor']=$_SESSION['groceries']=$_SESSION['groceriesliquor']=false;
+        $_SESSION['message_groceries']=$_SESSION['message_liquor']=$_SESSION['message_groceriesliquor']=NULL;
 
         if(isset($_POST['liquor']))
         {
@@ -239,50 +239,39 @@
 
             $grocery_card = test_input($_POST['gro_card']);
             $liquor_card = test_input($_POST['liq_card']);
-            $timestamp_groceries = $_POST["timestamp_groceries"];
-            $endTime_groceries = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_groceries"])));
+            $timestamp_groceriesliquor = $_POST["timestamp_groceriesliquor"];
+            $endTime_groceriesliquor = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_groceriesliquor"])));
 
-            $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp_groceries)));
+            $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp_groceriesliquor)));
 
-            $query_for_gro = "SELECT * from bookingsGroceries WHERE card_id='$grocery_card' ORDER BY st_sec desc limit 1;";
+            $query_for_gro = "SELECT * from bookingsGroceriesliquor WHERE card_id_groceries='$grocery_card' and card_id_liquor='$liquor_card' ORDER BY st_sec desc limit 1;";
 
-            $last_booking_gro = $conn->query($query_for_gro);
+            $last_booking_groceriesliquor = $conn->query($query_for_groceriesliquor);
 
-            $query_for_liquor = "SELECT * from bookingsLiquor WHERE card_id='$liquor_card' ORDER BY st_sec desc limit 1;";
 
-            $last_booking_liquor = $conn->query($query_for_liquor);
-
-            if(!$last_booking_gro && !$last_booking_liquor){
+            if(!$last_booking_groceriesliquor ){
                 die("failed grocery and liquor booking");
             }
 
-            $last_booking_gro = $last_booking_gro->fetch_assoc();
+            $last_booking_groceriesliquor = $last_booking_groceriesliquor->fetch_assoc();
 
-            $last_date_Groceries = $last_booking_gro["st_sec"];
+            $last_date_groceriesliquor = $last_booking_groceriesliquor["st_sec"];
 
-            $difference_Groceries = ($date_of_booking-$last_date_Groceries)/86400;
+            $difference_groceriesliquor = ($date_of_booking-$last_date_groceriesliquor)/86400;
 
-            $difference_Groceries = abs((int)$difference_Groceries);
-
-            $last_booking_liquor = $last_booking_liquor->fetch_assoc();
-
-            $last_date_liquor = $last_booking_liquor["st_sec"];
-
-            $difference_liquor = ($date_of_booking-$last_date_liquor)/86400;
-
-            $difference_liquor = abs((int)$difference_liquor);
+            $difference_groceriesliquor = abs((int)$difference_groceriesliquor);
 
 
-            $_SESSION['grocery_fail']=$_SESSION['liquor_fail']=false;
+            $_SESSION['groceriesliquor_fail']=false;
 
-            if($difference_Groceries<=10 && $difference_liquor<=10){
-                $_SESSION["groceries_fail"] = $_SESSION['liquor_fail'] = true;
+            if($difference_groceriesliquor<=10){
+                $_SESSION["groceriesliquor_fail"]  = true;
             }
 
             $current_year = date("Y",strtotime('today'));
-            $date = date("M d Y",strtotime($_POST["timestamp_groceries"]));
+            $date = date("M d Y",strtotime($_POST["timestamp_groceriesliquor"]));
 
-            $cal_table_name = "calendarGroceries";
+            $cal_table_name = "calendargroceriesliquor";
 
             // to fetch from caendar of groceries
             $sql = "SELECT * FROM $cal_table_name WHERE date='$date';";
@@ -298,9 +287,9 @@
             $liquor_counters= $qqq_result['counters'];
 
             //queries to select from table for groceries
-            $query_count = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$timestamp_groceries."';";
+            $query_count = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$timestamp_groceriesliquor."';";
             //$query_token = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time like '%".$date."';";
-            $query_token = "SELECT max(token) as cnt from bookingsGroceries where start_time like '%".$date."';";
+            $query_token = "SELECT max(token) as cnt from bookingsgroceriesliquor where start_time like '%".$date."';";
 
             
             // tells number of people already present with the exact timestamp (slot+date)
@@ -316,31 +305,23 @@
             }
 
 
-            // $liquor_card = test_input($_POST['liquor_card']);
-            // $timestamp_liquor = $_POST["timestamp_liquor"];
-            // $endTime_liquor = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_liquor"])));
 
-            // $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp_liquor)));
+            if(!$_SESSION['groceriesliquor_fail'] ){
+                $insert_sql_groceriesliquor = "INSERT INTO bookingsgroceriesliquor VALUES ('$grocery_card', $liquor_card', '$name', '$timestamp_groceriesliquor', '$contact', '$counter', '$rank', '$card_name', $token, $date_of_booking);";
+                $result_groceriesliquor = $conn->query($insert_sql_groceriesliquor);
 
-
-
-            if(!$_SESSION['liquor_fail'] && !$_SESSION['groceries_fail']){
-                $insert_sql_liq = "INSERT INTO bookingsLiquor VALUES ('$liquor_card', '$name', '$timestamp_groceries', '$contact', '$counter', '$rank', '$card_name', $token, $date_of_booking);";
-                $result_liq = $conn->query($insert_sql_liq);
-                $insert_sql_gro = "INSERT INTO bookingsGroceries VALUES ('$grocery_card', '$name', '$timestamp_groceries', '$contact', '$counter', '$rank', '$card_name', $token, $date_of_booking);";
-                $result_gro = $conn->query($insert_sql_gro);
-                if(!$result_gro && $result_liq){
+                if(!$result_groceriesliquor){
                     die("Error processing the request.");
                 }
-                $_SESSION['message_both']="Your request to buy Groceries Liquor was successful.<br><br>
-                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_groceries)) ." and ". date('H:ia',strtotime($endTime_groceries))." on ".date('M d Y',strtotime($timestamp_groceries))."<br> at counter number: $counter <br>Your token number: $token. <br>
+                $_SESSION['message_groceriesliquor']="Your request to buy Groceries and Liquor was successful.<br><br>
+                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_groceriesliquor)) ." and ". date('H:ia',strtotime($endTime_groceriesliquor))." on ".date('M d Y',strtotime($timestamp_groceriesliquor))."<br> at counter number: $counter <br>Your token number: $token. <br>
                 Grocery Card number: $grocery_card <br>
                 Liquor Card number: $liquor_card <br>
                 Kindly collect your items within this time frame. <br>
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
             else {
-                $_SESSION['message_both']="You must wait for at least 10 days after your previous visit, before making a request to buy Grocery and Liquor. <br>Last booking was scheduled for ". date('M d Y',$last_date_Groceries);
+                $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request to buy Grocery and Liquor. <br>Last booking was scheduled for ". date('M d Y',$last_date_groceriesliquor);
             }
         }
         header("Location: message.php");
@@ -568,13 +549,13 @@
                         </div>
                         <div class="col">
                             <div class="form-check text-center">
-                                <input type="checkbox" class="form-check-input" name="both" id='both'>
-                                <label class="form-check-label" for="both"><b>Groceries and Liquor</b></label>
+                                <input type="checkbox" class="form-check-input" name="groceriesliquor" id='groceriesliquor'>
+                                <label class="form-check-label" for="groceriesliquor"><b>Groceries and Liquor</b></label>
                             </div>
                             <br>
                             <div class="form-group">
                             <label for="visit_time"><b>List of time windows available for groceries and liquor</b></label>
-                            <select class="form-control" id="dropdown_groceries" name="timestamp_groceries" disabled>
+                            <select class="form-control" id="dropdown_groceriesliquor" name="timestamp_groceriesliquor" disabled>
                             <?php
                                 date_default_timezone_set("Asia/Kolkata");
                                 $present_time = strtotime('next hour');
@@ -588,18 +569,18 @@
                                     $new_timestamp = date("h:ia M d Y",$new_tp);
                                     $current_year = date("Y",strtotime('today'));
                                     $date = date("M d Y",$new_tp);
-                                    $table= "calendarGroceries";
+                                    $table= "calendargroceriesliquor";
                                     $sql = "SELECT * FROM $table WHERE date='".$date."';";
                                     $result = ($conn->query($sql))->fetch_assoc();
                                     $max_limit = $result['max_limit'];
                                     $total_counters = $result['counters'];
 
-                                    while(isHoliday($new_tp,$conn,"Groceries")){
+                                    while(isHoliday($new_tp,$conn,"groceriesliquor")){
                                         $new_tp = strtotime('30 minutes',$new_tp);
                                     }
 
-                                    if(isWorkingHour($new_tp,$conn,"Groceries")){
-                                        $sql = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$new_timestamp."';";
+                                    if(isWorkingHour($new_tp,$conn,"groceriesliquor")){
+                                        $sql = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$new_timestamp."';";
                                         $results = (($conn->query($sql))->fetch_assoc())['cnt'];
                                         if($results<$max_limit*$total_counters){
                                             echo "<option>". $new_timestamp ."</option>";

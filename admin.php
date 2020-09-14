@@ -38,8 +38,8 @@
         if($shop=="Groceries"){
             $table_name = "calendarGroceries";
         }
-        else if($shop=="Both") {
-            $table_name = "calendarGroceries";
+        else if($shop=="groceriesliquor") {
+            $table_name = "calendargroceriesliquor";
         }
         else{
             $table_name = "calendarLiquor";

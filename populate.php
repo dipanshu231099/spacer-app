@@ -91,6 +91,7 @@
 		echo "Reforming present year's table data. Please wait.";
 		$present_year = date("Y",strtotime("today"));
 		populate($present_year,$conn,"calendarGroceries");
+		populate($present_year,$conn,"calendargroceriesliquor");
 		populate($present_year,$conn,"calendarLiquor");
 		$_SESSION['message']= "New Calendar has been created. ";
 		$_SESSION['good']=true;
