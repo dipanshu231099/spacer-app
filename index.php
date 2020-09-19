@@ -389,8 +389,9 @@
                                         $results = (($conn->query($sql))->fetch_assoc())['cnt'];
                                         if($results<$max_limit*$total_counters){
                                             echo "<option>". $new_timestamp ."</option>";
-                                            $slots--;
+                                            
                                         }
+                                        $slots--;
                                     }
                                     $new_tp = strtotime("+30 minutes",$new_tp);
                                 }
@@ -441,8 +442,9 @@
                                         $results = (($conn->query($sql))->fetch_assoc())['cnt'];
                                         if($results<$max_limit*$total_counters){
                                             echo "<option>". $new_timestamp ."</option>";
-                                            $slots--;
+                                            
                                         }
+                                        $slots--;
                                     }
                                     $new_tp = strtotime("+30 minutes",$new_tp);
                                 }
