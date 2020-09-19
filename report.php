@@ -16,6 +16,8 @@
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
+    $shop = $_POST["shop"];
+    echo $shop;
 ?>
 
 <?php
@@ -28,7 +30,11 @@
         if($shop=="Groceries"){
             $table_name = "bookingsGroceries";
         }
-        else{
+        else if($shop=="Groceries and Liquor")
+        {
+            $table_name = "bookingsgroceriesliquor";
+        }
+        else if($shop=="Liquor"){
             $table_name = "bookingsLiquor";
         }
         $sql = "SELECT * FROM $table_name WHERE start_time like '%".$date."';";
@@ -48,11 +54,16 @@
     <title>ACSA Report</title>
 </head>
 <body style="padding:1%;">
+    
     <table class='table table-dark table-hover'>
         <thead>
+        
             <tr>
-                <th scope="col">card_id</th>
-                
+                <?php ?>
+                <?php if ($shop=='Groceries') { echo '<th scope="col">card_id</th>';}?>
+                <?php if ($shop=='Liquor') { echo '<th scope="col">card_id</th>';}?>
+                <?php if ($shop=='Groceries and Liquor') { echo '<th scope="col">card_id_groceries</th>';}?>
+                <?php if ($shop=='Groceries and Liquor') { echo '<th scope="col">card_id_liquor</th>';}?>
                 <th scope="col">Token</th>
                 <th scope="col">Counter#</th>
                 <th scope="col">Name</th>
@@ -64,7 +75,10 @@
         <tbody>
             <?php while($row = $results->fetch_assoc()){ ?>
                 <tr>
-                    <td><?php echo $row['card_id']; ?></td>
+                <?php if ($shop=='Groceries') { echo '<td>'.$row['card_id'].'</td>';}?>
+                <?php if ($shop=='Liquor') { echo '<td>'.$row['card_id'].'</td>';}?>
+                <?php if ($shop=='Groceries and Liquor') { echo '<td>'.$row['card_id_groceries'].'</td>';}?>
+                <?php if ($shop=='Groceries and Liquor') { echo '<td>'.$row['card_id_liquor'].'</td>';}?>
                     
                     <td><?php echo $row['token']; ?></td>
                     <td><?php echo $row['counter']; ?></td>

@@ -1,13 +1,17 @@
 console.log('connected')
 var user_name = document.getElementById('user_name')
 var dropdown_groceries = document.getElementById('dropdown_groceries')
+var dropdown_groceriesliquor = document.getElementById('dropdown_groceriesliquor')
 var dropdown_liquor = document.getElementById('dropdown_liquor')
 var contact = document.getElementById('contact_number')
 var button = document.getElementById('submit')
 var grocery = document.getElementById('groceries')
+var groceriesliquor = document.getElementById('groceriesliquor')
 var liquor = document.getElementById('liquor')
 var liquor_card = document.getElementById('liquor_card')
 var grocery_card = document.getElementById('grocery_card')
+var liq_card = document.getElementById('liq_card')
+var gro_card = document.getElementById('gro_card')
 var card_name = document.getElementById('card_name')
 
 user_name.addEventListener('keyup', logKey_name);
@@ -28,6 +32,11 @@ grocery.addEventListener('click',logKey_dropdown_groceries);
 grocery.addEventListener('keyup',logKey_gcard);
 grocery.addEventListener('click',logKey_gcard);
 
+groceriesliquor.addEventListener('keyup',logKey_dropdown_groceriesliquor);
+groceriesliquor.addEventListener('click',logKey_dropdown_groceriesliquor);
+groceriesliquor.addEventListener('keyup',logKey_glcard);
+groceriesliquor.addEventListener('click',logKey_glcard);
+
 liquor.addEventListener('keyup',logKey_dropdown_liquor);
 liquor.addEventListener('click',logKey_dropdown_liquor);
 liquor.addEventListener('keyup',logKey_lcard);
@@ -36,8 +45,14 @@ liquor.addEventListener('click',logKey_lcard);
 grocery_card.addEventListener('keyup',logKey_gcard);
 grocery_card.addEventListener('click',logKey_gcard);
 
+
 liquor_card.addEventListener('keyup',logKey_lcard);
 liquor_card.addEventListener('click',logKey_lcard);
+
+gro_card.addEventListener('keyup',logKey_glcard);
+gro_card.addEventListener('click',logKey_glcard);
+liq_card.addEventListener('keyup',logKey_glcard);
+liq_card.addEventListener('click',logKey_glcard);
 
 
 
@@ -90,6 +105,8 @@ function gcard(e){
     }
 }
 
+
+
 function lcard(e){
     if(liquor_card.value.length==17){
         liquor_card.classList.remove('is-invalid')
@@ -98,6 +115,21 @@ function lcard(e){
     else{
         liquor_card.classList.remove('is-valid')
         liquor_card.classList.add('is-invalid')
+    }
+}
+
+function glcard(e){
+    if(gro_card.value.length==17 && liq_card.value.length==17){
+        gro_card.classList.remove('is-invalid')
+        gro_card.classList.add('is-valid')
+        liq_card.classList.remove('is-invalid')
+        liq_card.classList.add('is-valid')
+    }
+    else{
+        gro_card.classList.remove('is-valid')
+        gro_card.classList.add('is-invalid')
+        liq_card.classList.remove('is-valid')
+        liq_card.classList.add('is-invalid')
     }
 }
 
@@ -157,11 +189,35 @@ function logKey_lcard(e){
     }
 }
 
+function logKey_glcard(e){
+    if(groceriesliquor.checked){
+        if(gro_card.value.length==19 && liq_card.value.length==19){
+            gro_card.classList.remove('is-invalid')
+            gro_card.classList.add('is-valid')
+            liq_card.classList.remove('is-invalid')
+            liq_card.classList.add('is-valid')
+        }
+        else {
+            gro_card.classList.remove('is-valid')
+            gro_card.classList.add('is-invalid')
+            liq_card.classList.remove('is-valid')
+            liq_card.classList.add('is-invalid')
+        }
+    }
+    else {
+        gro_card.classList.remove('is-invalid')
+        gro_card.classList.remove('is-valid')
+        liq_card.classList.remove('is-invalid')
+        liq_card.classList.remove('is-valid')
+    }
+}
+
 function logKey_submit(e){
     if(checkMobile(contact.value) && checkAlpha(user_name.value)
-     && (liquor.checked || grocery.checked)
+     && (liquor.checked || grocery.checked || groceriesliquor.checked)
      && !(liquor.checked && liquor_card.value.length!=19)
      && !(grocery.checked && grocery_card.value.length!=19)
+     && !(groceriesliquor.checked && gro_card.value.length!=19 && liq_card.value.length!=19)
      && checkAlpha(card_name.value)){
         button.disabled=false;
     }
@@ -181,6 +237,7 @@ function logKey_dropdown_groceries(e){
     }
 }
 
+
 function logKey_dropdown_liquor(e){
     if(liquor.checked){
         dropdown_liquor.disabled=false;
@@ -192,3 +249,15 @@ function logKey_dropdown_liquor(e){
     }
 }
 
+function logKey_dropdown_groceriesliquor(e){
+    if(groceriesliquor.checked){
+        dropdown_groceriesliquor.disabled=false;
+        gro_card.disabled=false;
+        liq_card.disabled=false;
+    }
+    else{
+        dropdown_groceriesliquor.disabled=true;
+        gro_card.disabled=true;
+        liq_card.disabled=true;
+    }
+}

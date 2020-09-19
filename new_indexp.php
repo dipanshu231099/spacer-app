@@ -221,30 +221,30 @@
                 $_SESSION["groceries_fail"] = true;
             }
             //vaeificaation groliq with gro
-            $query_for_grl = "SELECT * from bookingsgroceriesliquor WHERE card_id_groceries='$grocery_card' ORDER BY st_sec desc limit 1;";
-            echo "5gl. " .$query_for_grl ."<br>";
+            $query_for_gl = "SELECT * from bookingsgroceriesliquor WHERE card_id_groceries='$grocery_card' ORDER BY st_sec desc limit 1;";
+            echo "5gl. " .$query_for_gl ."<br>";
 
-            $last_booking_grl = $conn->query($query_for_grl);
+            $last_booking_gl = $conn->query($query_for_gl);
 
-            if(!$last_booking_grl){
+            if(!$last_booking_gl){
                 die("failed grocery booking");
             }
 
-            $last_booking_grl = $last_booking_grl->fetch_assoc();
+            $last_booking_gl = $last_booking_gl->fetch_assoc();
             // echo "6gl. " .$last_booking_gro ."<br>";
 
-            $last_date_grl = $last_booking_grl["st_sec"];
-            echo "7gl. " .$last_date_grl ."<br>";
+            $last_date_gl = $last_booking_gl["st_sec"];
+            echo "7gl. " .$last_date_gl ."<br>";
 
-            $difference_grl = ($date_of_booking-$last_date_grl)/86400;
-            echo "8gl. " .$difference_grl ."<br>";
+            $difference_gl = ($date_of_booking-$last_date_gl)/86400;
+            echo "8gl. " .$difference_gl ."<br>";
 
-            $difference_grl = abs((int)$difference_grl);
-            echo "9gl. " .$difference_grl ."<br>";
+            $difference_gl = abs((int)$difference_gl);
+            echo "9gl. " .$difference_gl ."<br>";
 
             $_SESSION['grocery_fail']=false;
 
-            if($difference_grl<=10){
+            if($difference_gl<=10){
                 $_SESSION["groceries_fail"] = true;
             }
             //end groliq verification
@@ -318,7 +318,7 @@
                     $_SESSION['message_groceries']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_Groceries);
                 }
                 else {
-                    $_SESSION['message_groceries']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_grl);
+                    $_SESSION['message_groceries']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_gl);
                 }
             }
         }
@@ -337,7 +337,6 @@
 
             $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp_gl)));
 
-           
             //checking groceries and liquor
             $query_for_gl = "SELECT * from bookingsgroceriesliquor WHERE card_id_groceries='$gro_card' AND card_id_liquor='$liq_card' ORDER BY st_sec desc limit 1;";
             $last_booking_gl = $conn->query($query_for_gl);
@@ -357,10 +356,8 @@
             if($difference_gl<=10){
                 $_SESSION["groceriesliquor_fail"] = true;
             }
-            //end groliq verification
-
-           //checking groceries 
-            $query_for_g = "SELECT * from bookingsGroceries WHERE card_id='$gro_card' ORDER BY st_sec desc limit 1;";
+            //checcking groceries card
+            $query_for_g = "SELECT * from bookingsgroceries WHERE card_id='$gro_card' ORDER BY st_sec desc limit 1;";
             $last_booking_g = $conn->query($query_for_g);
             if(!$last_booking_g){
                 die("failed grocery and liquor booking");
@@ -369,20 +366,16 @@
             $last_booking_g = $last_booking_g->fetch_assoc();
 
             $last_date_g = $last_booking_g["st_sec"];
-
             $difference_g = ($date_of_booking-$last_date_g)/86400;
-            // echo "1456. " .$difference_g ."<br>";
-
             $difference_g = abs((int)$difference_g);
+       
             $_SESSION['groceryliquor_fail']=false;
 
             if($difference_g<=10){
                 $_SESSION["groceriesliquor_fail"] = true;
             }
-            //end groceries verification
-
-            //checking liquor 
-            $query_for_l = "SELECT * from bookingsLiquor WHERE card_id='$liq_card' ORDER BY st_sec desc limit 1;";
+            //checking liquor_card
+            $query_for_l = "SELECT * from bookingsliquor WHERE card_id='$liq_card' ORDER BY st_sec desc limit 1;";
             $last_booking_l = $conn->query($query_for_l);
             if(!$last_booking_l){
                 die("failed grocery and liquor booking");
@@ -394,13 +387,13 @@
 
             $difference_l = ($date_of_booking-$last_date_l)/86400;
 
-            $difference_l = abs((int)$difference_l);
+            $difference_l = abs((int)$difference_g);
+
             $_SESSION['groceryliquor_fail']=false;
 
             if($difference_l<=10){
                 $_SESSION["groceriesliquor_fail"] = true;
             }
-            //end liquor verification
 
             $current_year = date("Y",strtotime('today'));
 
@@ -456,18 +449,7 @@
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
             else {
-                if($difference_gl==0){
-                    $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_gl);
-
-                }
-                if($difference_g==4) {
-                    $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_g);
-
-                } 
-                else {
-                    $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_l);
-
-                }
+                $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',($last_date_gl ||$last_date_l||$last_date_g));
             }
         }
 

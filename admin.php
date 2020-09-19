@@ -38,7 +38,10 @@
         if($shop=="Groceries"){
             $table_name = "calendarGroceries";
         }
-        else{
+        else if($shop=="Groceries and Liquor") {
+            $table_name = "calendargroceriesliquor";
+        }
+        else if($shop=="Liquor"){
             $table_name = "calendarLiquor";
         }
         $query = "UPDATE $table_name SET status='".$status."', max_limit='".$limit."' , counters='".$counters."' WHERE date= '".$newformat."'";
@@ -113,6 +116,7 @@
                                     <select class="form-control" id="shop" name="shop" required>
                                         <option>Groceries</option>
                                         <option>Liquor</option>
+                                        <option>Groceries and Liquor</option>
                                     </select>
                                     </div>
                                 </div>
@@ -161,6 +165,7 @@
                                 <select class="form-control" id="shop" name="shop" required>
                                         <option>Groceries</option>
                                         <option>Liquor</option>
+                                        <option>Groceries and Liquor</option>
                                         
                                 </select><br>
                                 <button type="submit" class="btn btn-outline-success w-100">Generate Report</button>

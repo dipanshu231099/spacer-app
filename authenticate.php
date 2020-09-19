@@ -23,6 +23,7 @@
             // die('tera naam joker');
             $_SESSION['authenticated']=true;
             header("Location: admin.php");
+            $_SESSION['incorrect']=false;
         }
         else {
             $_SESSION['incorrect']=true;
@@ -67,14 +68,16 @@
                     <button type="submit" id='submit' class="btn btn-primary mb-2" style="width:100%">Login to Dashboard</button>
                     <a href="index.php"><button type="button" class="btn btn-success" style="width:100%;">Back to Home</button></a>
                 </form>
-                <?php
-                    if($_SESSION['incorrect'])
-                    echo
-                    '<div class="alert alert-danger" role="alert">
-                        Invalid username or password. <br>
-                        Thou Shall Not Pass.
-                    </div>';
-                ?>
+                <!-- <?php
+                // $a=$_SESSION['incorrect'];
+                // echo $a;
+                //     if($_SESSION['incorrect'])
+                //     echo '<div class="alert alert-danger" role="alert">
+                //     Invalid username or password. <br>
+                //     Thou Shall Not Pass.
+                // </div>';
+                    
+                ?> -->
             </div>
 
             <div class="col-sm-6 right-pane">

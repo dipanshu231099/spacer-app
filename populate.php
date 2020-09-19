@@ -92,6 +92,7 @@
 		$present_year = date("Y",strtotime("today"));
 		populate($present_year,$conn,"calendarGroceries");
 		populate($present_year,$conn,"calendarLiquor");
+		populate($present_year,$conn,"calendargroceriesliquor");
 		$_SESSION['message']= "New Calendar has been created. ";
 		$_SESSION['good']=true;
 		header("Location: admin_message.php");
