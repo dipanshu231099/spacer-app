@@ -1,6 +1,6 @@
 <?php
     session_start(); 
-   $config = include('config.php');
+    $config = include('config.php');
     $servername = $config["host"];
     $username = $config['username'];
     $password = $config['password'];
@@ -406,7 +406,7 @@
 
             $date = date("M d Y",strtotime($_POST["timestamp_groceriesliquor"]));
 
-            $cal_table_name = "calendargroceriesliquor";
+            $cal_table_name = "calendarGroceries";
 
             // to fetch from caendar of groceries and liquor
             $sql = "SELECT * FROM $cal_table_name WHERE date='$date';";
@@ -716,7 +716,7 @@
                                     $new_timestamp = date("h:ia M d Y",$new_tp);
                                     $current_year = date("Y",strtotime('today'));
                                     $date = date("M d Y",$new_tp);
-                                    $table= "calendargroceriesliquor";
+                                    $table= "calendarGroceries";
                                     $sql = "SELECT * FROM $table WHERE date='".$date."';";
                                     $result = ($conn->query($sql))->fetch_assoc();
                                     $max_limit = $result['max_limit'];
