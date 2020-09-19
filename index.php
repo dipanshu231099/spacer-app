@@ -315,10 +315,10 @@
             }
             else {
                 if($difference_Groceries==0) {
-                    $_SESSION['message_groceries']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_Groceries);
+                    $_SESSION['message_groceries']="AAYou must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_Groceries);
                 }
                 else {
-                    $_SESSION['message_groceries']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_grl);
+                    $_SESSION['message_groceries']="AA1You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_grl);
                 }
             }
         }
@@ -456,7 +456,8 @@
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
             else {
-                if($difference_gl==0){
+                /*if($difference_gl==0){
+
                     $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_gl);
 
                 }
@@ -467,7 +468,11 @@
                 else {
                     $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_l);
 
-                }
+                }*/
+
+            }
+            if($difference_gl<10 || $difference_g<10 || $difference_L<10 ){
+$_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request . <br>Last booking was scheduled for ". date('M d Y',max($last_date_l,$last_date_g , $last_date_gl));
             }
         }
 
