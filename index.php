@@ -103,7 +103,7 @@
             } 
            
             // GROLIQ VERIFICATION
-            $query_for_liq = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$liquor_card' ORDER BY st_sec desc limit 1;";
+            $query_for_liq = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$liquor_card' AND l=1 ORDER BY st_sec desc limit 1;";
 
             $last_booking_liq = $conn->query($query_for_liq);
 
@@ -141,13 +141,21 @@
 
             //queries to select from table for liquor
             $query_count = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time='".$timestamp_liquor."';";
+       // $query_count2 = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$timestamp_liquor."';";
+
             //$query_token = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time like '%".$date."';";
             $query_token = "SELECT max(token) as cnt from bookingsLiquor where start_time like '%".$date."';";
+            //$query_token2 = "SELECT max(token) as cnt from bookingsgroceriesliquor where start_time like '%".$date."';";
+
             // tells number of people already present with the exact timestamp (slot+date)
             $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
-            
+            //$count_timestamp2 = (($conn->query($query_count2))->fetch_assoc())['cnt'];
+            $count_timestamp = $count_timestamp + $count_timestamp2;
             // tells number of people already present on that day(only date)
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
+            //$count_token2 = (($conn->query($query_token2))->fetch_assoc())['cnt'];
+            //$count_token = max($count_token,$count_token2);
+
 
             $token = $count_token+1;
             $counter = (int)(($count_timestamp/$max_limit)) + 1;//extra liquor counters for liquor counter
@@ -221,7 +229,7 @@
                 $_SESSION["groceries_fail"] = true;
             }
             //vaeificaation groliq with gro
-            $query_for_grl = "SELECT * from bookingsgroceriesliquor WHERE card_id_groceries='$grocery_card' ORDER BY st_sec desc limit 1;";
+            $query_for_grl = "SELECT * from bookingsgroceriesliquor WHERE card_id_groceries='$grocery_card' AND g=1 ORDER BY st_sec desc limit 1;";
             echo "5gl. " .$query_for_grl ."<br>";
 
             $last_booking_grl = $conn->query($query_for_grl);
@@ -242,7 +250,7 @@
             $difference_grl = abs((int)$difference_grl);
             echo "9gl. " .$difference_grl ."<br>";
 
-            $_SESSION['grocery_fail']=false;
+            //$_SESSION['grocery_fail']=false;
 
             if($difference_grl<=10){
                 $_SESSION["groceries_fail"] = true;
@@ -276,20 +284,27 @@
 
 
             //queries to select from table for groceries
-            $query_count = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$timestamp_groceries."';";
+        $query_count = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$timestamp_groceries."';";
             echo "15. " .$query_count ."<br>";
-
+        $query_count2 = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$timestamp_groceries."';";
             //$query_token = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time like '%".$date."';";
             $query_token = "SELECT max(token) as cnt from bookingsGroceries where start_time like '%".$date."';";
+            $query_token2 = "SELECT max(token) as cnt from bookingsgroceriesliquor where start_time like '%".$date."';";
+
             echo "16. " .$query_token ."<br>";
 
             
             // tells number of people already present with the exact timestamp (slot+date)
             $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
+            $count_timestamp2 = (($conn->query($query_count2))->fetch_assoc())['cnt'];
             echo "17. " .$count_timestamp ."<br>";
 
             // tells number of people already present on that day(only date)
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
+            $count_token2 = (($conn->query($query_token2))->fetch_assoc())['cnt'];
+
+            $count_timestamp = $count_timestamp + $count_timestamp2;
+            $count_token = max($count_token , $count_token2);
 
             $token = $count_token+1;
 
@@ -339,10 +354,10 @@
 
            
             //checking groceries and liquor
-            $query_for_gl = "SELECT * from bookingsgroceriesliquor WHERE card_id_groceries='$gro_card' AND card_id_liquor='$liq_card' ORDER BY st_sec desc limit 1;";
+            $query_for_gl = "SELECT * from bookingsgroceriesliquor WHERE card_id_groceries='$gro_card' AND card_id_liquor='$liq_card' AND g=1 AND l=1 ORDER BY st_sec desc limit 1;";
             $last_booking_gl = $conn->query($query_for_gl);
             if(!$last_booking_gl){
-                die("failed grocery and liquor booking");
+                die("fdfailed grocery and liquor booking");
             }
 
             $last_booking_gl = $last_booking_gl->fetch_assoc();
@@ -361,43 +376,59 @@
 
            //checking groceries 
             $query_for_g = "SELECT * from bookingsGroceries WHERE card_id='$gro_card' ORDER BY st_sec desc limit 1;";
+$query_for_g2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_groceries='$gro_card' AND g=1 ORDER BY st_sec desc limit 1;";
             $last_booking_g = $conn->query($query_for_g);
-            if(!$last_booking_g){
-                die("failed grocery and liquor booking");
+            $last_booking_g2 = $conn->query($query_for_g2);
+            if(!$last_booking_g || !$last_booking_g2){
+                die("$query_for_g2");
             }
 
             $last_booking_g = $last_booking_g->fetch_assoc();
+            $last_booking_g2 = $last_booking_g2->fetch_assoc();
 
             $last_date_g = $last_booking_g["st_sec"];
-
+            $last_date_g2 = $last_booking_g2["st_sec"];
+            $last_date_g = max($last_date_g , $last_date_g2);
             $difference_g = ($date_of_booking-$last_date_g)/86400;
             // echo "1456. " .$difference_g ."<br>";
 
             $difference_g = abs((int)$difference_g);
             $_SESSION['groceryliquor_fail']=false;
-
+            $grocery_fail = 0;
             if($difference_g<=10){
-                $_SESSION["groceriesliquor_fail"] = true;
+                //$_SESSION["groceriesliquor_fail"] = true;
+                $grocery_fail = 1; 
             }
             //end groceries verification
 
             //checking liquor 
             $query_for_l = "SELECT * from bookingsLiquor WHERE card_id='$liq_card' ORDER BY st_sec desc limit 1;";
+$query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$liq_card' AND l=1 ORDER BY st_sec desc limit 1;";
+            $liquor_fail = 0;
             $last_booking_l = $conn->query($query_for_l);
-            if(!$last_booking_l){
+            $last_booking_l2 = $conn->query($query_for_l2);
+
+            if(!$last_booking_l || !$last_booking_l2){
                 die("failed grocery and liquor booking");
             }
 
             $last_booking_l = $last_booking_l->fetch_assoc();
+            $last_booking_l2 = $last_booking_l2->fetch_assoc();
 
             $last_date_l = $last_booking_l["st_sec"];
-
+            $last_date_l2 = $last_booking_l2["st_sec"];
+            $last_date_l = max($last_date_l , $last_date_l2);
             $difference_l = ($date_of_booking-$last_date_l)/86400;
 
             $difference_l = abs((int)$difference_l);
-            $_SESSION['groceryliquor_fail']=false;
+            //$_SESSION['groceryliquor_fail']=false;
 
             if($difference_l<=10){
+                //$_SESSION["groceriesliquor_fail"] = true;
+                $liquor_fail = 1;
+
+            }
+            if($grocery_fail==1 && $liquor_fail==1){
                 $_SESSION["groceriesliquor_fail"] = true;
             }
             //end liquor verification
@@ -424,14 +455,21 @@
             //queries to select from table for groceries and liquor
            
             $query_count = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$timestamp_gl."';";
+            $query_count2 = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$timestamp_gl."';";
             //$query_token = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time like '%".$date."';";
             $query_token = "SELECT max(token) as cnt from bookingsgroceriesliquor where start_time like '%".$date."';";
+            $query_token2 = "SELECT max(token) as cnt from bookingsGroceries where start_time like '%".$date."';";
         
             
             // tells number of people already present with the exact timestamp (slot+date)
             $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
+            $count_timestamp2 = (($conn->query($query_count2))->fetch_assoc())['cnt'];
+
             // tells number of people already present on that day(only date)
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
+            $count_token2 = (($conn->query($query_token2))->fetch_assoc())['cnt'];
+            $count_timestamp  = $count_timestamp2 + $count_timestamp;
+            $count_token  = max($count_token , $count_token2);
 
             $token = $count_token+1;
            
@@ -442,7 +480,15 @@
             }
 
             if(!$_SESSION['groceriesliquor_fail']){
-                $insert_sql = "INSERT INTO bookingsgroceriesliquor VALUES ('$gro_card','$liq_card', '$name', '$timestamp_gl', '$contact', '$counter', '$rank', '$card_name', $token, $date_of_booking);";
+                $g1 = 1;
+                $g2 = 1;
+                if($grocery_fail==1){
+                    $g1 = 0;
+                }
+                if($liquor_fail==1){
+                    $g2 = 0;
+                }
+                $insert_sql = "INSERT INTO bookingsgroceriesliquor VALUES ('$gro_card','$liq_card', '$name', '$timestamp_gl', '$contact', '$counter', '$rank', '$card_name', $token, $date_of_booking,$g1,$g2);";
                 echo "21. " .$insert_sql ."<br>";
 
                 $result = $conn->query($insert_sql);
@@ -456,6 +502,7 @@
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
             else {
+                $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a requesttt .";
                 /*if($difference_gl==0){
 
                     $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_gl);
@@ -472,7 +519,8 @@
 
             }
             if($difference_gl<10 || $difference_g<10 || $difference_L<10 ){
-$_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request . <br>Last booking was scheduled for ". date('M d Y',max($last_date_l,$last_date_g , $last_date_gl));
+//$_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request . <br>Last booking was scheduled for ". date('M d Y',max($last_date_l,$last_date_g , $last_date_gl));
+                
             }
         }
 
@@ -630,7 +678,12 @@ $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after y
                                     }
                                     if(isWorkingHour($new_tp,$conn,"Liquor")){
                                         $sql = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time='".$new_timestamp."';";
+                                        //$sql2 = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$new_timestamp."';";
+
                                         $results = (($conn->query($sql))->fetch_assoc())['cnt'];
+                                        //$results2 = (($conn->query($sql2))->fetch_assoc())['cnt'];
+                                        //$results = $results + $results2;
+
                                         if($results<$max_limit*$total_counters){
                                             echo "<option>". $new_timestamp ."</option>";
                                             $slots--;
@@ -682,7 +735,11 @@ $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after y
 
                                     if(isWorkingHour($new_tp,$conn,"Groceries")){
                                         $sql = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$new_timestamp."';";
+        $sql2 = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$new_timestamp."' AND g=1;";
+
                                         $results = (($conn->query($sql))->fetch_assoc())['cnt'];
+                                        $results2 = (($conn->query($sql2))->fetch_assoc())['cnt'];
+                                        $results = $results + $results2;
                                         if($results<$max_limit*$total_counters){
                                             echo "<option>". $new_timestamp ."</option>";
                                             $slots--;
@@ -733,7 +790,12 @@ $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after y
 
                                     if(isWorkingHour($new_tp,$conn,"groceriesliquor")){
                                         $sql = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$new_timestamp."';";
+                                        $sql2 = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$new_timestamp."';";
+
                                         $results = (($conn->query($sql))->fetch_assoc())['cnt'];
+                                        $results2 = (($conn->query($sql2))->fetch_assoc())['cnt'];
+                                        $results = $results + $results2;
+
                                         if($results<$max_limit*$total_counters){
                                             echo "<option>". $new_timestamp ."</option>";
                                             $slots--;
