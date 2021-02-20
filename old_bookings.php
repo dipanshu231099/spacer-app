@@ -33,6 +33,15 @@
             die($sql_query_for_grocery);
             }
         }
+        if(isset($_POST['groceriesliquor'])){
+            $grocery_card = $_POST["grocery_card"];
+            $liquor_card = $_POST["liquor_card"];
+            $sql_query_for_groceriesliquor = "select * from bookingsgroceriesliquor where card_id_groceries='".$grocery_card."' and card_id_liquor='".$liquor_card."';";
+            $results_groceriesliquor = $conn->query($sql_query_for_groceriesliquor);
+            if(!$results_groceriesliquor){
+                die($sql_query_for_groceriesliquor);
+                }
+            }
         
         
 
@@ -83,6 +92,21 @@
 
                             <label for="grocery_card" class="col-form-label">Grocery card number</label>
                             <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="Grocery card number. This will be used to verify you." disabled required>
+                            <div class="invalid-feedback">
+                                Must be 19 characters long.
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check text-center">
+                                <input type="checkbox" class="form-check-input" name="groceriesliquor" id='groceriesliquor'>
+                                <label class="form-check-label" for="groceriesliquor">Groceries and Liquor</label>
+                            </div>
+                            <br>
+
+                            <label for="grocery_card" class="col-form-label">Grocery card number</label>
+                            <input type="text" id='grocery_card' class="form-control" name="grocery_card" placeholder="Grocery card number. This will be used to verify you." disabled required>
+                            <label for="liquor_card" class="col-form-label">Liquor card number</label>
+                            <input type="text" id='liquor_card' class="form-control" name="liquor_card" placeholder="Liquor card number. This will be used to verify you." disabled required>
                             <div class="invalid-feedback">
                                 Must be 19 characters long.
                             </div>
@@ -152,6 +176,38 @@
                                 </tr>
                             <?php } ?>
                         </tbody>
+                    </table>
+                    <?php } ?>
+                    <?php if(isset($_POST['groceriesliquor'])){ ?>
+                    <hr>
+                    <h3 class='text-center'>Grocery and Liquor Bookings</h3>
+                    <table class='table table-dark table-hover'>
+                        <thead>
+                            <tr>
+                                <th scope="col">card_id_groceries</th>
+                                <th scope="col">card_id_liquor</th>
+                                <th scope="col">date and time</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while($row1 = $results_groceriesliquor->fetch_assoc()){ ?>
+                                <tr>
+                                    <td><?php echo $row2['card_id_groceries']; ?></td>
+                                    <td><?php echo $row2['card_id_liquor']; ?></td>
+                                    <td><?php echo $row2['start_time']; ?></td>
+                                    <td>
+                                        <form method="post" action="b_process.php"> 
+                                            <input type="hidden" name="card_number" value="<?php echo $row2['card_id_groceris']; ?>"/>
+                                            <input type="hidden" name="card_number" value="<?php echo $row2['card_id_liquor']; ?>"/>
+                                            <input type="hidden" name="start_time" value="<?php echo $row2['start_time']; ?>"/>
+                                            <input type="hidden" name="op_table" value="bookingsgroceriesliquor">
+                                            <button <?php if(strtotime(date("h:i:sa"))>strtotime($row2['start_time'])){echo "disabled";}?> type='submit' class='btn btn-primary w-100'>Cancel</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
                     </table>
                     <?php } ?>
 

@@ -16,6 +16,7 @@
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
+    $shop = $_POST["shop"];
 ?>
 
 <?php
@@ -27,6 +28,10 @@
         $table_name = "";
         if($shop=="Groceries"){
             $table_name = "bookingsGroceries";
+        }
+        else if($shop=="Both")
+        {
+            ($table_name = "bookingsgroceries" && $table_name = "bookingsLiquor");
         }
         else{
             $table_name = "bookingsLiquor";

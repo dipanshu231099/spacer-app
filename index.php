@@ -54,6 +54,7 @@
     $rank = $name = $contact = $timestamp = "";
     $liquor = false;
     $groceries = false;
+    $groceriesliquor = false;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //POST variables here------
@@ -66,8 +67,8 @@
 
         $contact = test_input($_POST["contact"]);
 
-        $_SESSION['liquor']=$_SESSION['groceries']=false;
-        $_SESSION['message_groceries']=$_SESSION['message_liquor']=NULL;
+        $_SESSION['liquor']=$_SESSION['groceries']=$_SESSION['groceriesliquor']=false;
+        $_SESSION['message_groceries']=$_SESSION['message_liquor']=$_SESSION['message_groceriesliquor']=NULL;
 
         if(isset($_POST['liquor']))
         {
@@ -230,6 +231,97 @@
             }
             else {
                 $_SESSION['message_groceries']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_Groceries);
+            }
+        }
+        if(isset($_POST['both'])){
+
+            $_SESSION['both']=true;
+
+            $grocery_card = test_input($_POST['gro_card']);
+            $liquor_card = test_input($_POST['liq_card']);
+            $timestamp_groceriesliquor = $_POST["timestamp_groceriesliquor"];
+            $endTime_groceriesliquor = date("h:ia M d Y",strtotime("+30 minutes", strtotime($_POST["timestamp_groceriesliquor"])));
+
+            $date_of_booking = strtotime(date("M d Y" , strtotime($timestamp_groceriesliquor)));
+
+            $query_for_gro = "SELECT * from bookingsGroceriesliquor WHERE card_id_groceries='$grocery_card' and card_id_liquor='$liquor_card' ORDER BY st_sec desc limit 1;";
+
+            $last_booking_groceriesliquor = $conn->query($query_for_groceriesliquor);
+
+
+            if(!$last_booking_groceriesliquor ){
+                die("failed grocery and liquor booking");
+            }
+
+            $last_booking_groceriesliquor = $last_booking_groceriesliquor->fetch_assoc();
+
+            $last_date_groceriesliquor = $last_booking_groceriesliquor["st_sec"];
+
+            $difference_groceriesliquor = ($date_of_booking-$last_date_groceriesliquor)/86400;
+
+            $difference_groceriesliquor = abs((int)$difference_groceriesliquor);
+
+
+            $_SESSION['groceriesliquor_fail']=false;
+
+            if($difference_groceriesliquor<=10){
+                $_SESSION["groceriesliquor_fail"]  = true;
+            }
+
+            $current_year = date("Y",strtotime('today'));
+            $date = date("M d Y",strtotime($_POST["timestamp_groceriesliquor"]));
+
+            $cal_table_name = "calendargroceriesliquor";
+
+            // to fetch from caendar of groceries
+            $sql = "SELECT * FROM $cal_table_name WHERE date='$date';";
+
+            // catching the results
+            $result = ($conn->query($sql))->fetch_assoc();
+            $max_limit = $result['max_limit'];
+            $total_counters = $result['counters'];
+            
+            //query to get  number of liqour counters
+            $qqq = "SELECT counters FROM calendarLiquor WHERE date='$date';";
+            $qqq_result = ($conn->query($qqq))->fetch_assoc();
+            $liquor_counters= $qqq_result['counters'];
+
+            //queries to select from table for groceries
+            $query_count = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$timestamp_groceriesliquor."';";
+            //$query_token = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time like '%".$date."';";
+            $query_token = "SELECT max(token) as cnt from bookingsgroceriesliquor where start_time like '%".$date."';";
+
+            
+            // tells number of people already present with the exact timestamp (slot+date)
+            $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
+            
+            // tells number of people already present on that day(only date)
+            $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
+
+            $token = $count_token+1;
+            $counter = (int)(($count_timestamp/$max_limit)) + 1 + $liquor_counters;//extra +1 for liquor counter
+            if($counter - $liquor_counters >$total_counters){
+                die("sorry the spots just got filled");
+            }
+
+
+
+            if(!$_SESSION['groceriesliquor_fail'] ){
+                $insert_sql_groceriesliquor = "INSERT INTO bookingsgroceriesliquor VALUES ('$grocery_card', $liquor_card', '$name', '$timestamp_groceriesliquor', '$contact', '$counter', '$rank', '$card_name', $token, $date_of_booking);";
+                $result_groceriesliquor = $conn->query($insert_sql_groceriesliquor);
+
+                if(!$result_groceriesliquor){
+                    die("Error processing the request.");
+                }
+                $_SESSION['message_groceriesliquor']="Your request to buy Groceries and Liquor was successful.<br><br>
+                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_groceriesliquor)) ." and ". date('H:ia',strtotime($endTime_groceriesliquor))." on ".date('M d Y',strtotime($timestamp_groceriesliquor))."<br> at counter number: $counter <br>Your token number: $token. <br>
+                Grocery Card number: $grocery_card <br>
+                Liquor Card number: $liquor_card <br>
+                Kindly collect your items within this time frame. <br>
+                Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
+            }
+            else {
+                $_SESSION['message_groceriesliquor']="You must wait for at least 10 days after your previous visit, before making a request to buy Grocery and Liquor. <br>Last booking was scheduled for ". date('M d Y',$last_date_groceriesliquor);
             }
         }
         header("Location: message.php");
@@ -405,7 +497,7 @@
                             </div>
                         </div>
 
-                        <div class="col">
+                        <div class="col" style='border-right:solid 1px black'>
                             <div class="form-check text-center">
                                 <input type="checkbox" class="form-check-input" name="groceries" id='groceries'>
                                 <label class="form-check-label" for="groceries"><b>Groceries</b></label>
@@ -457,6 +549,60 @@
                                 Must be 19 characters long.
                             </div>
                         </div>
+                        <div class="col">
+                            <div class="form-check text-center">
+                                <input type="checkbox" class="form-check-input" name="groceriesliquor" id='groceriesliquor'>
+                                <label class="form-check-label" for="groceriesliquor"><b>Groceries and Liquor</b></label>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                            <label for="visit_time"><b>List of time windows available for groceries and liquor</b></label>
+                            <select class="form-control" id="dropdown_groceriesliquor" name="timestamp_groceriesliquor" disabled>
+                            <?php
+                                date_default_timezone_set("Asia/Kolkata");
+                                $present_time = strtotime('next hour');
+                                $presnt_minute = (int)date("i",$present_time);
+                                $present_time = strtotime("-$presnt_minute minutes",$present_time);
+                                $new_tp = $present_time;
+
+
+                                $slots = 20;
+                                while($slots>0){
+                                    $new_timestamp = date("h:ia M d Y",$new_tp);
+                                    $current_year = date("Y",strtotime('today'));
+                                    $date = date("M d Y",$new_tp);
+                                    $table= "calendargroceriesliquor";
+                                    $sql = "SELECT * FROM $table WHERE date='".$date."';";
+                                    $result = ($conn->query($sql))->fetch_assoc();
+                                    $max_limit = $result['max_limit'];
+                                    $total_counters = $result['counters'];
+
+                                    while(isHoliday($new_tp,$conn,"groceriesliquor")){
+                                        $new_tp = strtotime('30 minutes',$new_tp);
+                                    }
+
+                                    if(isWorkingHour($new_tp,$conn,"groceriesliquor")){
+                                        $sql = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$new_timestamp."';";
+                                        $results = (($conn->query($sql))->fetch_assoc())['cnt'];
+                                        if($results<$max_limit*$total_counters){
+                                            echo "<option>". $new_timestamp ."</option>";
+                                            $slots--;
+                                        }
+                                    }
+                                    $new_tp = strtotime("+30 minutes",$new_tp);
+                                }
+                            ?> 
+                            </select>
+                            </div>
+                            <label for="gro_card" class="col-form-label"><b>Grocery card number</b></label>
+                            <input type="text" id='gro_card' class="form-control" name="gro_card" placeholder="Grocery card number. This will be used to verify you." disabled required>
+                            <label for="liq_card" class="col-form-label"><b>Liquor card number</b></label>
+                            <input type="text" id='liq_card' class="form-control" name="liq_card" placeholder="Liquor card number. This will be used to verify you." disabled required>
+                            <div class="invalid-feedback">
+                                Must be 19 characters long.
+                            </div>
+                        </div>
+                        
 
                     </div>
                     <hr>

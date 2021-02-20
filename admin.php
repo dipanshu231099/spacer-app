@@ -38,6 +38,9 @@
         if($shop=="Groceries"){
             $table_name = "calendarGroceries";
         }
+        else if($shop=="groceriesliquor") {
+            $table_name = "calendargroceriesliquor";
+        }
         else{
             $table_name = "calendarLiquor";
         }
@@ -113,6 +116,7 @@
                                     <select class="form-control" id="shop" name="shop" required>
                                         <option>Groceries</option>
                                         <option>Liquor</option>
+                                        <option>Both</option>
                                     </select>
                                     </div>
                                 </div>
@@ -161,6 +165,7 @@
                                 <select class="form-control" id="shop" name="shop" required>
                                         <option>Groceries</option>
                                         <option>Liquor</option>
+                                        <option>Both</option>
                                         
                                 </select><br>
                                 <button type="submit" class="btn btn-outline-success w-100">Generate Report</button>

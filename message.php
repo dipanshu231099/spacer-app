@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION['liquor']==false && $_SESSION['groceries']==false){
+    if($_SESSION['liquor']==false && $_SESSION['groceries']==$_SESSION['groceriesliquor']==false){
       header("Location: index.php");
       exit();
     }
@@ -34,6 +34,13 @@
               <p>
                   <?php
                     echo $_SESSION['message_groceries'];
+                  ?>
+              </p>
+          </div>
+          <div class="alert <?php echo ((!$_SESSION['groceriesliquor_fail'])?"alert-success":"alert-danger") ?>" style="<?php echo (($_SESSION['groceriesliquor']==false)?"display:none":" ") ?>" role="alert">
+              <p>
+                  <?php
+                    echo $_SESSION['message_groceriesliquor'];
                   ?>
               </p>
           </div>
