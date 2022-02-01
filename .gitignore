@@ -2,4 +2,5 @@
 *config*
 *fake.php
 *.zip*
+*DS_Store*
 config_prod.php

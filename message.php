@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION['liquor']==false && $_SESSION['groceries']==false){
+    if($_SESSION['liquor']==false && $_SESSION['groceries']==false && $_SESSION['groceriesliquor']==false){
       header("Location: index.php");
       exit();
     }
@@ -37,6 +37,13 @@
                   ?>
               </p>
           </div>
+          <div class="alert <?php echo ((!$_SESSION['groceriesliquor_fail'])?"alert-success":"alert-danger") ?>" style="<?php echo (($_SESSION['groceriesliquor']==false)?"display:none":" ") ?>" role="alert">
+              <p>
+                  <?php
+                    echo $_SESSION['message_groceriesliquor'];
+                  ?>
+              </p>
+          </div>
           <div class="row">
             <div class="col">
               <a href="index.php"><button class="btn btn-info mb-2 w-100">Home</button></a>
@@ -51,7 +58,7 @@
 </body>
 <!-- Footer -->
 <footer class="page-footer font-small blue">
-  <div class="footer-copyright text-center py-2">© 2020 Copyright:
+  <div class="footer-copyright text-center py-2">© 2021 Copyright:
     <a href="acknowledgement.php">Team Page</a>
   </div>
 </footer>

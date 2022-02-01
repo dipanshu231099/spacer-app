@@ -23,18 +23,14 @@
     <div class="row text-center">
         <!-- Team item -->
         <div class="col-xl-4 col-sm-6 mb-5">
-            <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/major_new.jpg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                <h5 class="mb-0">Maj KS Thakur (retd)</h5><span class="small text-uppercase text-muted">Manager</span>
-                <br>
-                <span class="small text-uppercase text-muted">ESM CSD <br> Mandi<br> </span>
-
+            <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/ishwar.jpg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Ishwar Prajapati</h5><span class="small text-uppercase text-muted">Application Developer</span><br>
+                <span class="small text-uppercase text-muted">Operations Engineer <br> iiots</span>
                 <ul class="social mb-0 list-inline mt-3">
-                    <li class="list-inline-item"><a href="" class="social-link"><i class="fa fa-suitcase"></i></a></li>
+                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/ishwar-chandora-b8617319a/" class="social-link"><i class="fa fa-linkedin"></i></a></li>
                 </ul>
             </div>
-        </div>
-       
-
+        </div><!-- End -->
         <!-- Team item -->
         <div class="col-xl-4 col-sm-6 mb-5">
             <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/dipanshu.png" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
@@ -46,9 +42,8 @@
                 </ul>
             </div>
         </div><!-- End -->
-
-        <!-- Team item -->
-        <div class="col-xl-4 col-sm-6 mb-5">
+          <!-- Team item -->
+          <div class="col-xl-4 col-sm-6 mb-5">
             <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/ayushman.jpg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                 <h5 class="mb-0">Ayushman</h5><span class="small text-uppercase text-muted">Application Developer</span>
                 <br>
@@ -58,18 +53,20 @@
                 </ul>
             </div>
         </div><!-- End -->
-
         <!-- Team item -->
-        <div class="col-xl-6 col-sm-6 mb-5">
-            <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/shruti.png" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                <h5 class="mb-0">Shruti Kaushik</h5><span class="small text-uppercase text-muted">Guidance</span><br>
-                <span class="small text-uppercase text-muted">PhD <br> IIT Mandi</span>
+        <div class="col-xl-4 col-sm-6 mb-5">
+            <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/major_new.jpg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Maj KS Thakur (retd)</h5><span class="small text-uppercase text-muted">Manager</span>
+                <br>
+                <span class="small text-uppercase text-muted">ESM CSD <br> Mandi<br> </span>
+
                 <ul class="social mb-0 list-inline mt-3">
-                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/shruti-kaushik-799977b8/" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                    <li class="list-inline-item"><a href="" class="social-link"><i class="fa fa-suitcase"></i></a></li>
                 </ul>
             </div>
-        </div><!-- End -->
-        <div class="col-xl-6 col-sm-6 mb-5">
+        </div>
+       
+        <div class="col-xl-4 col-sm-6 mb-5">
             <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/varun.jpeg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
                 <h5 class="mb-0">Varun Dutt</h5><span class="small text-uppercase text-muted">Mentor</span>
                 <br>
@@ -80,6 +77,26 @@
                 </ul>
             </div>
         </div>
+
+
+       
+        
+        <!-- Team item -->
+        <div class="col-xl-4 col-sm-6 mb-5">
+            <div class="bg-white rounded shadow-sm py-5 px-4"><img src="public/shruti.png" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Shruti Kaushik</h5><span class="small text-uppercase text-muted">Guidance</span><br>
+                <span class="small text-uppercase text-muted">PhD <br> IIT Mandi</span>
+                <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item"><a href="https://www.linkedin.com/in/shruti-kaushik-799977b8/" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div><!-- End -->
+
+         
+
+       
+
+        
 
     </div>
 

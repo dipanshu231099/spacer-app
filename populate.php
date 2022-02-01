@@ -41,8 +41,25 @@
     	$first=mktime(0, 0, 0, 1, 1, $year);
 		$temp = $first;
 		
-		$max_counters=($table_name=="calendarGroceries")?2:1;
-		$max_limit=($table_name=="calendarGroceries")?4:15;
+		if($table_name=="calendarLiquor") {
+		    $max_counters=1;
+		} elseif ($table_name=="calendarGroceriesLiquor") {
+		     $max_counters=2;
+		} elseif ($table_name=="calendarGroceries") {
+		    $max_counters=2;
+		}
+			if($table_name=="calendarLiquor") {
+		    $max_limit=6;
+		} elseif ($table_name=="calendarGroceriesLiquor") {
+		     $max_limit=4;
+		} elseif ($table_name=="calendarGroceries") {
+		    $max_limit=5;
+		}
+// 		$max_counters=($table_name=="calendarLiquor")?1:($table_name=="calendarGroceriesLiquor")?2:2;
+// 		$max_limit=($table_name=="calendarLiquor")?6:($table_name=="calendarGroceriesLiquor")?4:5;
+// 		$max_counters=($table_name=="calendarLiquor")?1:2;
+// 		$max_limit=($table_name=="calendarLiquor")?6:5;
+		
     	while($flag==1){
 	    	if(date("Y",$temp)==(string)$year+2){
 	    		$flag=0;
@@ -91,7 +108,9 @@
 		echo "Reforming present year's table data. Please wait.";
 		$present_year = date("Y",strtotime("today"));
 		populate($present_year,$conn,"calendarGroceries");
+		populate($present_year,$conn,"calendarGroceriesLiquor");
 		populate($present_year,$conn,"calendarLiquor");
+		//populate($present_year,$conn,"calendarGroceries");
 		$_SESSION['message']= "New Calendar has been created. ";
 		$_SESSION['good']=true;
 		header("Location: admin_message.php");

@@ -1,43 +1,59 @@
 console.log('connected')
 var user_name = document.getElementById('user_name')
 var dropdown_groceries = document.getElementById('dropdown_groceries')
+var dropdown_groceriesliquor = document.getElementById('dropdown_groceriesliquor')
 var dropdown_liquor = document.getElementById('dropdown_liquor')
 var contact = document.getElementById('contact_number')
 var button = document.getElementById('submit')
 var grocery = document.getElementById('groceries')
 var liquor = document.getElementById('liquor')
+var groceriesliquor = document.getElementById('groceriesliquor')
 var liquor_card = document.getElementById('liquor_card')
 var grocery_card = document.getElementById('grocery_card')
+var liq_card = document.getElementById('liq_card')
+var gro_card = document.getElementById('gro_card')
 var card_name = document.getElementById('card_name')
 
-user_name.addEventListener('keyup', logKey_name);
-user_name.addEventListener('click', logKey_name);
 
-contact.addEventListener('keyup', logKey_number);
-contact.addEventListener('click', logKey_number);
+
+
+
 
 
 document.addEventListener('keyup', logKey_submit);
 document.addEventListener('click', logKey_submit);
 
-card_name.addEventListener('keyup',logKey_card_name);
-card_name.addEventListener('click',logKey_card_name);
+
 
 grocery.addEventListener('keyup',logKey_dropdown_groceries);
 grocery.addEventListener('click',logKey_dropdown_groceries);
 grocery.addEventListener('keyup',logKey_gcard);
 grocery.addEventListener('click',logKey_gcard);
 
+
 liquor.addEventListener('keyup',logKey_dropdown_liquor);
 liquor.addEventListener('click',logKey_dropdown_liquor);
 liquor.addEventListener('keyup',logKey_lcard);
 liquor.addEventListener('click',logKey_lcard);
+
+
+groceriesliquor.addEventListener('keyup',logKey_dropdown_groceriesliquor);
+groceriesliquor.addEventListener('click',logKey_dropdown_groceriesliquor);
+groceriesliquor.addEventListener('keyup',logKey_glcard);
+groceriesliquor.addEventListener('click',logKey_glcard);
 
 grocery_card.addEventListener('keyup',logKey_gcard);
 grocery_card.addEventListener('click',logKey_gcard);
 
 liquor_card.addEventListener('keyup',logKey_lcard);
 liquor_card.addEventListener('click',logKey_lcard);
+
+
+gro_card.addEventListener('keyup',logKey_glcard);
+gro_card.addEventListener('click',logKey_glcard);
+liq_card.addEventListener('keyup',logKey_glcard);
+liq_card.addEventListener('click',logKey_glcard);
+
 
 
 
@@ -101,6 +117,21 @@ function lcard(e){
     }
 }
 
+function glcard(e){
+    if(gro_card.value.length==17 && liq_card.value.length==17){
+        gro_card.classList.remove('is-invalid')
+        gro_card.classList.add('is-valid')
+        liq_card.classList.remove('is-invalid')
+        liq_card.classList.add('is-valid')
+    }
+    else{
+        gro_card.classList.remove('is-valid')
+        gro_card.classList.add('is-invalid')
+        liq_card.classList.remove('is-valid')
+        liq_card.classList.add('is-invalid')
+    }
+}
+
 function logKey_number(e){
     if(checkMobile(contact.value)){
         contact.classList.remove('is-invalid')
@@ -157,12 +188,37 @@ function logKey_lcard(e){
     }
 }
 
+function logKey_glcard(e){
+    if(groceriesliquor.checked){
+        if(gro_card.value.length==19 && liq_card.value.length==19){
+            gro_card.classList.remove('is-invalid')
+            gro_card.classList.add('is-valid')
+            liq_card.classList.remove('is-invalid')
+            liq_card.classList.add('is-valid')
+        }
+        else {
+            gro_card.classList.remove('is-invalid')
+            gro_card.classList.add('is-valid')
+            liq_card.classList.remove('is-valid')
+            liq_card.classList.add('is-invalid')
+            
+        }
+    }
+    else {
+        gro_card.classList.remove('is-invalid')
+        gro_card.classList.remove('is-valid')
+        liq_card.classList.remove('is-invalid')
+        liq_card.classList.add('is-valid')
+    }
+}
+
+
 function logKey_submit(e){
-    if(checkMobile(contact.value) && checkAlpha(user_name.value)
-     && (liquor.checked || grocery.checked)
+    if( (liquor.checked || grocery.checked || groceriesliquor.checked)
      && !(liquor.checked && liquor_card.value.length!=19)
      && !(grocery.checked && grocery_card.value.length!=19)
-     && checkAlpha(card_name.value)){
+     && !(groceriesliquor.checked && gro_card.value.length!=19 && liq_card.value.length!=19)
+     ){
         button.disabled=false;
     }
     else {
@@ -172,23 +228,48 @@ function logKey_submit(e){
 
 function logKey_dropdown_groceries(e){
     if(grocery.checked){
-        dropdown_groceries.disabled=false;
+
         grocery_card.disabled=false;
+        liquor.disabled=true;
+        groceriesliquor.disabled=true;
     }
     else{
-        dropdown_groceries.disabled=true;
+
         grocery_card.disabled=true;
+        liquor.disabled=false;
+        groceriesliquor.disabled=false;
     }
 }
 
 function logKey_dropdown_liquor(e){
     if(liquor.checked){
-        dropdown_liquor.disabled=false;
+        
         liquor_card.disabled=false;
+        grocery.disabled=true;
+        groceriesliquor.disabled=true;
     }
     else {
         liquor_card.disabled=true;
-        dropdown_liquor.disabled=true;
+        grocery.disabled=false;
+        groceriesliquor.disabled=false;
+        
+    }
+}
+
+function logKey_dropdown_groceriesliquor(e){
+    if(groceriesliquor.checked){
+
+        gro_card.disabled=false;
+        liq_card.disabled=false;
+        liquor.disabled=true;
+        grocery.disabled=true;
+    }
+    else{
+
+        gro_card.disabled=true;
+        liq_card.disabled=true;
+        liquor.disabled=false;
+        grocery.disabled=false;
     }
 }
 

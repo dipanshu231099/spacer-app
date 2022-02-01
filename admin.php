@@ -33,15 +33,33 @@
 
         $t1 = (string)$year;
         $t2 = (string)($year+1);
+        $endH=15;
+        $endM=30;
         //$table_name = "calendar_".$t1."_".$t2;
         $table_name = "";
         if($shop=="Groceries"){
             $table_name = "calendarGroceries";
         }
-        else{
+        else if($shop=="Groceries and Liquor") {
+            $table_name = "calendarGroceriesLiquor";
+        }
+        else if($shop=="Liquor"){
             $table_name = "calendarLiquor";
         }
-        $query = "UPDATE $table_name SET status='".$status."', max_limit='".$limit."' , counters='".$counters."' WHERE date= '".$newformat."'";
+        
+        if($status=="half"){
+            $endH=13;
+            $endM=0;
+        }
+        else if($status=="close") {
+            $endH=0;
+            $endM=0;
+        }
+        else if($status=="full"){ 
+            $endH=15;
+            $endM=30;
+        }
+        $query = "UPDATE $table_name SET status='".$status."', endH='".$endH."', endM='".$endM."',max_limit='".$limit."' , counters='".$counters."' WHERE date= '".$newformat."'";
         $results = $conn->query($query);
         if(!$results){
             die("sf");
@@ -113,6 +131,7 @@
                                     <select class="form-control" id="shop" name="shop" required>
                                         <option>Groceries</option>
                                         <option>Liquor</option>
+                                        <option>Groceries and Liquor</option>
                                     </select>
                                     </div>
                                 </div>
@@ -161,6 +180,7 @@
                                 <select class="form-control" id="shop" name="shop" required>
                                         <option>Groceries</option>
                                         <option>Liquor</option>
+                                        <option>Groceries and Liquor</option>
                                         
                                 </select><br>
                                 <button type="submit" class="btn btn-outline-success w-100">Generate Report</button>
@@ -192,7 +212,7 @@
     <!-- Footer -->
     <footer class="page-footer font-small blue">
 
-    <div class="footer-copyright text-center py-2">© 2020 Copyright:
+    <div class="footer-copyright text-center py-2">© 2021 Copyright:
         <a href="acknowledgement.php">Team Page</a>
     </div>
 

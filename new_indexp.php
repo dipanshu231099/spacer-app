@@ -39,25 +39,10 @@
         $endH = $result['endH'];
         $endM = $result['endM'];
 
-        $date_s = 14;
-        $month_s = 6;
-        $year_s = 2021;
-        $raw_date_s = mktime(0,0,0,$month_s,$date_s,$year_s);
-        if(time()< $raw_date_s){
-            $endH = "13";
-            $endM = "30";
-        }
-
         $first_slot = date("Hi",strtotime("$startH:$startM"));
         $last_slot = date("Hi",strtotime("$endH:$endM -30 minutes"));
         
-        /*if(date("H",$tp)!="13"){
-            if($timestring>=$first_slot && $timestring<=$last_slot)return true;
-        }*/
-        if(time()< $raw_date_s){
-            if($timestring>=$first_slot && $timestring<=$last_slot)return true;
-        }
-        else if(date("H",$tp)!="13"){
+        if(date("H",$tp)!="13"){
             if($timestring>=$first_slot && $timestring<=$last_slot)return true;
         }
         return false;
@@ -156,17 +141,22 @@
 
             //queries to select from table for liquor
             $query_count = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time='".$timestamp_liquor."';";
-       
+       // $query_count2 = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$timestamp_liquor."';";
+
             //$query_token = "SELECT COUNT(*) as cnt from bookingsLiquor where start_time like '%".$date."';";
             $query_token = "SELECT max(token) as cnt from bookingsLiquor where start_time like '%".$date."';";
-            
+            //$query_token2 = "SELECT max(token) as cnt from bookingsgroceriesliquor where start_time like '%".$date."';";
+
             // tells number of people already present with the exact timestamp (slot+date)
             $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
+            //$count_timestamp2 = (($conn->query($query_count2))->fetch_assoc())['cnt'];
             $count_timestamp = $count_timestamp + $count_timestamp2;
-            
             // tells number of people already present on that day(only date)
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
-       
+            //$count_token2 = (($conn->query($query_token2))->fetch_assoc())['cnt'];
+            //$count_token = max($count_token,$count_token2);
+
+
             $token = $count_token+1;
             $counter = (int)(($count_timestamp/$max_limit)) + 1;//extra liquor counters for liquor counter
             if($counter>$total_counters){
@@ -180,7 +170,7 @@
                     die("Error processing the request.");
                 }
                 $_SESSION['message_liquor']="Your request to buy Liquor was successful.<br><br>
-                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_liquor)) ." and ". date('H:ia',strtotime($endTime_liquor))." on ".date('M d Y',strtotime($timestamp_liquor))."<br> at counter number: $counter <br>Your token number: $token. <br>
+                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:i',strtotime($timestamp_liquor)) ." and ". date('H:i',strtotime($endTime_liquor))." on ".date('M d Y',strtotime($timestamp_liquor))."<br> at counter number: $counter <br>Your token number: $token. <br>
                 Liquor Card number: $liquor_card <br>
                 Kindly collect your items within this time frame. <br>
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
@@ -287,7 +277,7 @@
             echo "13. " .$total_counters ."<br>";
 
             //query to get  number of liqour counters
-            $qqq = "SELECT counters FROM calendarGroceries WHERE date='$date';";
+            $qqq = "SELECT counters FROM calendarLiquor WHERE date='$date';";
             $qqq_result = ($conn->query($qqq))->fetch_assoc();
             $liquor_counters= $qqq_result['counters'];
             echo "14. " .$liquor_counters ."<br>";
@@ -296,18 +286,26 @@
             //queries to select from table for groceries
         $query_count = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$timestamp_groceries."';";
             echo "15. " .$query_count ."<br>";
+        $query_count2 = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$timestamp_groceries."';";
             //$query_token = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time like '%".$date."';";
             $query_token = "SELECT max(token) as cnt from bookingsGroceries where start_time like '%".$date."';";
-            
+            $query_token2 = "SELECT max(token) as cnt from bookingsgroceriesliquor where start_time like '%".$date."';";
+
             echo "16. " .$query_token ."<br>";
 
             
             // tells number of people already present with the exact timestamp (slot+date)
             $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
-            
+            $count_timestamp2 = (($conn->query($query_count2))->fetch_assoc())['cnt'];
+            echo "17. " .$count_timestamp ."<br>";
+
             // tells number of people already present on that day(only date)
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
-            
+            $count_token2 = (($conn->query($query_token2))->fetch_assoc())['cnt'];
+
+            $count_timestamp = $count_timestamp + $count_timestamp2;
+            $count_token = max($count_token , $count_token2);
+
             $token = $count_token+1;
 
             $counter = (int)(($count_timestamp/$max_limit)) + 1 + $liquor_counters;//extra +1 for liquor counter
@@ -325,17 +323,17 @@
                     die("Error processing the request.");
                 }
                 $_SESSION['message_groceries']="Your request to buy Groceries was successful.<br><br>
-                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_groceries)) ." and ". date('H:ia',strtotime($endTime_groceries))." on ".date('M d Y',strtotime($timestamp_groceries))."<br> at counter number: $counter <br>Your token number: $token. <br>
+                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:i',strtotime($timestamp_groceries)) ." and ". date('H:i',strtotime($endTime_groceries))." on ".date('M d Y',strtotime($timestamp_groceries))."<br> at counter number: $counter <br>Your token number: $token. <br>
                 Grocery Card number: $grocery_card <br>
                 Kindly collect your items within this time frame. <br>
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
             }
             else {
                 if($difference_Groceries<=10) {
-                    $_SESSION['message_groceries']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_Groceries);
+                    $_SESSION['message_groceries']="AAYou must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_Groceries);
                 }
                 else {
-                    $_SESSION['message_groceries']="You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_grl);
+                    $_SESSION['message_groceries']="AA1You must wait for at least 10 days after your previous visit, before making a request to buy Groceries. <br>Last booking was scheduled for ". date('M d Y',$last_date_grl);
                 }
             }
         }
@@ -439,7 +437,7 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
 
             $date = date("M d Y",strtotime($_POST["timestamp_groceriesliquor"]));
 
-            $cal_table_name = "calendarGroceriesLiquor";
+            $cal_table_name = "calendarGroceries";
 
             // to fetch from caendar of groceries and liquor
             $sql = "SELECT * FROM $cal_table_name WHERE date='$date';";
@@ -457,19 +455,26 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
             //queries to select from table for groceries and liquor
            
             $query_count = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$timestamp_gl."';";
+            $query_count2 = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$timestamp_gl."';";
+            //$query_token = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time like '%".$date."';";
             $query_token = "SELECT max(token) as cnt from bookingsgroceriesliquor where start_time like '%".$date."';";
-            
+            $query_token2 = "SELECT max(token) as cnt from bookingsGroceries where start_time like '%".$date."';";
+        
             
             // tells number of people already present with the exact timestamp (slot+date)
             $count_timestamp = (($conn->query($query_count))->fetch_assoc())['cnt'];
-            
+            $count_timestamp2 = (($conn->query($query_count2))->fetch_assoc())['cnt'];
+
             // tells number of people already present on that day(only date)
             $count_token = (($conn->query($query_token))->fetch_assoc())['cnt'];
-            
+            $count_token2 = (($conn->query($query_token2))->fetch_assoc())['cnt'];
+            $count_timestamp  = $count_timestamp2 + $count_timestamp;
+            $count_token  = max($count_token , $count_token2);
+
             $token = $count_token+1;
            
             $counter = (int)(($count_timestamp/$max_limit)) + 1 + $liquor_counters;//extra +1 for liquor counter
-            echo $counter.$max_limit.$count_timestamp."a".$liquor_counters;
+        
             if($counter - $liquor_counters >$total_counters){
                 die("sorry the spots just got filled");
             }
@@ -483,7 +488,6 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
                 if($liquor_fail==1){
                     $g2 = 0;
                 }
-                
                 $insert_sql = "INSERT INTO bookingsgroceriesliquor VALUES ('$gro_card','$liq_card', '$name', '$timestamp_gl', '$contact', '$counter', '$rank', '$card_name', $token, $date_of_booking,$g1,$g2);";
                 echo "21. " .$insert_sql ."<br>";
 
@@ -494,20 +498,20 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
 
                 if($liquor_fail==0 && $grocery_fail==1) {
                     $_SESSION['message_groceriesliquor']="Your request to buy Groceries was <b>unsuccessful</b> and Liquor was <b>successful</b>.<br><br>
-                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_gl)) ." and ". date('H:ia',strtotime($endTime_gl))." on ".date('M d Y',strtotime($timestamp_gl))."<br> at counter number: $counter <br>Your token number: $token. <br>
+                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:i',strtotime($timestamp_gl)) ." and ". date('H:i',strtotime($endTime_gl))." on ".date('M d Y',strtotime($timestamp_gl))."<br> at counter number: $counter <br>Your token number: $token. <br>
                 Grocery Card number: $gro_card <br> Liquor Card number: $liq_card <br>
                 Kindly collect your items within this time frame. <br>
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
                 } 
                 else if($liquor_fail==1 && $grocery_fail==0) {
                     $_SESSION['message_groceriesliquor']="Your request to buy Groceries was <b>successful</b> and Liquor was <b>unsuccessful</b>.<br><br>
-                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_gl)) ." and ". date('H:ia',strtotime($endTime_gl))." on ".date('M d Y',strtotime($timestamp_gl))."<br> at counter number: $counter <br>Your token number: $token. <br>
+                Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:i',strtotime($timestamp_gl)) ." and ". date('H:i',strtotime($endTime_gl))." on ".date('M d Y',strtotime($timestamp_gl))."<br> at counter number: $counter <br>Your token number: $token. <br>
                 Grocery Card number: $gro_card <br> Liquor Card number: $liq_card <br>
                 Kindly collect your items within this time frame. <br>
                 Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
                 } else {
                     $_SESSION['message_groceriesliquor']="Your request to buy Groceries and Liquor was <b>successful</b>.<br><br>
-                    Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:ia',strtotime($timestamp_gl)) ." and ". date('H:ia',strtotime($endTime_gl))." on ".date('M d Y',strtotime($timestamp_gl))."<br> at counter number: $counter <br>Your token number: $token. <br>
+                    Please visit Army Canteen, Palace Colony, Mandi, HP, India - 175001 between ". date('H:i',strtotime($timestamp_gl)) ." and ". date('H:i',strtotime($endTime_gl))." on ".date('M d Y',strtotime($timestamp_gl))."<br> at counter number: $counter <br>Your token number: $token. <br>
                     Grocery Card number: $gro_card <br> Liquor Card number: $liq_card <br>
                     Kindly collect your items within this time frame. <br>
                     Please take a screenshot of this e-appointment to validate yourself at the gate/counter.";
@@ -569,9 +573,6 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
                 <div class="alert alert-info" role="alert">
                     <p>
                    <strong style="color:red">Welcome to ARTRAC ESM Canteen Mandi, Himachal Pradesh, India</strong>
-                        <br>
-                        <br>
-                   <b>For customers at Sundernagar, </b><a href="http://acsa.iiots.in/sun/" target="_blank" style="color:blue;"> please click here </a>
                         <br>
                         <br>
                         Booking Policy
@@ -682,7 +683,7 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
 
                                 $slots = 20;
                                 while($slots>0){
-                                    $new_timestamp = date("h:ia M d Y",$new_tp);
+                                    $new_timestamp = date("H:i M d Y",$new_tp);
                                     $current_year = date("Y",strtotime('today'));
                                     $date = date("M d Y",$new_tp);
                                     $table = "calendarLiquor";
@@ -699,7 +700,7 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
 
                                         $results = (($conn->query($sql))->fetch_assoc())['cnt'];
                                         //$results2 = (($conn->query($sql2))->fetch_assoc())['cnt'];
-                                        $results = $results;
+                                        //$results = $results + $results2;
 
                                         if($results<$max_limit*$total_counters){
                                             echo "<option>". $new_timestamp ."</option>";
@@ -737,8 +738,8 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
 
 
                                 $slots = 20;
-                                while($slots<0){
-                                    $new_timestamp = date("h:ia M d Y",$new_tp);
+                                while($slots>0){
+                                    $new_timestamp = date("H:i M d Y",$new_tp);
                                     $current_year = date("Y",strtotime('today'));
                                     $date = date("M d Y",$new_tp);
                                     $table= "calendarGroceries";
@@ -752,12 +753,12 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
                                     }
 
                                     if(isWorkingHour($new_tp,$conn,"Groceries")){
-                                        // $sql1 = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$new_timestamp."';";
+                                        $sql1 = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$new_timestamp."';";
                                         $sql2 = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$new_timestamp."';";
 
-                                        // $results1 = (($conn->query($sql1))->fetch_assoc())['cnt'];
+                                        $results1 = (($conn->query($sql1))->fetch_assoc())['cnt'];
                                         $results2 = (($conn->query($sql2))->fetch_assoc())['cnt'];
-                                        $results = $results2;
+                                        $results = $results1 + $results2;
 
                                         if($results<$max_limit*$total_counters){
                                             echo "<option>". $new_timestamp ."</option>";
@@ -795,26 +796,26 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
 
                                 $slots = 20;
                                 while($slots>0){
-                                    $new_timestamp = date("h:ia M d Y",$new_tp);
+                                    $new_timestamp = date("H:i M d Y",$new_tp);
                                     $current_year = date("Y",strtotime('today'));
                                     $date = date("M d Y",$new_tp);
-                                    $table= "calendarGroceriesLiquor";
+                                    $table= "calendarGroceries";
                                     $sql = "SELECT * FROM $table WHERE date='".$date."';";
                                     $result = ($conn->query($sql))->fetch_assoc();
                                     $max_limit = $result['max_limit'];
                                     $total_counters = $result['counters'];
 
-                                    while(isHoliday($new_tp,$conn,"GroceriesLiquor")){
+                                    while(isHoliday($new_tp,$conn,"Groceries")){
                                         $new_tp = strtotime('30 minutes',$new_tp);
                                     }
 
-                                    if(isWorkingHour($new_tp,$conn,"GroceriesLiquor")){
+                                    if(isWorkingHour($new_tp,$conn,"Groceries")){
                                         $sql1 = "SELECT COUNT(*) as cnt from bookingsgroceriesliquor where start_time='".$new_timestamp."';";
-                                        // $sql2 = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$new_timestamp."';";
+                                        $sql2 = "SELECT COUNT(*) as cnt from bookingsGroceries where start_time='".$new_timestamp."';";
 
                                         $results1 = (($conn->query($sql1))->fetch_assoc())['cnt'];
-                                        // $results2 = (($conn->query($sql2))->fetch_assoc())['cnt'];
-                                        $results = $results1;
+                                        $results2 = (($conn->query($sql2))->fetch_assoc())['cnt'];
+                                        $results = $results1 + $results2;
 
                                         if($results<$max_limit*$total_counters){
                                             echo "<option>". $new_timestamp ."</option>";
@@ -861,5 +862,5 @@ $query_for_l2 = "SELECT * from bookingsgroceriesliquor WHERE card_id_liquor='$li
   </div>
 
 </footer>
-<script src="javascripts/script4.js"></script>
+<script src="javascripts/script1.js"></script>
 </html>
